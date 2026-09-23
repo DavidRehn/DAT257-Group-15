@@ -15,7 +15,7 @@ public class SolarRadiationRetreiver{
         httpClient = HttpClient.newHttpClient();
         apiUrl += String.format(Locale.US,  // So it uses . instead of , when formatting
                                 "?latitude=%f&longitude=%f&hourly=global_tilted_irradiance&tilt=%d&azimuth=%d&forecast_days=%d", 
-                                request.GetLatitude(), request.GetLongitude(), request.GetTilt(), request.GetAzimuth(), request.GetDays());
+                                request.Latitude(), request.Longitude(), request.Tilt(), request.Azimuth(), request.Days());
     }
 
     public void GetWeatherInfo(){

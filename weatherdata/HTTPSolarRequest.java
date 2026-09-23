@@ -31,13 +31,13 @@ public class HTTPSolarRequest {
         }
     }
 
-    public double GetLatitude(){return latitude;}
+    public double Latitude(){return latitude;}
 
-    public double GetLongitude(){return longitude;}
+    public double Longitude(){return longitude;}
 
-    public int GetTilt(){return tiltDeg;}
+    public int Tilt(){return tiltDeg;}
 
-    public int GetDays(){return days;}
+    public int Days(){return days;}
 
-    public int GetAzimuth(){return azimuthDeg;}
+    public int Azimuth(){return azimuthDeg;}
 }
