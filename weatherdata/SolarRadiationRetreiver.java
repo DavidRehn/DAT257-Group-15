@@ -1,7 +1,11 @@
 package weatherdata;
 
+import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+import java.util.Locale;
 
 public class SolarRadiationRetreiver{
     private String apiUrl = "https://api.open-meteo.com/v1/forecast";     // Open meteo api
@@ -9,11 +13,19 @@ public class SolarRadiationRetreiver{
 
     public SolarRadiationRetreiver(HTTPSolarRequest request){
         httpClient = HttpClient.newHttpClient();
-        apiUrl += String.format("?latitude=%f&longitude=%f&hourly=global_tilted_irradiance&tilt=%d&azimuth=%d&forecast_days=%d", 
+        apiUrl += String.format(Locale.US,  // So it uses . instead of , when formatting
+                                "?latitude=%f&longitude=%f&hourly=global_tilted_irradiance&tilt=%d&azimuth=%d&forecast_days=%d", 
                                 request.GetLatitude(), request.GetLongitude(), request.GetTilt(), request.GetAzimuth(), request.GetDays());
     }
 
     public void GetWeatherInfo(){
-        //HttpRequest request = 
-    }
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiUrl)).GET().build();
+        HttpResponse<String> response;
+        try{
+            response = httpClient.send(request, BodyHandlers.ofString());
+            System.out.println(response.body());    // Prints a JSON
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }  
 }
