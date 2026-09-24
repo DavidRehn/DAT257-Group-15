@@ -206,8 +206,6 @@ public  class LocationApp extends Application {
 
                 allMessage.setText("Please fill in all fields");
 
-
-
             } else {
 
                 try {
