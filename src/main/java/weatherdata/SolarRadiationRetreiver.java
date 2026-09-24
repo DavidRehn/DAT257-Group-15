@@ -8,7 +8,7 @@ import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Locale;
 import javax.json.stream.JsonParser;  
-import javax.json;  
+import javax.json.Json;  
 
 public class SolarRadiationRetreiver{
     private String apiUrl = "https://api.open-meteo.com/v1/forecast";     // Open meteo api
@@ -27,6 +27,7 @@ public class SolarRadiationRetreiver{
         try{
             response = httpClient.send(request, BodyHandlers.ofString());
             JsonParser parser = Json.createParser(new StringReader(response.body()));
+            System.out.println(response.body());
         }catch (Exception e){
             e.printStackTrace();
         }

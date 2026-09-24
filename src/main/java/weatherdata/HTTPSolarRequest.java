@@ -19,14 +19,14 @@ public class HTTPSolarRequest {
 
     private static int DirectionToAzimuth(Direction dir){
         switch (dir) {
-            case Direction.SOUTH:        return 0;      // Degrees from south (clock-wise)
-            case Direction.SOUTHWEST:    return 45;
-            case Direction.WEST:         return 90;
-            case Direction.NORTHWEST:    return 135;
-            case Direction.NORTH:        return 180;
-            case Direction.NORTHEAST:    return 225;
-            case Direction.EAST:         return 270;
-            case Direction.SOUTHEAST:    return 315;
+            case SOUTH:        return 0;      // Degrees from south (clock-wise)
+            case SOUTHWEST:    return 45;
+            case WEST:         return 90;
+            case NORTHWEST:    return 135;
+            case NORTH:        return 180;
+            case NORTHEAST:    return 225;
+            case EAST:         return 270;
+            case SOUTHEAST:    return 315;
             default : return -1;    // Can never happen
         }
     }

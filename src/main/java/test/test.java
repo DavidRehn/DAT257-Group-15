@@ -1,3 +1,4 @@
+package test;
 
 import other.Direction;
 import weatherdata.HTTPSolarRequest;
