@@ -1,0 +1,4 @@
+Compile & run:    .\mvnw.cmd --% compile exec:java -Dexec.mainClass= test.test        // Replace test.test with class to run (has to contain main-method) 
+                                                                                         (format: {package}.{class}, (class is without .java ending))
+
+Clean compile:    .\mvnw.cmd clean compile     // Does a clean compile of the entire project

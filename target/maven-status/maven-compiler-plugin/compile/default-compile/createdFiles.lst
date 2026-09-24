@@ -1,5 +1,6 @@
 weatherdata\HTTPSolarRequest.class
 weatherdata\SolarRadiationRetreiver.class
+test\test.class
 other\Direction.class
 weatherdata\ForecastTimestamp.class
 weatherdata\HTTPSolarRequest$1.class
