@@ -1,24 +1,33 @@
 
 package location;
 //import
-import javafx.geometry.Insets;
-import javafx.scene.control.TextField;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Button;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.geometry.Pos;
-import javafx.stage.Stage;
-import javafx.scene.control.ScrollPane;
+import java.util.Hashtable;
 
+import javax.json.JsonString;
+
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import saveload.JsonSaveLoad;
+import saveload.SaveLoadInterface;
 public  class LocationApp extends Application {
+
+    SaveLoadInterface saveLoad = new JsonSaveLoad();
+    Hashtable<String, Object> saveData = new Hashtable<>();
 
     @Override
     public void start(Stage stage) {
-
+        saveData.putAll(saveLoad.load());
+        System.out.println(saveData);
  // Create the title
 
         Label title = new Label("Location and Solar Panel Info");
@@ -37,7 +46,9 @@ public  class LocationApp extends Application {
         TextField longitudeField = new TextField();
         longitudeField.setPromptText("Enter longitude");
         longitudeField.setMaxWidth(220);
-
+        if(saveData.containsKey("longitude")){
+            longitudeField.setText((saveData.get("longitude")).toString());
+        }
 
 // Check longitude
         Button checkButton = new Button("Check longitude");
@@ -67,7 +78,9 @@ public  class LocationApp extends Application {
         TextField latitudeField = new TextField();
         latitudeField.setPromptText("Enter latitude");
         latitudeField.setMaxWidth(220);
-
+        if(saveData.containsKey("latitude")){
+            latitudeField.setText((saveData.get("latitude")).toString());
+        }
 
 // Check latitude
         Button latitudeButton = new Button("Check latitude");
@@ -101,7 +114,9 @@ public  class LocationApp extends Application {
         TextField areaField = new TextField();
         areaField.setPromptText("Area (m²)");
         areaField.setMaxWidth(220);
-
+        if(saveData.containsKey("area")){
+            areaField.setText((saveData.get("area")).toString());
+        }
 
 // Check solar panel area
         Button areaButton = new Button("Check area");
@@ -130,7 +145,9 @@ public  class LocationApp extends Application {
         TextField tiltField = new TextField();
         tiltField.setPromptText("Tilt (degrees)");
         tiltField.setMaxWidth(220);
-
+        if(saveData.containsKey("tilt")){
+            tiltField.setText((saveData.get("tilt")).toString());
+        }
 
 // Check solar panel tilt
         Button tiltButton = new Button("Check tilt");
@@ -172,6 +189,9 @@ public  class LocationApp extends Application {
 
         directionList.setPrefWidth(185);
         directionList.setMaxWidth(185);
+        if(saveData.containsKey("direction")){
+            directionList.setValue(((JsonString)saveData.get("direction")).getString());
+        }
 
  // Check solar panel direction
         Button directionButton = new Button("Check direction");
@@ -192,6 +212,7 @@ public  class LocationApp extends Application {
 
 
  // Check all user inputs
+ 
         Button checkAllButton = new Button("Check All");
 
         Label allMessage = new Label("");
@@ -270,6 +291,13 @@ public  class LocationApp extends Application {
                                                 allMessage.setText(
                                                         "All inputs are valid"
                                                 );
+                                                saveData.clear();
+                                                saveData.put("longitude",Double.valueOf(longitudeField.getText()));
+                                                saveData.put("latitude", Double.valueOf(latitudeField.getText()));
+                                                saveData.put("area", Double.valueOf(areaField.getText()));
+                                                saveData.put("tilt", Integer.valueOf(tiltField.getText()));
+                                                saveData.put("direction", directionList.getValue());
+                                                saveLoad.save(saveData);
 
                                             }
 
@@ -305,13 +333,14 @@ public  class LocationApp extends Application {
 
                     }
 
-
+                    
                 } catch (NumberFormatException e) {
 
                     allMessage.setText(
                             "Please enter a valid longitude"
                     );
                 }
+                
             }
         });
 
@@ -459,4 +488,6 @@ public  class LocationApp extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+
 }
