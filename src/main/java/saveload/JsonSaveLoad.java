@@ -11,9 +11,12 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 import javax.json.Json;
+import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
+import javax.json.JsonString;
+import javax.json.JsonValue;
 
 public class JsonSaveLoad implements SaveLoadInterface {
     private String filename ="SavedAppData.json";
@@ -62,7 +65,21 @@ public class JsonSaveLoad implements SaveLoadInterface {
                 JsonReader read = Json.createReader(new StringReader(reader.nextLine()));
                 JsonObject obj = read.readObject();
                 read.close();
-                obj.forEach(payload::put);
+                
+                for (JsonObject.Entry<String, JsonValue> en : obj.entrySet()) {
+            
+                    String key = en.getKey();
+                    JsonValue val = en.getValue();
+                    if (val instanceof JsonNumber){
+                        if(((JsonNumber) val).isIntegral()){
+                            payload.put(key,((JsonNumber) val).intValue());
+                        }else{
+                            payload.put(key,((JsonNumber) val).doubleValue());
+                        }
+                    }else if (val instanceof JsonString){
+                        payload.put(key,((JsonString) val).getString());
+                    }
+                }
             }
         }catch(FileNotFoundException e){}
 

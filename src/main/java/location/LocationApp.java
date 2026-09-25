@@ -3,8 +3,6 @@ package location;
 //import
 import java.util.Hashtable;
 
-import javax.json.JsonString;
-
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -190,7 +188,7 @@ public  class LocationApp extends Application {
         directionList.setPrefWidth(185);
         directionList.setMaxWidth(185);
         if(saveData.containsKey("direction")){
-            directionList.setValue(((JsonString)saveData.get("direction")).getString());
+            directionList.setValue((String)saveData.get("direction"));
         }
 
  // Check solar panel direction
