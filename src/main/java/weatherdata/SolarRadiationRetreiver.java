@@ -21,15 +21,26 @@ public class SolarRadiationRetreiver{
                                 request.Latitude(), request.Longitude(), request.Tilt(), request.Azimuth(), request.Days());
     }
 
-    public void GetWeatherInfo(){
-        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiUrl)).GET().build();
-        HttpResponse<String> response;
-        try{
-            response = httpClient.send(request, BodyHandlers.ofString());
-            JsonParser parser = Json.createParser(new StringReader(response.body()));
+
+    public String GetWeatherInfo() {
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(apiUrl))
+                .GET()
+                .build();
+
+        try {
+            HttpResponse<String> response =
+                    httpClient.send(request, BodyHandlers.ofString());
+
+            // Print the response for testing
             System.out.println(response.body());
-        }catch (Exception e){
+
+            // Return the JSON data to the caller
+            return response.body();
+
+        } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-    }  
+    }
 }
