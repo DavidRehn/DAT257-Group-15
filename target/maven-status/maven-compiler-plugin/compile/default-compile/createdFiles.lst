@@ -3,7 +3,6 @@ weatherdata\HTTPSolarRequest.class
 location\LocationMain.class
 other\Direction.class
 weatherdata\SolarRadiationRetreiver.class
-test\test.class
 saveload\SaveLoadInterface.class
 location\LocationManager.class
 location\LocationApp.class

@@ -19,6 +19,7 @@ public class ForecastTimestamp {
         this.solarRadiationWpM2 = radiationWpM2;
     }
 
+
     /** Returns the timestamp of the object.
      * @return Timestamp
      */
@@ -29,4 +30,12 @@ public class ForecastTimestamp {
      * @return  Solar raiaton value.
      */
     public double SolarRadiationWpM2(){return solarRadiationWpM2;}
+
+    /** Returns a string representation of this object.
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString(){
+        return "{" + time + ", " + solarRadiationWpM2 + "}";
+    }
 }

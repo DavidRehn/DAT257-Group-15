@@ -16,21 +16,24 @@ import javax.json.Json;
 public class SolarRadiationRetreiver{
     private String apiUrl = "https://api.open-meteo.com/v1/forecast";     // Open meteo api
     private final HttpClient httpClient;
+    private WeatherParser weatherParser;
 
-    public SolarRadiationRetreiver(HTTPSolarRequest request){
+    public SolarRadiationRetreiver(){
         httpClient = HttpClient.newHttpClient();
-        apiUrl += String.format(Locale.US,  // So it uses . instead of , when formatting
-                                "?latitude=%f&longitude=%f&hourly=global_tilted_irradiance&tilt=%d&azimuth=%d&forecast_days=%d", 
-                                request.Latitude(), request.Longitude(), request.Tilt(), request.Azimuth(), request.Days());
+        weatherParser = new WeatherParser();
     }
 
-    public void GetWeatherInfo(){
+    public void GetWeatherInfo(HTTPSolarRequest requestParams){
+        apiUrl += String.format(Locale.US,  // So it uses . instead of , when formatting
+                                "?latitude=%f&longitude=%f&hourly=global_tilted_irradiance&tilt=%d&azimuth=%d&forecast_days=%d&timezone=auto",      // Returns the time in the local timezone (from coords), handles summer time automaticaly
+                                requestParams.Latitude(), requestParams.Longitude(), requestParams.Tilt(), requestParams.Azimuth(), requestParams.Days());
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiUrl)).GET().build();
         HttpResponse<String> response;
         try{
             response = httpClient.send(request, BodyHandlers.ofString());
             JsonParser parser = Json.createParser(new StringReader(response.body()));
-            System.out.println(response.body());
+            weatherParser.ParseToJson(response.body());
+            weatherParser.PrintTimestamps();    // temporary
         }catch (Exception e){
             e.printStackTrace();
         }
