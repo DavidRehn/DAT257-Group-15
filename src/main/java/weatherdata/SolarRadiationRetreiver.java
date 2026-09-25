@@ -10,6 +10,9 @@ import java.util.Locale;
 import javax.json.stream.JsonParser;  
 import javax.json.Json;  
 
+/**
+ *  Class to handle the interaction with the Open Meteo Api.
+ */
 public class SolarRadiationRetreiver{
     private String apiUrl = "https://api.open-meteo.com/v1/forecast";     // Open meteo api
     private final HttpClient httpClient;
