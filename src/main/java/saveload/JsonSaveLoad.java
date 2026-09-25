@@ -21,6 +21,9 @@ import javax.json.JsonValue;
 public class JsonSaveLoad implements SaveLoadInterface {
     private String filename ="SavedAppData.json";
     private JsonObjectBuilder builder;
+    /** 
+        * @pram 
+    */
     public void save(Hashtable<String,Object> pairs){
         JsonObjectBuilder builder = Json.createObjectBuilder();
         resetBuilder();
@@ -53,10 +56,16 @@ public class JsonSaveLoad implements SaveLoadInterface {
 
         }
     }
+
+    /** 
+    */
     private void resetBuilder(){
         builder = Json.createObjectBuilder();
     }
-    
+
+    /** 
+        * @return 
+    */
     public Hashtable load(){
         Hashtable<String, Object> payload = new Hashtable<>();
         File file = new File(filename);

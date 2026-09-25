@@ -15,10 +15,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+//saveload
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
+//weatherdata
+import weatherdata.HTTPSolarRequest;
+import weatherdata.SolarRadiationRetreiver;
+//import weatherdata.CallWeatherAPI;
 public  class LocationApp extends Application {
 
+    //CallWeatherAPI apiAccess = new CallWeatherAPI();
     SaveLoadInterface saveLoad = new JsonSaveLoad();
     Hashtable<String, Object> saveData = new Hashtable<>();
 
@@ -297,6 +303,8 @@ public  class LocationApp extends Application {
                                                 saveData.put("direction", directionList.getValue());
                                                 saveLoad.save(saveData);
 
+// Temp API kopling:
+                                                //apiAccess.callAPI();
                                             }
 
                                         } catch (NumberFormatException e) {
