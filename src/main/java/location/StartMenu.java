@@ -136,7 +136,7 @@ public class StartMenu extends Application {
         NumberAxis yAxis = new NumberAxis();
 
 
-        xAxis.setLabel("Time (GMT)");
+        xAxis.setLabel("Time (local)");
 
         boolean hasForecast =
                 forecastTimes != null && forecastRadiation != null;
