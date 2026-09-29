@@ -1,0 +1,15 @@
+powermarketdata\HTTPMarketRequest.class
+location\LocationMain.class
+weatherdata\SolarRadiationRetreiver.class
+saveload\SaveLoadInterface.class
+location\LocationManager.class
+weatherdata\HTTPSolarRequest$1.class
+powermarketdata\PowerMarketRetriver.class
+saveload\JsonSaveLoad.class
+weatherdata\HTTPSolarRequest.class
+other\Direction.class
+weatherdata\WeatherParser.class
+powermarketdata\PowerMarketParser.class
+test\test.class
+location\LocationApp.class
+weatherdata\ForecastTimestamp.class
