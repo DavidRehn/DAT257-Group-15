@@ -7,12 +7,13 @@ import weatherdata.SolarRadiationRetreiver;
 //saveload
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
+import java.util.Hashtable;
 
-public class CallWeatherAPI(){
+public class CallWeatherAPI{
     public SaveLoadInterface saveLoad = new JsonSaveLoad();
     public Hashtable<String, Object> saveData = new Hashtable<>();
     
-    public voui CallWeatherAPI{
+    public void CallWeatherAPI{
         
     }
 
