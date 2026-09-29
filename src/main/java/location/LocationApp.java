@@ -15,6 +15,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.scene.control.ScrollPane;
+import other.Direction;
+import weatherdata.HTTPSolarRequest;
+import weatherdata.SolarRadiationRetreiver;
+import javax.json.Json;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import java.io.StringReader;
+import javax.json.JsonArray;
+import javafx.application.Platform;
+
 //saveload
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
@@ -43,9 +54,11 @@ public  class LocationApp extends Application {
 
         Button backButton = new Button("← Back to main page");
 
+
         backButton.setOnAction(event -> {
-            stage.close();
+            new StartMenu().start(stage);
         });
+
 // Longitude
         TextField longitudeField = new TextField();
         longitudeField.setPromptText("Enter longitude");
@@ -295,17 +308,99 @@ public  class LocationApp extends Application {
                                                 allMessage.setText(
                                                         "All inputs are valid"
                                                 );
-                                                saveData.clear();
-                                                saveData.put("longitude",Double.valueOf(longitudeField.getText()));
-                                                saveData.put("latitude", Double.valueOf(latitudeField.getText()));
-                                                saveData.put("area", Double.valueOf(areaField.getText()));
-                                                saveData.put("tilt", Integer.valueOf(tiltField.getText()));
-                                                saveData.put("direction", directionList.getValue());
-                                                saveLoad.save(saveData);
 
-// Temp API kopling:
-                                                //apiAccess.callAPI();
-                                            }
+                                                Direction selectedDirection = Direction.valueOf(
+                                                        directionList.getValue().toUpperCase()
+                                                );
+
+                                                HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
+                                                        latitude,
+                                                        longitude,
+                                                        tilt,
+                                                        1,
+                                                        selectedDirection
+                                                );
+
+                                                System.out.println(
+                                                        "Latitude: " + weatherRequest.Latitude()
+                                                );
+
+                                                Thread apiThread;
+                                                apiThread = new Thread(() -> {
+                                                    SolarRadiationRetreiver retriever =
+                                                            new SolarRadiationRetreiver(weatherRequest);
+
+                                                    String json = retriever.GetWeatherInfo();
+
+                                                    if (json != null) {
+                                                        System.out.println("API data received successfully!");
+
+                                                        try (JsonReader reader =
+                                                                     Json.createReader(new StringReader(json))) {
+
+                                                            JsonObject hourly = reader.readObject()
+                                                                    .getJsonObject("hourly");
+
+
+                                                            JsonArray times = hourly.getJsonArray("time");
+
+                                                            JsonArray radiation =
+                                                                    hourly.getJsonArray("global_tilted_irradiance");
+
+
+                                                            for (int i = 0; i < times.size(); i++) {
+                                                                String time = times.getString(i);
+
+                                                                double irradiance = radiation
+                                                                        .getJsonNumber(i)
+                                                                        .doubleValue();
+
+                                                                System.out.println(
+                                                                        time + " -> " + irradiance + " W/m²"
+                                                                );
+                                                            } // End of for loop
+
+// Add this INSIDE the try block
+                                                            Platform.runLater(() -> {
+                                                                StartMenu.setForecastData(times, radiation);
+
+                                                                allMessage.setText(
+                                                                        "Forecast loaded! Back to main page."
+                                                                );
+                                                            });
+
+
+                                                        } // End of try block
+
+                                                    } else {
+                                                        System.out.println(
+                                                                "Failed to receive API data."
+                                                        );
+                                                    }
+
+                                                }); // End of Thread
+
+                                                apiThread.setDaemon(true);
+                                                apiThread.start();
+
+
+                                          
+                                          // Save the user's information
+saveData.clear();
+saveData.put("longitude",
+        Double.valueOf(longitudeField.getText()));
+saveData.put("latitude",
+        Double.valueOf(latitudeField.getText()));
+saveData.put("area",
+        Double.valueOf(areaField.getText()));
+saveData.put("tilt",
+        Integer.valueOf(tiltField.getText()));
+saveData.put("direction",
+        directionList.getValue());
+
+saveLoad.save(saveData);
+
+} // End of valid tilt
 
                                         } catch (NumberFormatException e) {
 
