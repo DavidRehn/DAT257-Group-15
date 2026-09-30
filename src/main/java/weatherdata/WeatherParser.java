@@ -57,4 +57,6 @@ public class WeatherParser {
         out += "]";
         System.out.println(out);
     }
+
+    public ArrayList<ForecastTimestamp> GetTimestamps(){return timestamps;}
 }
