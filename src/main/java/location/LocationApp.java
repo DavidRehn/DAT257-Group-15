@@ -188,7 +188,7 @@ public  class LocationApp extends Application {
         });
 // Solar panel efficiency
         TextField efficiencyField = new TextField();
-        efficiencyField.setPromptText("efficiency (%)");
+        efficiencyField.setPromptText("efficiency (0.0 to 1.0)");
         efficiencyField.setMaxWidth(220);
         if(saveData.containsKey("efficiency")){
             efficiencyField.setText((saveData.get("efficiency")).toString());
@@ -394,12 +394,12 @@ public  class LocationApp extends Application {
                                           
                                           // Save the user's information
 
-int efficiency = Integer.parseInt(efficiencyField.getText());
+double efficiency = Double.parseDouble(efficiencyField.getText());
 
-                                    if (efficiency <= 0) {
+                                    if (efficiency <= 0.0||efficiency > 1.0|| !Double.isFinite(efficiency)) {
 
                                         allMessage.setText(
-                                                "Efficiency must be greater than 0"
+                                                "Efficiency must be between 0.0 and 1.0"
                                         );
                                     }else{
 
@@ -413,7 +413,7 @@ saveData.put("area",
 saveData.put("tilt",
         Integer.valueOf(tiltField.getText()));
 saveData.put("efficiency",
-        Integer.valueOf(efficiencyField.getText()));
+        Double.valueOf(efficiencyField.getText()));
 saveData.put("direction",
         directionList.getValue());
 
