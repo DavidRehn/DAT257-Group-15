@@ -1,9 +1,16 @@
 
 package location;
 //import
+import java.io.StringReader;
 import java.util.Hashtable;
 
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -15,21 +22,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.control.ScrollPane;
 import other.Direction;
-import weatherdata.HTTPSolarRequest;
-import weatherdata.SolarRadiationRetreiver;
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
-import java.io.StringReader;
-import javax.json.JsonArray;
-import javafx.application.Platform;
-
-//saveload
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
-//weatherdata
 import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
 //import weatherdata.CallWeatherAPI;
@@ -191,7 +186,13 @@ public  class LocationApp extends Application {
             }
 
         });
-
+// Solar panel efficiency
+        TextField efficiencyField = new TextField();
+        efficiencyField.setPromptText("efficiency (%)");
+        efficiencyField.setMaxWidth(220);
+        if(saveData.containsKey("efficiency")){
+            efficiencyField.setText((saveData.get("efficiency")).toString());
+        }
 // Solar panel direction
         ComboBox<String> directionList = new ComboBox<>();
 
@@ -240,11 +241,17 @@ public  class LocationApp extends Application {
                     || latitudeField.getText().isBlank()
                     || areaField.getText().isBlank()
                     || tiltField.getText().isBlank()
+                    || efficiencyField.getText().isBlank()
                     || directionList.getValue() == null) {
 
                 allMessage.setText("Please fill in all fields");
 
             } else {
+
+
+
+
+                
 
                 try {
 
@@ -386,6 +393,16 @@ public  class LocationApp extends Application {
 
                                           
                                           // Save the user's information
+
+int efficiency = Integer.parseInt(efficiencyField.getText());
+
+                                    if (efficiency <= 0) {
+
+                                        allMessage.setText(
+                                                "Efficiency must be greater than 0"
+                                        );
+                                    }else{
+
 saveData.clear();
 saveData.put("longitude",
         Double.valueOf(longitudeField.getText()));
@@ -395,11 +412,13 @@ saveData.put("area",
         Double.valueOf(areaField.getText()));
 saveData.put("tilt",
         Integer.valueOf(tiltField.getText()));
+saveData.put("efficiency",
+        Integer.valueOf(efficiencyField.getText()));
 saveData.put("direction",
         directionList.getValue());
 
 saveLoad.save(saveData);
-
+                                    }//end of efficiency
 } // End of valid tilt
 
                                         } catch (NumberFormatException e) {
@@ -533,6 +552,13 @@ saveLoad.save(saveData);
         HBox tiltRow = new HBox(15, tiltLabel, tiltField);
         tiltRow.setAlignment(Pos.CENTER);
 
+// Efficiency row
+        Label efficiencyLabel = new Label("Efficiency");
+        efficiencyLabel.setPrefWidth(90);
+
+        HBox efficiencyRow = new HBox(15, efficiencyLabel, efficiencyField);
+        efficiencyRow.setAlignment(Pos.CENTER);
+
 // Direction row
         Label directionLabel = new Label("Direction");
         directionLabel.setPrefWidth(90);
@@ -565,7 +591,9 @@ saveLoad.save(saveData);
         layout.getChildren().add(tiltRow);
         //layout.getChildren().add(tiltButton);
         // layout.getChildren().add(tiltMessage);
-
+        
+        layout.getChildren().add(efficiencyRow);
+        
         layout.getChildren().add(directionRow);
         // layout.getChildren().add(directionButton);
         //layout.getChildren().add(directionMessage);

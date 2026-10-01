@@ -1,19 +1,22 @@
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\LocationApp.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\LocationMain.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\LocationManager.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\StartMenu.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\StartMenuMain.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\Direction.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\powermarketdata\HTTPMarketRequest.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketParser.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketRetriver.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\saveload\JsonSaveLoad.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\saveload\SaveLoadInterface.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\test\test.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\CallWeatherAPI.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\EstimationTimestamp.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\ForecastTimestamp.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\HTTPSolarRequest.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\SolarRadiationRetreiver.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\Timestamp.java
-C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\WeatherParser.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\AppliancesApp.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\LocationApp.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\LocationMain.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\LocationManager.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\StartMenu.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\StartMenuMain.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\Direction.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\SolarPanel.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\HTTPMarketRequest.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketParser.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketRetriver.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\saveload\JsonSaveLoad.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\saveload\SaveLoadInterface.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\test\test.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\CallWeatherAPI.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\EnergyEstimator.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\EstimationTimestamp.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\ForecastTimestamp.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\HTTPSolarRequest.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\SolarRadiationRetreiver.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\Timestamp.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\WeatherParser.java
