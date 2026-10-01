@@ -263,9 +263,9 @@ public  class LocationApp extends Application {
 
                     } 
                 } catch (NumberFormatException e) {
-                    allMessage.setText(
-                            "Please enter a valid longitude"
-                    );
+
+                    allMessage.setText("Please enter a valid longitude");
+
                 }
                     
  // Check Latitude
@@ -318,7 +318,6 @@ public  class LocationApp extends Application {
                 } catch (NumberFormatException e) {
 
                     allMessage.setText("Please enter a valid whole number for tilt");
-                    return;
 
                 }
                     
@@ -335,17 +334,13 @@ public  class LocationApp extends Application {
                     
                 } catch (NumberFormatException e) {
 
-                    allMessage.setText("Please enter a valid whole number for tilt");
+                    allMessage.setText("Please enter a valid number for tilt");
                     
                 }
-
 
                 allMessage.setText("All inputs are valid");
 
                                                 
-
-
-        
 // Save the user's information
                 //Clear current data
                 saveData.clear();
@@ -390,7 +385,7 @@ public  class LocationApp extends Application {
                                                 
             HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
                 (double)saveData.get("longitude"),
-                (double)saveData.get("longitude"),
+                (double)saveData.get("latitude"),
                 (int)saveData.get("tilt"),
                 1,
                 selectedDirection
