@@ -1,6 +1,5 @@
 
 package location;
-//import
 import java.io.StringReader;
 import java.util.Hashtable;
 
@@ -248,223 +247,216 @@ public  class LocationApp extends Application {
 
             } else {
 
-
-
-
-                
-
+//Check Longitude
+                double longitude=0;
                 try {
 
-                    double longitude =
-                            Double.parseDouble(longitudeField.getText());
+                    longitude = Double.parseDouble(longitudeField.getText());
 
-                    if (longitude < -180 || longitude > 180
-                            || !Double.isFinite(longitude)) {
+                    if (longitude < -180 || longitude > 180 || !Double.isFinite(longitude)) {
+                        //Sets message at the bottom of the setting screen
+                        allMessage.setText("Longitude must be between -180 and 180");
+                        
+                        //Exit early
+                        return;
 
-                        allMessage.setText(
-                                "Longitude must be between -180 and 180"
-                        );
 
-
-                    } else {
-
- // Check latitude
-                        try {
-
-                            double latitude =
-                                    Double.parseDouble(latitudeField.getText());
-
-                            if (latitude < -90 || latitude > 90
-                                    || !Double.isFinite(latitude)) {
-
-                                allMessage.setText(
-                                        "Latitude must be between -90 and 90"
-                                );
-
-
-                            } else {
-
- // Check solar panel area
-                                try {
-
-                                    double area =
-                                            Double.parseDouble(areaField.getText());
-
-                                    if (area <= 0 || !Double.isFinite(area)) {
-
-                                        allMessage.setText(
-                                                "Area must be greater than 0"
-                                        );
-
-
-                                    } else {
-
-// Check solar panel tilt
-                                        try {
-
-                                            int tilt = Integer.parseInt(tiltField.getText());
-
-                                            if (tilt < 0 || tilt > 90) {
-
-                                                allMessage.setText(
-                                                        "Tilt must be between 0 and 90"
-                                                );
-
-                                            } else {
-
-                                                allMessage.setText(
-                                                        "All inputs are valid"
-                                                );
-
-                                                Direction selectedDirection = Direction.valueOf(
-                                                        directionList.getValue().toUpperCase()
-                                                );
-
-                                                HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
-                                                        latitude,
-                                                        longitude,
-                                                        tilt,
-                                                        1,
-                                                        selectedDirection
-                                                );
-
-                                                System.out.println(
-                                                        "Latitude: " + weatherRequest.Latitude()
-                                                );
-
-                                                Thread apiThread;
-                                                apiThread = new Thread(() -> {
-                                                    SolarRadiationRetreiver retriever =
-                                                            new SolarRadiationRetreiver(weatherRequest);
-
-                                                    String json = retriever.GetWeatherInfo();
-
-                                                    if (json != null) {
-                                                        System.out.println("API data received successfully!");
-
-                                                        try (JsonReader reader =
-                                                                     Json.createReader(new StringReader(json))) {
-
-                                                            JsonObject hourly = reader.readObject()
-                                                                    .getJsonObject("hourly");
-
-
-                                                            JsonArray times = hourly.getJsonArray("time");
-
-                                                            JsonArray radiation =
-                                                                    hourly.getJsonArray("global_tilted_irradiance");
-
-
-                                                            for (int i = 0; i < times.size(); i++) {
-                                                                String time = times.getString(i);
-
-                                                                double irradiance = radiation
-                                                                        .getJsonNumber(i)
-                                                                        .doubleValue();
-
-                                                                System.out.println(
-                                                                        time + " -> " + irradiance + " W/m²"
-                                                                );
-                                                            } // End of for loop
-
-// Add this INSIDE the try block
-                                                            Platform.runLater(() -> {
-                                                                StartMenu.setForecastData(times, radiation);
-
-                                                                allMessage.setText(
-                                                                        "Forecast loaded! Back to main page."
-                                                                );
-                                                            });
-
-
-                                                        } // End of try block
-
-                                                    } else {
-                                                        System.out.println(
-                                                                "Failed to receive API data."
-                                                        );
-                                                    }
-
-                                                }); // End of Thread
-
-                                                apiThread.setDaemon(true);
-                                                apiThread.start();
-
-
-                                          
-                                          // Save the user's information
-
-double efficiency = Double.parseDouble(efficiencyField.getText());
-
-                                    if (efficiency <= 0.0||efficiency > 1.0|| !Double.isFinite(efficiency)) {
-
-                                        allMessage.setText(
-                                                "Efficiency must be between 0.0 and 1.0"
-                                        );
-                                    }else{
-
-saveData.clear();
-saveData.put("longitude",
-        Double.valueOf(longitudeField.getText()));
-saveData.put("latitude",
-        Double.valueOf(latitudeField.getText()));
-saveData.put("area",
-        Double.valueOf(areaField.getText()));
-saveData.put("tilt",
-        Integer.valueOf(tiltField.getText()));
-saveData.put("efficiency",
-        Double.valueOf(efficiencyField.getText()));
-saveData.put("direction",
-        directionList.getValue());
-
-saveLoad.save(saveData);
-                                    }//end of efficiency
-} // End of valid tilt
-
-                                        } catch (NumberFormatException e) {
-
-                                            allMessage.setText(
-                                                    "Please enter a valid whole number for tilt"
-                                            );
-
-                                        }
-
-                                    }
-
-
-                                } catch (NumberFormatException e) {
-
-                                    allMessage.setText(
-                                            "Please enter a valid area"
-                                    );
-
-                                }
-
-                            }
-
-
-                        } catch (NumberFormatException e) {
-
-                            allMessage.setText(
-                                    "Please enter a valid latitude"
-                            );
-
-                        }
-
-                    }
-
-                    
+                    } 
                 } catch (NumberFormatException e) {
-
                     allMessage.setText(
                             "Please enter a valid longitude"
                     );
                 }
+                    
+ // Check Latitude
+                double latitude=0;
+                try {
+
+                    latitude = Double.parseDouble(latitudeField.getText());
+
+                    if (latitude < -90 || latitude > 90 || !Double.isFinite(latitude)) {
+
+                        allMessage.setText(
+                            "Latitude must be between -90 and 90"
+                        );
+                        return;
+
+                    }
+                } catch (NumberFormatException e) {
+
+                    allMessage.setText("Please enter a valid latitude");
+
+                }
+
+ // Check solar panel area
+                double area=0;
+                try {
+                    area = Double.parseDouble(areaField.getText());
+
+                    if (area <= 0 || !Double.isFinite(area)) {
+
+                        allMessage.setText("Area must be greater than 0");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+
+                    allMessage.setText("Please enter a valid area");
+
+                }
+
+// Check solar panel tilt
+                int tilt=0;
+                try {
+
+                    tilt = Integer.parseInt(tiltField.getText());
+
+                    if (tilt < 0 || tilt > 90) {
+
+                        allMessage.setText("Tilt must be between 0 and 90");
+                        return;
+                    }
+                } catch (NumberFormatException e) {
+
+                    allMessage.setText("Please enter a valid whole number for tilt");
+                    return;
+
+                }
+                    
+// Check solar panel efficiency
+                double efficiency=0;
+                try {
+                    efficiency = Double.parseDouble(efficiencyField.getText());
+
+                    if (efficiency <= 0.0||efficiency > 1.0|| !Double.isFinite(efficiency)) {
+
+                        allMessage.setText("Efficiency must be between 0.0 and 1.0");
+                        return;
+                    }
+                    
+                } catch (NumberFormatException e) {
+
+                    allMessage.setText("Please enter a valid whole number for tilt");
+                    
+                }
+
+
+                allMessage.setText("All inputs are valid");
+
+                                                
+
+
+        
+// Save the user's information
+                //Clear current data
+                saveData.clear();
+
+                //Add the data from the fields to the SaveData buffer
+                saveData.put("longitude", longitude);
+                saveData.put("latitude", latitude);
+                saveData.put("area", area);
+                saveData.put("tilt", tilt);
+                saveData.put("efficiency", efficiency);
+                saveData.put("direction", directionList.getValue());
+
+                //Save the SaveData
+                saveLoad.save(saveData);
+    
+            }//end of else
+
+
+                                        
+
+                                    
+
+
+                                
+
+                            
+
+
+                        
+
+                    
+
+                    
                 
-            }
+                
+            
         });
 
+        Button getForecastButton = new Button("Get Forecast");
+        getForecastButton.setOnAction(event -> {
+            Direction selectedDirection = Direction.valueOf(((String)saveData.get("direction")).toUpperCase());
+                                                
+            HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
+                (double)saveData.get("longitude"),
+                (double)saveData.get("longitude"),
+                (int)saveData.get("tilt"),
+                1,
+                selectedDirection
+                );
 
+            System.out.println(
+                "Latitude: " + weatherRequest.Latitude()
+                );
+
+            Thread apiThread;
+            apiThread = new Thread(() -> {
+                SolarRadiationRetreiver retriever =
+                    new SolarRadiationRetreiver(weatherRequest);
+
+                String json = retriever.GetWeatherInfo();
+
+                if (json != null) {
+                    System.out.println("API data received successfully!");
+
+                    try (JsonReader reader =
+                        Json.createReader(new StringReader(json))) {
+
+                        JsonObject hourly = reader.readObject()
+                            .getJsonObject("hourly");
+
+
+                        JsonArray times = hourly.getJsonArray("time");
+
+                        JsonArray radiation =
+                            hourly.getJsonArray("global_tilted_irradiance");
+
+
+                        for (int i = 0; i < times.size(); i++) {
+                            String time = times.getString(i);
+
+                            double irradiance = radiation
+                                .getJsonNumber(i)
+                                .doubleValue();
+
+                            System.out.println(
+                                time + " -> " + irradiance + " W/m²"
+                            );
+                        } // End of for loop
+
+    // Add this INSIDE the try block
+                        Platform.runLater(() -> {
+                            StartMenu.setForecastData(times, radiation);
+
+                            allMessage.setText(
+                                "Forecast loaded! Back to main page."
+                            );
+                        });
+
+
+                    } // End of try block
+
+                } else {
+                    System.out.println("Failed to receive API data.");
+                }
+
+            }); // End of Thread
+
+            apiThread.setDaemon(true);
+            apiThread.start();
+                                                
+        });
         // Create a list of cities
         /*
         ComboBox<String> cityList = new ComboBox<>();
@@ -570,6 +562,9 @@ saveLoad.save(saveData);
 
         layout.getChildren().add(title);
         layout.getChildren().add(backRow);
+//Button row
+    HBox buttonRow = new HBox(15, checkAllButton, getForecastButton);
+        buttonRow.setAlignment(Pos.CENTER);
 
 // Location section
         layout.getChildren().add(locationTitle);
@@ -599,7 +594,9 @@ saveLoad.save(saveData);
         //layout.getChildren().add(directionMessage);
 
         // Check everything
-        layout.getChildren().add(checkAllButton);
+        layout.getChildren().add(buttonRow);
+        //layout.getChildren().add(checkAllButton);
+        //layout.getChildren().add(getForecastButton);
         layout.getChildren().add(allMessage);
         // layout.getChildren().add(cityList);
         // layout.getChildren().add(saveButton);
