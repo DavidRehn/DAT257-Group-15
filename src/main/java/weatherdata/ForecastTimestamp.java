@@ -26,6 +26,9 @@ public class ForecastTimestamp extends Timestamp{
         return "{" + GetTime() + ", " + GetWatts() + ", " + GetTemp() + "}";
     }
 
+    /** Returns the ambient temperature at this timestamp. 
+     * @return Temperature.
+    */
     public double GetTemp(){
         return temp2M;
     }
