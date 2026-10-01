@@ -57,13 +57,14 @@ public class StartMenu extends Application {
         clock.play();
 
         Label title = new Label("Solar App");
+        Button appliances = new Button("Appliances");
         Button settings = new Button("Settings");
 
         title.setStyle("-fx-font-size: 22px;");
         title.setAlignment(Pos.CENTER);
         title.setMaxWidth(Double.MAX_VALUE);
 
-        HBox header = new HBox(20, date, title, settings);
+        HBox header = new HBox(20, date, title, appliances, settings);
         header.setAlignment(Pos.CENTER);
         header.setPadding(new Insets(15));
         header.setStyle("-fx-background-color: #6096e6;");
@@ -218,6 +219,10 @@ public class StartMenu extends Application {
         }
 
         // Open the existing settings page
+        appliances.setOnAction(event -> {
+            clock.stop();
+            new AppliancesApp().start(stage);
+        });
         settings.setOnAction(event -> {
             clock.stop();
             new LocationApp().start(stage);
