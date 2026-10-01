@@ -27,6 +27,7 @@ private ArrayList<Double> priseStamps;
         priseStamps = new ArrayList<>();
     }
 
+    
     /** Parses the api response to a list of ForecastPriseStamps and writes it to priseStamps.
      * @param json The string received from the response body.
      */
