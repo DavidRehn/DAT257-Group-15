@@ -16,4 +16,9 @@ public abstract class Timestamp {
     public LocalDateTime GetTime() {return time;}
 
     public double GetWatts(){return watts;}
+
+    @Override
+    public String toString(){
+        return "{" + GetTime() + ", " + GetWatts() + "}";
+    }
 }

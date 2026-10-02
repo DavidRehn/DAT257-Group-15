@@ -6,6 +6,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+import java.util.ArrayList;
 import java.util.Locale;
 import javax.json.stream.JsonParser;  
 import javax.json.Json;  
@@ -18,34 +19,71 @@ public class SolarRadiationRetreiver{
     private final HttpClient httpClient;
     private WeatherParser weatherParser;
 
-    public SolarRadiationRetreiver(){
-        httpClient = HttpClient.newHttpClient();
-        weatherParser = new WeatherParser();
+    public SolarRadiationRetreiver(WeatherParser parser){
+        httpClient = HttpClient.newHttpClient(); 
+        this.weatherParser = parser;
     }
 
-public SolarRadiationRetreiver(HTTPSolarRequest request) {
-    this();
+    public SolarRadiationRetreiver(HTTPSolarRequest request, WeatherParser parser) {
+        this(parser);
 
-    apiUrl += String.format(
-            Locale.US,
-            "?latitude=%f&longitude=%f"
-                    + "&hourly=global_tilted_irradiance"
-                    + "&tilt=%d&azimuth=%d"
-                    + "&forecast_days=%d"
-                    + "&timezone=auto",
-            request.Latitude(),
-            request.Longitude(),
-            request.Tilt(),
-            request.Azimuth(),
-            request.Days()
+        apiUrl += String.format(
+                Locale.US,
+                "?latitude=%f&longitude=%f"
+                        + "&hourly=global_tilted_irradiance"
+                        + "&tilt=%d&azimuth=%d"
+                        + "&forecast_days=%d"
+                        + "&timezone=auto",
+                request.Latitude(),
+                request.Longitude(),
+                request.Tilt(),
+                request.Azimuth(),
+                request.Days()
+            );
+    }
+
+
+
+        public String GetWeatherInfo() {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(apiUrl))
+                    .GET()
+                    .build();
+
+            try {
+                HttpResponse<String> response =
+                        httpClient.send(request, BodyHandlers.ofString());
+
+                // Print the response for testing
+                //System.out.println(response.body());
+
+                // Return the JSON data to the caller
+                return response.body();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+    
+    public void GetWeatherInfo(HTTPSolarRequest requestParams) {
+
+        String requestUrl = String.format(
+                Locale.US,
+                "https://api.open-meteo.com/v1/forecast"
+                        + "?latitude=%f&longitude=%f"
+                        + "&hourly=global_tilted_irradiance,temperature_2m"
+                        + "&tilt=%d&azimuth=%d"
+                        + "&forecast_days=%d&timezone=auto",
+                requestParams.Latitude(),
+                requestParams.Longitude(),
+                requestParams.Tilt(),
+                requestParams.Azimuth(),
+                requestParams.Days()
         );
-}
 
-
-
-    public String GetWeatherInfo() {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiUrl))
+                .uri(URI.create(requestUrl))
                 .GET()
                 .build();
 
@@ -53,49 +91,12 @@ public SolarRadiationRetreiver(HTTPSolarRequest request) {
             HttpResponse<String> response =
                     httpClient.send(request, BodyHandlers.ofString());
 
-            // Print the response for testing
-            //System.out.println(response.body());
-
-            // Return the JSON data to the caller
-            return response.body();
+            weatherParser.ParseToJson(response.body()); 
+            //weatherParser.PrintTimestamps();
 
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
     }
-  
-public void GetWeatherInfo(HTTPSolarRequest requestParams) {
-
-    String requestUrl = String.format(
-            Locale.US,
-            "https://api.open-meteo.com/v1/forecast"
-                    + "?latitude=%f&longitude=%f"
-                    + "&hourly=global_tilted_irradiance, temperature_2m"
-                    + "&tilt=%d&azimuth=%d"
-                    + "&forecast_days=%d&timezone=auto",
-            requestParams.Latitude(),
-            requestParams.Longitude(),
-            requestParams.Tilt(),
-            requestParams.Azimuth(),
-            requestParams.Days()
-    );
-
-    HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(requestUrl))
-            .GET()
-            .build();
-
-    try {
-        HttpResponse<String> response =
-                httpClient.send(request, BodyHandlers.ofString());
-
-        weatherParser.ParseToJson(response.body());
-        //weatherParser.PrintTimestamps();
-
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-}
 
 }
