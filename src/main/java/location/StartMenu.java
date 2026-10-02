@@ -27,6 +27,8 @@ import javax.json.JsonArray;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 
+import weatherdata.*;
+
 public class StartMenu extends Application {
     private static JsonArray forecastTimes;
     private static JsonArray forecastRadiation;

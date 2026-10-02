@@ -11,6 +11,8 @@ import java.util.Hashtable;
 import java.util.Scanner;
 
 import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonNumber;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
@@ -18,28 +20,25 @@ import javax.json.JsonReader;
 import javax.json.JsonString;
 import javax.json.JsonValue;
 
+import other.SavableData;
+
 public class JsonSaveLoad implements SaveLoadInterface {
     private String filename ="SavedAppData.json";
     private JsonObjectBuilder builder;
     /** 
         * @pram 
     */
-    public void save(Hashtable<String,Object> pairs){
-        JsonObjectBuilder builder = Json.createObjectBuilder();
+   @Override 
+    public boolean save(Hashtable<String,SavableData> values){
+        JsonArrayBuilder builder = Json.createArrayBuilder();
         resetBuilder();
-        for (HashMap.Entry<String, Object> en : pairs.entrySet()) {
+        for (HashMap.Entry<String, SavableData> en : values.entrySet()) {
             
             String key = en.getKey();
-            Object val = en.getValue();
-            if (val instanceof Integer){
-                builder.add(key,((Integer)val).intValue());
-            }else if (val instanceof Double){
-                builder.add(key,((Double)val).doubleValue());
-            }else if (val instanceof  String){
-                builder.add(key,(String)val);
-            }
+            SavableData val = en.getValue();
+            builder.add(val.ToJsonObj(key)); 
         }
-        JsonObject payload = builder.build();
+        JsonArray payload = builder.build();
         System.out.println(payload.toString());
         try {
             File file = new File(filename);
@@ -53,8 +52,9 @@ public class JsonSaveLoad implements SaveLoadInterface {
             fileWriter.flush();
             System.out.println("saved in file");
         } catch (IOException e) {
-
+            return false;
         }
+        return true;
     }
 
     /** 
