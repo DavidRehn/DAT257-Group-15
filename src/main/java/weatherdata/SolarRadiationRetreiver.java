@@ -54,7 +54,7 @@ public SolarRadiationRetreiver(HTTPSolarRequest request) {
                     httpClient.send(request, BodyHandlers.ofString());
 
             // Print the response for testing
-            System.out.println(response.body());
+            //System.out.println(response.body());
 
             // Return the JSON data to the caller
             return response.body();
@@ -91,7 +91,7 @@ public void GetWeatherInfo(HTTPSolarRequest requestParams) {
                 httpClient.send(request, BodyHandlers.ofString());
 
         weatherParser.ParseToJson(response.body());
-        weatherParser.PrintTimestamps();
+        //weatherParser.PrintTimestamps();
 
     } catch (Exception e) {
         e.printStackTrace();
