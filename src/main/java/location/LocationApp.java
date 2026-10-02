@@ -26,6 +26,7 @@ import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
 import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
+import weatherdata.WeatherParser;
 //import weatherdata.CallWeatherAPI;
 public  class LocationApp extends Application {
 
@@ -398,7 +399,7 @@ public  class LocationApp extends Application {
             Thread apiThread;
             apiThread = new Thread(() -> {
                 SolarRadiationRetreiver retriever =
-                    new SolarRadiationRetreiver(weatherRequest);
+                    new SolarRadiationRetreiver(weatherRequest, new WeatherParser());
 
                 String json = retriever.GetWeatherInfo();
 
