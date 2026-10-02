@@ -17,10 +17,16 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.time.LocalTime;
 import javafx.animation.Timeline;
 import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 import javax.json.JsonArray;
+
+import powermarketdata.PowerMarketParser;
+import powermarketdata.PowerMarketRetriver;
+
 public class StartMenu extends Application {
     private static JsonArray forecastTimes;
     private static JsonArray forecastRadiation;
@@ -79,7 +85,36 @@ public class StartMenu extends Application {
         Label usageValue = new Label("500 W");
 
         Label price = new Label("Current electricity price");
-        Label priceValue = new Label("2 SEK/kWh");
+        Label priceValue = new Label(" SEK/kWh");
+        
+
+// Uppdate Live
+        PowerMarketRetriver x = new PowerMarketRetriver();
+        ArrayList<Double> r = new ArrayList<>( PowerMarketParser.ParseToJson(x.GetPowerMarketInfo() ));
+        double a = r.get(LocalTime.now().getHour()*4);
+
+        priceValue.setText(
+            a
+            +" SEK/kWh"
+        );
+
+        Timeline priceClock = new Timeline(
+            //
+            new KeyFrame(Duration.minutes(15), event -> {
+                //
+                PowerMarketRetriver pmsrr = new PowerMarketRetriver();
+                ArrayList<Double> priceList = new ArrayList<>( PowerMarketParser.ParseToJson(pmsrr.GetPowerMarketInfo() ));
+                double pris = priceList.get(LocalTime.now().getHour()*4);
+
+                priceValue.setText(
+                    pris
+                    +" SEK/kWh"
+                );
+            })
+        );
+
+        priceClock.setCycleCount(Timeline.INDEFINITE);
+        priceClock.play();
 
 // Make the numbers bigger and bold
         productionValue.setStyle(

@@ -71,7 +71,7 @@ public void GetWeatherInfo(HTTPSolarRequest requestParams) {
             Locale.US,
             "https://api.open-meteo.com/v1/forecast"
                     + "?latitude=%f&longitude=%f"
-                    + "&hourly=global_tilted_irradiance"
+                    + "&hourly=global_tilted_irradiance, temperature_2m"
                     + "&tilt=%d&azimuth=%d"
                     + "&forecast_days=%d&timezone=auto",
             requestParams.Latitude(),

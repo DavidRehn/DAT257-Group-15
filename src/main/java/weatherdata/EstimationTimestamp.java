@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.time.LocalDateTime;
 
 /**
- *  Immutable class to represent a timestamp with a corresponding energy production (W)
+ *  Immutable class to represent a timestamp with a corresponding energy production estimate (W).
  */
 public class EstimationTimestamp extends Timestamp{
 

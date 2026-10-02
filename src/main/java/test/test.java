@@ -1,4 +1,5 @@
 package test;
+import powermarketdata.PowerMarketParser;
 /* 
 import other.Direction;
 import weatherdata.HTTPSolarRequest;
@@ -22,6 +23,8 @@ public class test {
         
         //HTTPSolarRequest pmreq = new HTTPSolarRequest(57.668, 11.998, 45, 1, Direction.SOUTH);
         PowerMarketRetriver pmsrr = new PowerMarketRetriver();
-        pmsrr.GetPowerMarketInfo();//pmreq);
+        //pmsrr.GetPowerMarketInfo(); //pmreq);
+        
+        PowerMarketParser.ParseToJson(pmsrr.GetPowerMarketInfo() );
     }
 }

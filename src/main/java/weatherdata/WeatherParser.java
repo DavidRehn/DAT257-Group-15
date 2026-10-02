@@ -31,18 +31,20 @@ public class WeatherParser {
         jsonObj = jsonObj.getJsonObject("hourly");  // "hourly" contains time and value arrays
         JsonArray timeArray = jsonObj.getJsonArray("time");
         JsonArray GTIArray = jsonObj.getJsonArray("global_tilted_irradiance");
-        BuildTimestampList(timeArray, GTIArray);
+        JsonArray tempArray = jsonObj.getJsonArray("temperature_2m");
+        BuildTimestampList(timeArray, GTIArray, tempArray);
     }
 
     /** Responsible for building the list from the parsed JsonArrays.
      * @param times Received array with the timestamps.
      * @param GTI Received array with the values.
      */
-    private void BuildTimestampList(JsonArray times, JsonArray GTI){
+    private void BuildTimestampList(JsonArray times, JsonArray GTI, JsonArray temps){
         for (int i = 0; i < times.size(); i++){    // size is the same for both arrays
             LocalDateTime time = LocalDateTime.parse(times.getString(i));
             double number = GTI.getJsonNumber(i).doubleValue();
-            timestamps.add(new ForecastTimestamp(time, number));
+            double temp = temps.getJsonNumber(i).doubleValue();
+            timestamps.add(new ForecastTimestamp(time, number, temp));
         }
     }
 
