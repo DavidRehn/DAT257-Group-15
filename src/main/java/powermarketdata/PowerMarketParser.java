@@ -44,7 +44,7 @@ private ArrayList<Double> priseStamps;
             }
         }
 
-        System.out.println(prislista +"tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
+        //System.out.println(prislista +"tttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt");
         return prislista;
     
     }
