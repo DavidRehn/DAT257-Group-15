@@ -11,6 +11,9 @@ public class EnergyEstimator {
     private SolarPanel panel;
     private ArrayList<EstimationTimestamp> timestamps;
 
+    // Solar panel parameters
+    private static final double tempCoeff = -0.004; // -0.4%/°C
+    private static final double baseTemp = 25.0;    //°C, reference cell temp according to Standard Test Conditions (STC).
     // NOCT parameters (constants)
     private static final double NOCT = 45.0;       // °C
     private static final double NOCT_AMBIENT = 20.0; // °C
@@ -54,7 +57,7 @@ public class EnergyEstimator {
      * @return Power temperature coefficient.
      */
     private double TempCoefficient(double ambientTemp, double irradiance){     
-        return 1 + -0.004 * (CellTemp(ambientTemp, irradiance) - 25.0); // Hardcoded coefficient = -0.4%/°C, baseline = 25°C
+        return 1 + tempCoeff * (CellTemp(ambientTemp, irradiance) - baseTemp); 
     }
 
     /** Fuction to estimate the temperature of the solar array based on ambient temperature and nominal operating cell temperature (NOCT).
