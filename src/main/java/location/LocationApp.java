@@ -120,7 +120,23 @@ public  class LocationApp extends Application {
             }
 
         });
+//
+ComboBox<String> zoneList = new ComboBox<>();
 
+        zoneList.getItems().addAll(
+                "SE1",
+                "SE2",
+                "SE3",
+                "SE4"
+        );
+
+        zoneList.setPromptText("Choose zone");
+
+        zoneList.setPrefWidth(185);
+        zoneList.setMaxWidth(185);
+        if(saveData.containsKey("zone")){
+            zoneList.setValue((String)saveData.get("zone"));
+        }
 
 // Solar panel area
         TextField areaField = new TextField();
@@ -242,7 +258,8 @@ public  class LocationApp extends Application {
                     || areaField.getText().isBlank()
                     || tiltField.getText().isBlank()
                     || efficiencyField.getText().isBlank()
-                    || directionList.getValue() == null) {
+                    || directionList.getValue() == null
+                    || zoneList.getValue() == null) {
 
                 allMessage.setText("Please fill in all fields");
 
@@ -349,6 +366,7 @@ public  class LocationApp extends Application {
                 //Add the data from the fields to the SaveData buffer
                 saveData.put("longitude", longitude);
                 saveData.put("latitude", latitude);
+                saveData.put("zone", zoneList.getValue());
                 saveData.put("area", area);
                 saveData.put("tilt", tilt);
                 saveData.put("efficiency", efficiency);
@@ -359,24 +377,6 @@ public  class LocationApp extends Application {
     
             }//end of else
 
-
-                                        
-
-                                    
-
-
-                                
-
-                            
-
-
-                        
-
-                    
-
-                    
-                
-                
             
         });
 
@@ -558,6 +558,15 @@ public  class LocationApp extends Application {
 
         layout.getChildren().add(title);
         layout.getChildren().add(backRow);
+        
+// Zone row
+        Label zoneLabel = new Label("Zone");
+        zoneLabel.setPrefWidth(90);
+
+        HBox zoneRow = new HBox(15, zoneLabel, zoneList);
+        zoneRow.setAlignment(Pos.CENTER);
+
+
 //Button row
     HBox buttonRow = new HBox(15, checkAllButton, getForecastButton);
         buttonRow.setAlignment(Pos.CENTER);
