@@ -3,27 +3,44 @@ package location;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.scene.Node;
-import javafx.scene.control.CheckBox;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import other.AppInterface;
+import other.ApplianceData;
+import other.Model;
+import other.SubAppInterface;
 
-public class AppliancesApp extends Application {
+public class AppliancesApp extends Application implements SubAppInterface{
+    private Model appData;
+    public void linkAppData(Model m){
+        this.appData=m;
+    }
+    private AppInterface root;
+    public void linkRoot(AppInterface root){
+        this.root=root;
+    }
+    ApplianceData appliances=new ApplianceData();
 
     @Override
     public void start(Stage stage) {
+        if(appData.Get("ApplianceData")!=null){
+            appliances=(ApplianceData)appData.Get("ApplianceData");
+        }
 
         Label title = new Label("Appliances");
 
         Button backButton = new Button("← Back to main page");
 
         backButton.setOnAction(event -> {
-            new StartMenu().start(stage);
+            System.out.println(root);
+            root.viewStart(stage);
         });
 
         HBox backRow = new HBox(backButton);
@@ -106,8 +123,8 @@ public class AppliancesApp extends Application {
             try {
                 double wattage = Double.parseDouble(wattageField.getText());
 
-                if (name.isBlank()) {
-                    errorMessage.setText("Please enter an appliance name");
+                if (name.isBlank() || appliances.hasKey(name)) {
+                    errorMessage.setText("Please enter a unique appliance name");
                     return;
                 }
 
@@ -120,6 +137,9 @@ public class AppliancesApp extends Application {
 
                 Label nameLabel = new Label(name);
                 Label wattageLabel = new Label(wattage + " W");
+                appliances.Put(name,wattage);
+                appData.Store("ApplianceData",appliances);
+
                 nameLabel.setPrefWidth(120);
                 wattageLabel.setPrefWidth(100);
                 CheckBox inUseCheckBox = new CheckBox("In use");
@@ -165,6 +185,7 @@ public class AppliancesApp extends Application {
 
                 // Remove appliance
                 removeButton.setOnAction(e -> {
+                    appliances.Remove(nameLabel.getText(),Double.parseDouble(wattageLabel.getText()));
                     applianceList.getChildren().remove(applianceRow);
                     updateTotal(applianceList, totalLabel, currentUsage);
                 });
@@ -178,9 +199,7 @@ public class AppliancesApp extends Application {
             }
         });
 
-        backButton.setOnAction(event -> {
-            new StartMenu().start(stage);
-        });
+        
 
         VBox layout = new VBox(
                 20,

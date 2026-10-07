@@ -1,35 +1,37 @@
 
 package location;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+
+import javax.json.JsonArray;
+
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.time.LocalTime;
-import javafx.animation.Timeline;
-import javafx.animation.KeyFrame;
 import javafx.util.Duration;
-import javax.json.JsonArray;
-
+import other.AppInterface;
+import other.Model;
+import other.SubAppInterface;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 
-import weatherdata.*;
-
-public class StartMenu extends Application {
+public class StartMenu extends Application implements SubAppInterface{
     private static JsonArray forecastTimes;
     private static JsonArray forecastRadiation;
 
@@ -40,8 +42,19 @@ public class StartMenu extends Application {
         forecastTimes = times;
         forecastRadiation = radiation;
     }
+
+    private Model appData;
+    public void linkAppData(Model m){
+        this.appData=m;
+    }
+    private AppInterface root;
+    public void linkRoot(AppInterface root){
+        this.root=root;
+    }
+
     @Override
     public void start(Stage stage) {
+
 
         // Header
         DateTimeFormatter formatter =
@@ -258,11 +271,11 @@ public class StartMenu extends Application {
         // Open the existing settings page
         appliances.setOnAction(event -> {
             clock.stop();
-            new AppliancesApp().start(stage);
+            root.viewAppliances(stage);
         });
         settings.setOnAction(event -> {
             clock.stop();
-            new LocationApp().start(stage);
+            root.viewSettings(stage);
         });
 
         // Main layout

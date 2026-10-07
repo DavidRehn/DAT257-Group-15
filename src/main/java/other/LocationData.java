@@ -17,6 +17,11 @@ public class LocationData implements SavableData{
         this.latitude = lat;
     }
 
+    public LocationData(JsonObject obj){
+        this.longitude = obj.getJsonNumber("longitude").doubleValue();
+        this.latitude = obj.getJsonNumber("latitude").doubleValue();
+    }
+
     /** Returns the area of the solar array.
      * @return Area (m^2).
      */
@@ -35,9 +40,5 @@ public class LocationData implements SavableData{
         builder = Json.createObjectBuilder();
         builder.add(key, val);
         return builder.build();
-    }
-
-    public void FromJsonObj(JsonObject obj){
-
     }
 }

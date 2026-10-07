@@ -4,5 +4,4 @@ import javax.json.JsonObject;
 
 public interface SavableData {
     public JsonObject ToJsonObj(String key);
-    public void FromJsonObj(JsonObject val);
 }

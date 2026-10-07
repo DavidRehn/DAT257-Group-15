@@ -21,23 +21,50 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import other.AppInterface;
 import other.Direction;
+import other.LocationData;
+import other.Model;
+import other.SolarPanel;
+import other.SubAppInterface;
+import other.ZoneData;
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
 import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
 import weatherdata.WeatherParser;
 //import weatherdata.CallWeatherAPI;
-public  class LocationApp extends Application {
+public  class LocationApp extends Application implements SubAppInterface {
+
+    private Model appData;
+    public void linkAppData(Model m){
+        this.appData=m;
+    }
+
+    private AppInterface root;
+    public void linkRoot(AppInterface root){
+        this.root=root;
+    }
+
 
     //CallWeatherAPI apiAccess = new CallWeatherAPI();
-    SaveLoadInterface saveLoad = new JsonSaveLoad();
-    Hashtable<String, Object> saveData = new Hashtable<>();
-
+    private SaveLoadInterface saveLoad = new JsonSaveLoad();
+    private Hashtable<String, Object> saveData = new Hashtable<>();
+    private SolarPanel solarPanel;
+    private LocationData locationData;
+    private ZoneData zoneData;
     @Override
     public void start(Stage stage) {
-        saveData.putAll(saveLoad.load());
-        System.out.println(saveData);
+        if(appData.Get("SolarPanel")!=null){
+            solarPanel = (SolarPanel)appData.Get("SolarPanel");
+        }
+        if(appData.Get("LocationData")!=null){
+            locationData = (LocationData)appData.Get("LocationData");
+        }
+        if(appData.Get("ZoneData")!=null){
+            zoneData = (ZoneData)appData.Get("ZoneData");
+        }
+        
  // Create the title
 
         Label title = new Label("Location and Solar Panel Info");
@@ -51,16 +78,17 @@ public  class LocationApp extends Application {
 
 
         backButton.setOnAction(event -> {
-            new StartMenu().start(stage);
+            root.viewStart(stage);
         });
 
 // Longitude
         TextField longitudeField = new TextField();
         longitudeField.setPromptText("Enter longitude");
         longitudeField.setMaxWidth(220);
-        if(saveData.containsKey("longitude")){
-            longitudeField.setText((saveData.get("longitude")).toString());
+        if(appData.Get("LocationData")!=null){
+            longitudeField.setText(""+locationData.Longitude());
         }
+        
 
 // Check longitude
         Button checkButton = new Button("Check longitude");
@@ -90,8 +118,8 @@ public  class LocationApp extends Application {
         TextField latitudeField = new TextField();
         latitudeField.setPromptText("Enter latitude");
         latitudeField.setMaxWidth(220);
-        if(saveData.containsKey("latitude")){
-            latitudeField.setText((saveData.get("latitude")).toString());
+        if(appData.Get("LocationData")!=null){
+            latitudeField.setText(""+locationData.Latitude());
         }
 
 // Check latitude
@@ -134,16 +162,16 @@ ComboBox<String> zoneList = new ComboBox<>();
 
         zoneList.setPrefWidth(185);
         zoneList.setMaxWidth(185);
-        if(saveData.containsKey("zone")){
-            zoneList.setValue((String)saveData.get("zone"));
+        if(appData.Get("ZoneData")!=null){
+            zoneList.setValue(zoneData.Zone());
         }
 
 // Solar panel area
         TextField areaField = new TextField();
         areaField.setPromptText("Area (m²)");
         areaField.setMaxWidth(220);
-        if(saveData.containsKey("area")){
-            areaField.setText((saveData.get("area")).toString());
+        if(appData.Get("SolarPanel")!=null){
+            areaField.setText(""+solarPanel.Area());
         }
 
 // Check solar panel area
@@ -173,8 +201,8 @@ ComboBox<String> zoneList = new ComboBox<>();
         TextField tiltField = new TextField();
         tiltField.setPromptText("Tilt (degrees)");
         tiltField.setMaxWidth(220);
-        if(saveData.containsKey("tilt")){
-            tiltField.setText((saveData.get("tilt")).toString());
+        if(appData.Get("SolarPanel")!=null){
+            tiltField.setText(""+solarPanel.Tilt());
         }
 
 // Check solar panel tilt
@@ -206,25 +234,29 @@ ComboBox<String> zoneList = new ComboBox<>();
         TextField efficiencyField = new TextField();
         efficiencyField.setPromptText("efficiency (0.0 to 1.0)");
         efficiencyField.setMaxWidth(220);
-        if(saveData.containsKey("efficiency")){
-            efficiencyField.setText((saveData.get("efficiency")).toString());
+        if(appData.Get("SolarPanel")!=null){
+            efficiencyField.setText(""+solarPanel.Efficiency());
         }
 // Solar panel direction
         ComboBox<String> directionList = new ComboBox<>();
 
         directionList.getItems().addAll(
-                "North",
                 "South",
+                "Southwest",
+                "West",
+                "Northwest",
+                "North",
+                "Northeast",
                 "East",
-                "West"
+                "Southeast"
         );
 
         directionList.setPromptText("Choose direction");
 
         directionList.setPrefWidth(185);
         directionList.setMaxWidth(185);
-        if(saveData.containsKey("direction")){
-            directionList.setValue((String)saveData.get("direction"));
+        if(appData.Get("SolarPanel")!=null){
+            directionList.setValue(solarPanel.Direction().toString().toLowerCase());
         }
 
  // Check solar panel direction
@@ -360,21 +392,13 @@ ComboBox<String> zoneList = new ComboBox<>();
 
                                                 
 // Save the user's information
-                //Clear current data
-                saveData.clear();
+                
+                appData.Store("LocationData",new LocationData(longitude, latitude));
+                appData.Store("ZoneData",new ZoneData(zoneList.getValue()));
+                appData.Store("SolarPanel", new SolarPanel(area,tilt,SolarPanel.directionConverter(directionList.getValue().toUpperCase()),efficiency));
+                
+                appData.SaveToDisc();
 
-                //Add the data from the fields to the SaveData buffer
-                saveData.put("longitude", longitude);
-                saveData.put("latitude", latitude);
-                saveData.put("zone", zoneList.getValue());
-                saveData.put("area", area);
-                saveData.put("tilt", tilt);
-                saveData.put("efficiency", efficiency);
-                saveData.put("direction", directionList.getValue());
-
-                //Save the SaveData
-                //saveLoad.save(saveData);
-    
             }//end of else
 
             
@@ -382,12 +406,12 @@ ComboBox<String> zoneList = new ComboBox<>();
 
         Button getForecastButton = new Button("Get Forecast");
         getForecastButton.setOnAction(event -> {
-            Direction selectedDirection = Direction.valueOf(((String)saveData.get("direction")).toUpperCase());
+            Direction selectedDirection = Direction.valueOf((solarPanel.Direction().toString()).toUpperCase());
                                                 
             HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
-                (double)saveData.get("longitude"),
-                (double)saveData.get("latitude"),
-                (int)saveData.get("tilt"),
+                locationData.Longitude(),
+                locationData.Latitude(),
+                solarPanel.Tilt(),
                 1,
                 selectedDirection
                 );

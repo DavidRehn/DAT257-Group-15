@@ -1,7 +1,6 @@
 package other;
 
 import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 
@@ -19,11 +18,21 @@ public class SolarPanel implements SavableData{
         this.direction = direction;
         this.efficiency = efficiency;
     }
+    public SolarPanel(JsonObject obj){
+        this.area = obj.getJsonNumber("area").doubleValue();
+        this.tilt = obj.getInt("tilt");
+        this.direction = directionConverter(obj.getString("direction"));
+        this.efficiency = obj.getJsonNumber("efficiency").doubleValue();
+    }
 
     /** Returns the area of the solar array.
      * @return Area (m^2).
      */
     public double Area(){return  area;}
+
+    public int Tilt(){return  tilt;}
+
+    public Direction Direction(){return direction;}
 
     /** Returns the efficiency of the solar array.
      * @return Efficiency (0 - 1).
@@ -44,15 +53,8 @@ public class SolarPanel implements SavableData{
         return builder.build();
     }
 
-    public void FromJsonObj(JsonObject val){
-        JsonObject obj = val.getJsonObject("SolarPanel");
-        this.area = obj.getInt("area");
-        this.tilt = obj.getInt("tilt");
-        this.direction = directionConverter(obj.getString("direction"));
-        this.efficiency = obj.getInt("efficiency");
-    }
 
-    public Direction directionConverter(String direction){
+    public static Direction directionConverter(String direction){
         switch(direction){
             case "SOUTH" : return Direction.SOUTH;
             case "SOUTHWEST" : return Direction.SOUTHWEST;

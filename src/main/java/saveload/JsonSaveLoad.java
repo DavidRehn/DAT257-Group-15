@@ -5,20 +5,17 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.StringReader;
+import java.lang.reflect.Constructor;
 import java.nio.file.FileAlreadyExistsException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Scanner;
-import java.util.ArrayList;
 
 import javax.json.Json;
 import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
-import javax.json.JsonNumber;
 import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.json.JsonReader;
-import javax.json.JsonString;
 import javax.json.JsonValue;
 
 import other.SavableData;
@@ -26,6 +23,10 @@ import other.SavableData;
 public class JsonSaveLoad implements SaveLoadInterface {
     private String filename ="SavedAppData.json";
 
+    public JsonSaveLoad() {
+    }
+
+    
     // For casting loaded jsonobjects
     private String c;
     private int id;
@@ -77,17 +78,25 @@ public class JsonSaveLoad implements SaveLoadInterface {
                 read.close();
                 for (JsonValue val : arr) {
                     System.out.println(val);
-
-                    GetClass(val);
                     
-                    try{
-                        Class<SavableData> data = (Class<SavableData>)Class.forName("other."+ c);
-                        SavableData obj = data.newInstance();
-                        obj.FromJsonObj((JsonObject)val);
-                        
-                    }catch(Exception e){
-                        System.out.println(e);
-                    }
+                    GetClass(val);
+                    for (JsonObject.Entry<String, JsonValue> en : ((JsonObject)val).entrySet()) {
+                        try{
+                            Class data = Class.forName("other."+ c);
+                            Class[] paraType = {Class.forName("javax.json.JsonObject")};
+                            System.out.println(paraType[0]);
+                            Constructor<SavableData> con = data.getConstructor(paraType);
+                            SavableData obj = con.newInstance(((JsonObject)val).getJsonObject(en.getKey()));
+                            
+                                String key = en.getKey();
+                                payload.put(key,obj);
+                            
+                                
+                        }catch(Exception e){
+                            e.printStackTrace();
+                            
+                        }
+                }
                 }
             }
             /* 
