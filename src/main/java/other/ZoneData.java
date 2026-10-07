@@ -20,7 +20,11 @@ public class ZoneData implements SavableData{
 
     public JsonObject ToJsonObj(String key){
         JsonObjectBuilder builder = Json.createObjectBuilder();
-        builder.add("zone", zone);
+        builder.add(key, zone);
         return builder.build();
+    }
+
+    public void FromJsonObj(JsonObject obj){
+        this.zone = obj.getString("ZoneData");
     }
 }

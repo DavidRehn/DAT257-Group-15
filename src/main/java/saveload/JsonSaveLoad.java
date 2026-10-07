@@ -9,6 +9,7 @@ import java.nio.file.FileAlreadyExistsException;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 import javax.json.Json;
 import javax.json.JsonArray;
@@ -24,14 +25,16 @@ import other.SavableData;
 
 public class JsonSaveLoad implements SaveLoadInterface {
     private String filename ="SavedAppData.json";
-    private JsonObjectBuilder builder;
-    /** 
-        * @pram 
+
+    // For casting loaded jsonobjects
+    private String c;
+    private int id;
+    
+    /** [{"solarPanel*0" : {object}}, {"Zone*0" : {object}}, ...]
     */
    @Override 
     public boolean save(Hashtable<String,SavableData> values){
         JsonArrayBuilder builder = Json.createArrayBuilder();
-        resetBuilder();
         for (HashMap.Entry<String, SavableData> en : values.entrySet()) {
             
             String key = en.getKey();
@@ -57,28 +60,49 @@ public class JsonSaveLoad implements SaveLoadInterface {
         return true;
     }
 
-    /** 
-    */
-    private void resetBuilder(){
-        builder = Json.createObjectBuilder();
-    }
+
 
     /** 
         * @return 
     */
-    public Hashtable load(){
-        Hashtable<String, Object> payload = new Hashtable<>();
+    public Hashtable<String, SavableData> load(){
+        Hashtable<String, SavableData> payload = new Hashtable<>();
         File file = new File(filename);
+        JsonArrayBuilder builder = Json.createArrayBuilder();
         try(Scanner reader = new Scanner(file)){
+            while (reader.hasNext()) {
+                JsonReader read = Json.createReader(new StringReader(reader.next()));
+                JsonArray arr = read.readArray();
+                System.out.println(arr);
+                read.close();
+                for (JsonValue val : arr) {
+                    System.out.println(val);
+
+                    GetClass(val);
+                    
+                    try{
+                        Class<SavableData> data = (Class<SavableData>)Class.forName("other."+ c);
+                        SavableData obj = data.newInstance();
+                        obj.FromJsonObj((JsonObject)val);
+                        
+                    }catch(Exception e){
+                        System.out.println(e);
+                    }
+                }
+            }
+            /* 
             while(reader.hasNextLine()){
                 JsonReader read = Json.createReader(new StringReader(reader.nextLine()));
                 JsonObject obj = read.readObject();
                 read.close();
                 
                 for (JsonObject.Entry<String, JsonValue> en : obj.entrySet()) {
-            
                     String key = en.getKey();
                     JsonValue val = en.getValue();
+
+
+
+
                     if (val instanceof JsonNumber){
                         if(((JsonNumber) val).isIntegral()){
                             payload.put(key,((JsonNumber) val).intValue());
@@ -89,9 +113,22 @@ public class JsonSaveLoad implements SaveLoadInterface {
                         payload.put(key,((JsonString) val).getString());
                     }
                 }
-            }
+            }*/
         }catch(FileNotFoundException e){}
 
         return payload;
+    }
+
+    /** Helper function to get the class to cast a loaded object to, as well as the id of the object.
+     * @param val JsonValue loaded from the array.
+     */
+    private void GetClass(JsonValue val){
+        JsonObject obj = (JsonObject)val;
+        Object[] arr = obj.keySet().toArray();
+        String s = (String) arr[0];
+        c = s.substring(0, s.indexOf("*"));
+        System.out.println(c);
+        id = Integer.parseInt(s.substring(s.indexOf("*") + 1, s.length()));
+        System.out.println(id);
     }
 }

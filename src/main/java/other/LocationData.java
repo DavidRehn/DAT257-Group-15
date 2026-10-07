@@ -36,4 +36,8 @@ public class LocationData implements SavableData{
         builder.add(key, val);
         return builder.build();
     }
+
+    public void FromJsonObj(JsonObject obj){
+
+    }
 }

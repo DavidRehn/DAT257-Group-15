@@ -373,7 +373,7 @@ ComboBox<String> zoneList = new ComboBox<>();
                 saveData.put("direction", directionList.getValue());
 
                 //Save the SaveData
-                saveLoad.save(saveData);
+                //saveLoad.save(saveData);
     
             }//end of else
 

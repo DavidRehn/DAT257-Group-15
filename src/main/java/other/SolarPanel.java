@@ -13,8 +13,10 @@ public class SolarPanel implements SavableData{
     private Direction direction;
     private double efficiency;
 
-    public SolarPanel(double area, double efficiency){
+    public SolarPanel(double area, int tilt, Direction direction, double efficiency){
         this.area = area;
+        this.tilt = tilt;
+        this.direction = direction;
         this.efficiency = efficiency;
     }
 
@@ -28,6 +30,8 @@ public class SolarPanel implements SavableData{
      */
     public double Efficiency(){return efficiency;}
 
+    /** {{"area" : val}, {"tilt" : val}, {"direction" : val}, {"efficiency" : val}}
+     */
     public JsonObject ToJsonObj(String key){
         JsonObjectBuilder builder = Json.createObjectBuilder();
         builder.add("area", area);
@@ -38,5 +42,27 @@ public class SolarPanel implements SavableData{
         builder = Json.createObjectBuilder();
         builder.add(key, val);
         return builder.build();
+    }
+
+    public void FromJsonObj(JsonObject val){
+        JsonObject obj = val.getJsonObject("SolarPanel");
+        this.area = obj.getInt("area");
+        this.tilt = obj.getInt("tilt");
+        this.direction = directionConverter(obj.getString("direction"));
+        this.efficiency = obj.getInt("efficiency");
+    }
+
+    public Direction directionConverter(String direction){
+        switch(direction){
+            case "SOUTH" : return Direction.SOUTH;
+            case "SOUTHWEST" : return Direction.SOUTHWEST;
+            case "WEST" : return Direction.WEST;
+            case "NORTHWEST" : return Direction.NORTHWEST;
+            case "NORTH" : return Direction.NORTH;
+            case "NORTHEAST" : return Direction.NORTHEAST;
+            case "EAST" : return Direction.EAST;
+            case "SOUTHEAST" : return Direction.SOUTHEAST;
+        }
+        return Direction.SOUTH;     // Will never happen
     }
 }
