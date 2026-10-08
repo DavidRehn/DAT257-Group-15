@@ -1,30 +1,34 @@
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\AppMain.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\location\AppliancesApp.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\location\LocationApp.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\location\LocationMain.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\location\LocationManager.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\location\StartMenu.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\location\StartMenuMain.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\AppInterface.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\ApplianceData.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\Direction.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\LocationData.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\Model.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\SavableData.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\SolarPanel.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\SubAppInterface.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\other\ZoneData.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\powermarketdata\HTTPMarketRequest.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketParser.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketRetriver.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\saveload\JsonSaveLoad.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\saveload\SaveLoadInterface.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\test\test.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\CallWeatherAPI.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\EnergyEstimator.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\EstimationTimestamp.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\ForecastTimestamp.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\HTTPSolarRequest.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\SolarRadiationRetreiver.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\Timestamp.java
-D:\Skola\Agile\githubProdhektsPlats\DAT257-Group-15\src\main\java\weatherdata\WeatherParser.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\AppMain.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\AppliancesApp.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\builder\LabelBuilder.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\builder\LabelDirector.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\builder\LBuilder.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\BuilderDemo.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\LocationApp.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\LocationMain.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\LocationManager.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\StartMenu.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\location\StartMenuMain.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\AppInterface.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\ApplianceData.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\Direction.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\LocationData.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\Model.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\SavableData.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\SolarPanel.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\SubAppInterface.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\other\ZoneData.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\powermarketdata\HTTPMarketRequest.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketParser.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketRetriver.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\saveload\JsonSaveLoad.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\saveload\SaveLoadInterface.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\test\test.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\CallWeatherAPI.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\EnergyEstimator.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\EstimationTimestamp.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\ForecastTimestamp.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\HTTPSolarRequest.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\SolarRadiationRetreiver.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\Timestamp.java
+C:\Users\david\Documents\Utbildning\Agile software project management\DAT257-Group-15\src\main\java\weatherdata\WeatherParser.java

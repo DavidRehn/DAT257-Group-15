@@ -1,5 +1,5 @@
 package location.builder;
 
 public interface LBuilder {
-    void setLabelName(String labekName );
+    public void setLabelName(String labelName );
 }

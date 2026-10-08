@@ -2,8 +2,7 @@ package location.builder;
 
 public class LabelDirector {
 
-    public void constructZone(LBuilder){
-    location.builder.setLabelName( "labekName" );
-
+    public void constructZone(LBuilder builder){
+        builder.setLabelName( "labekName" );
     }
 }
