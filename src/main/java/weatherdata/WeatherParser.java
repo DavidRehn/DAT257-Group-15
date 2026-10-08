@@ -33,6 +33,7 @@ public class WeatherParser {
         JsonArray GTIArray = jsonObj.getJsonArray("global_tilted_irradiance");
         JsonArray tempArray = jsonObj.getJsonArray("temperature_2m");
         BuildTimestampList(timeArray, GTIArray, tempArray);
+        PrintTimestamps();
     }
 
     /** Responsible for building the list from the parsed JsonArrays.

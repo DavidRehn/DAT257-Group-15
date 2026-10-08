@@ -10,27 +10,32 @@ import java.util.ArrayList;
 import java.util.Locale;
 import javax.json.stream.JsonParser;  
 import javax.json.Json;  
+import other.Model;
 
 /**
  *  Class to handle the interaction with the Open Meteo Api.
  */
 public class SolarRadiationRetreiver{
-    private String apiUrl = "https://api.open-meteo.com/v1/forecast";     // Open meteo api
+    private String apiUrl;
     private final HttpClient httpClient;
     private WeatherParser weatherParser;
+    private Model model;
+    private EnergyEstimator estimator;
 
-    public SolarRadiationRetreiver(WeatherParser parser){
+    private SolarRadiationRetreiver(WeatherParser parser, Model model){
         httpClient = HttpClient.newHttpClient(); 
         this.weatherParser = parser;
+        estimator = new EnergyEstimator(parser, model);
     }
 
-    public SolarRadiationRetreiver(HTTPSolarRequest request, WeatherParser parser) {
-        this(parser);
+    public SolarRadiationRetreiver(HTTPSolarRequest request, WeatherParser parser, Model model) {
+        this(parser, model);
 
-        apiUrl += String.format(
+        apiUrl = String.format(
                 Locale.US,
-                "?latitude=%f&longitude=%f"
-                        + "&hourly=global_tilted_irradiance"
+                "https://api.open-meteo.com/v1/forecast"
+                        + "?latitude=%f&longitude=%f"
+                        + "&hourly=global_tilted_irradiance,temperature_2m"
                         + "&tilt=%d&azimuth=%d"
                         + "&forecast_days=%d"
                         + "&timezone=auto",
@@ -44,59 +49,19 @@ public class SolarRadiationRetreiver{
 
 
 
-        public String GetWeatherInfo() {
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(apiUrl))
-                    .GET()
-                    .build();
-
-            try {
-                HttpResponse<String> response =
-                        httpClient.send(request, BodyHandlers.ofString());
-
-                // Print the response for testing
-                //System.out.println(response.body());
-
-                // Return the JSON data to the caller
-                return response.body();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-    
-    public void GetWeatherInfo(HTTPSolarRequest requestParams) {
-
-        String requestUrl = String.format(
-                Locale.US,
-                "https://api.open-meteo.com/v1/forecast"
-                        + "?latitude=%f&longitude=%f"
-                        + "&hourly=global_tilted_irradiance,temperature_2m"
-                        + "&tilt=%d&azimuth=%d"
-                        + "&forecast_days=%d&timezone=auto",
-                requestParams.Latitude(),
-                requestParams.Longitude(),
-                requestParams.Tilt(),
-                requestParams.Azimuth(),
-                requestParams.Days()
-        );
-
+    public boolean GetWeatherInfo() {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(requestUrl))
+                .uri(URI.create(apiUrl))
                 .GET()
                 .build();
-
         try {
-            HttpResponse<String> response =
-                    httpClient.send(request, BodyHandlers.ofString());
-
+            HttpResponse<String> response = httpClient.send(request, BodyHandlers.ofString());
             weatherParser.ParseToJson(response.body()); 
-            //weatherParser.PrintTimestamps();
-
+            estimator.StoreTimestamps();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
+            return false;
         }
     }
-
 }

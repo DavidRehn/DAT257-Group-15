@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 /** Immutable interface to represent a timestamp and corresponding wattage
  */
-public abstract class Timestamp {
+public abstract class Timestamp{
     private final LocalDateTime time;
     private final double watts;
 
