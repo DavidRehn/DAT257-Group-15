@@ -1,1 +1,1 @@
-[{"SolarPanel*0":{"area":30.0,"tilt":30,"direction":"SOUTH","efficiency":0.2}},{"ZoneData*0":{"zone":"SE2"}}]
+[{"SolarPanel*0":{"area":30.0,"tilt":30,"direction":"NORTH","efficiency":0.2}},{"ZoneData*0":{"zone":"SE2"}},{"LocationData*0":{"longitude":11.0,"latitude":57.0}}]

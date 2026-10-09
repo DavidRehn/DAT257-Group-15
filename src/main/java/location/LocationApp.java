@@ -1,6 +1,9 @@
 
 package location;
 import java.io.StringReader;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 import javax.json.Json;
@@ -29,9 +32,11 @@ import other.LocationData;
 import other.Model;
 import other.SolarPanel;
 import other.SubAppInterface;
+import other.TimestampData;
 import other.ZoneData;
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
+import weatherdata.EstimationTimestamp;
 import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
 import weatherdata.WeatherParser;
@@ -58,6 +63,7 @@ public  class LocationApp extends Application implements SubAppInterface {
     private SolarPanel solarPanel;
     private LocationData locationData;
     private ZoneData zoneData;
+    private TimestampData timestampData;
     @Override
     public void start(Stage stage) {
         if(appData.Get("SolarPanel")!=null){
@@ -68,6 +74,9 @@ public  class LocationApp extends Application implements SubAppInterface {
         }
         if(appData.Get("ZoneData")!=null){
             zoneData = (ZoneData)appData.Get("ZoneData");
+        }
+        if(appData.Get("TimestampData")!=null){
+            timestampData = (TimestampData)appData.Get("TimestampData");
         }
 
 // Create the Directory
@@ -415,7 +424,8 @@ ComboBox<String> zoneList = new ComboBox<>();
         Button getForecastButton = new Button("Get Forecast");
         getForecastButton.setOnAction(event -> {
             Direction selectedDirection = Direction.valueOf((solarPanel.Direction().toString()).toUpperCase());
-                                                
+                       
+            locationData = (LocationData)appData.Get("LocationData");
             HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
                 locationData.Longitude(),
                 locationData.Latitude(),
@@ -431,27 +441,23 @@ ComboBox<String> zoneList = new ComboBox<>();
             Thread apiThread;
             apiThread = new Thread(() -> {
                 SolarRadiationRetreiver retriever =
-                    new SolarRadiationRetreiver(weatherRequest, new WeatherParser());
+                    new SolarRadiationRetreiver(weatherRequest, new WeatherParser(), appData);
 
-                String json = retriever.GetWeatherInfo();
+                boolean success = retriever.GetWeatherInfo();
 
-                if (json != null) {
+                if (success) {
                     System.out.println("API data received successfully!");
 
-                    try (JsonReader reader =
-                        Json.createReader(new StringReader(json))) {
+                    timestampData = (TimestampData)appData.Get("TimestampData");
+                    ArrayList<EstimationTimestamp> timestamps = new ArrayList<>();
 
-                        JsonObject hourly = reader.readObject()
-                            .getJsonObject("hourly");
+                    for (HashMap.Entry<String, Double> en : timestampData.GetTimestamps().entrySet()) {
+                        timestamps.add(new EstimationTimestamp(LocalDateTime.parse(en.getKey()), en.getValue()));
+                    }
+                    timestamps.sort(null);
 
-
-                        JsonArray times = hourly.getJsonArray("time");
-
-                        JsonArray radiation =
-                            hourly.getJsonArray("global_tilted_irradiance");
-
-
-                        for (int i = 0; i < times.size(); i++) {
+                    /* 
+                        for (;;){
                             String time = times.getString(i);
 
                             double irradiance = radiation
@@ -461,19 +467,14 @@ ComboBox<String> zoneList = new ComboBox<>();
                             System.out.println(
                                 time + " -> " + irradiance + " W/m²"
                             );
-                        } // End of for loop
+                        }*/      // End of for loop
 
-    // Add this INSIDE the try block
-                        Platform.runLater(() -> {
-                            StartMenu.setForecastData(times, radiation);
-
-                            allMessage.setText(
-                                "Forecast loaded! Back to main page."
-                            );
-                        });
-
-
-                    } // End of try block
+                    Platform.runLater(() -> {
+                        StartMenu.setForecastData(timestamps);
+                        allMessage.setText(
+                            "Forecast loaded! Back to main page."
+                        );
+                    });
 
                 } else {
                     System.out.println("Failed to receive API data.");

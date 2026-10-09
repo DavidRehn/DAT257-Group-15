@@ -1,10 +1,12 @@
 
 package location;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 import javax.json.JsonArray;
 
@@ -28,19 +30,16 @@ import javafx.util.Duration;
 import other.AppInterface;
 import other.Model;
 import other.SubAppInterface;
+import other.TimestampData;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
+import weatherdata.EstimationTimestamp;
 
 public class StartMenu extends Application implements SubAppInterface{
-    private static JsonArray forecastTimes;
-    private static JsonArray forecastRadiation;
+    private static ArrayList<EstimationTimestamp> forecast;
 
-    public static void setForecastData(
-            JsonArray times,
-            JsonArray radiation
-    ) {
-        forecastTimes = times;
-        forecastRadiation = radiation;
+    public static void setForecastData(ArrayList<EstimationTimestamp> f){
+        forecast = f;
     }
 
     private Model appData;
@@ -91,10 +90,16 @@ public class StartMenu extends Application implements SubAppInterface{
         header.setStyle("-fx-background-color: #6096e6;");
         HBox.setHgrow(title, Priority.ALWAYS);
 
-        // Temporary values - APIs will be connected later
+
+        TimestampData prodData = (TimestampData)appData.Get("TimestampData");
+        double prodVal = 0;
+        if (prodData != null){
+            LocalDateTime now = LocalDateTime.now();
+            prodVal = prodData.GetTimestamps().get(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), 0).toString());
+        }
 
         Label production = new Label("Current production");
-        Label productionValue = new Label("100 W");
+        Label productionValue = new Label((int)prodVal + " W");
 
         Label usage = new Label("Current usage");
         Label usageValue = new Label("500 W");
@@ -189,10 +194,9 @@ public class StartMenu extends Application implements SubAppInterface{
 
         xAxis.setLabel("Time (local)");
 
-        boolean hasForecast =
-                forecastTimes != null && forecastRadiation != null;
+        boolean hasForecast = forecast != null;
 
-        yAxis.setLabel(hasForecast ? "W/m²" : "W");
+        yAxis.setLabel("W");
 
 // Create the bar chart
         BarChart<String, Number> chart =
@@ -213,27 +217,13 @@ public class StartMenu extends Application implements SubAppInterface{
                 new XYChart.Series<>();
 
         if (hasForecast) {
-
             // Display real API data
-            int count = Math.min(
-                    forecastTimes.size(),
-                    forecastRadiation.size()
-            );
+            int count = forecast.size();
 
             for (int i = 0; i < count; i++) {
-
-                String time = forecastTimes.getString(i);
-
-                double irradiance = forecastRadiation
-                        .getJsonNumber(i)
-                        .doubleValue();
-
-                // Extract the hour from the timestamp
-                String hour = time.substring(11, 16);
-
-                data.getData().add(
-                        new XYChart.Data<>(hour, irradiance)
-                );
+                String time = String.valueOf(forecast.get(i).GetTime().getHour());
+                double irradiance = forecast.get(i).GetWatts();
+                data.getData().add(new XYChart.Data<>(time, irradiance));
             }
 
         } else {

@@ -1,12 +1,3 @@
-weatherdata\EstimationTimestamp.class
-other\ZoneData.class
-weatherdata\EnergyEstimator.class
-other\Model.class
-weatherdata\SolarRadiationRetreiver.class
-location\LocationManager.class
-powermarketdata\PowerMarketRetriver.class
-weatherdata\HTTPSolarRequest.class
-location\AppliancesApp.class
 location\StartMenu.class
 weatherdata\CallWeatherAPI.class
 AppMain.class
@@ -32,7 +23,4 @@ other\SubAppInterface.class
 location\builder\Row.class
 other\AppInterface.class
 location\builder\BBuilder.class
-weatherdata\WeatherParser.class
-test\test.class
-other\SavableData.class
-weatherdata\ForecastTimestamp.class
+AppMain.class

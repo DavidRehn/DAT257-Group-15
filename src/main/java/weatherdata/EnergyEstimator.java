@@ -2,13 +2,16 @@ package weatherdata;
 
 import java.util.ArrayList;
 
+import other.Model;
 import other.SolarPanel;
+import other.TimestampData;
 
 /** Class to handle the calculation of the electricity production estimate.
  */
 public class EnergyEstimator {
     private WeatherParser parser;
     private SolarPanel panel;
+    private Model model;
     private ArrayList<EstimationTimestamp> timestamps;
 
     // Solar panel parameters
@@ -23,15 +26,16 @@ public class EnergyEstimator {
      * @param parser Instance of a WeatherParser object.
      * @param panel Instance of a SolarPanel object.
      */
-    public EnergyEstimator(WeatherParser parser,  SolarPanel panel){
+    public EnergyEstimator(WeatherParser parser,  Model model){
         this.parser = parser;
-        this.panel = panel;
+        this.model = model;
+        panel = (SolarPanel)model.Get("SolarPanel");
         timestamps = new ArrayList<>();
     }
 
     /** Function to estimate a power output for all timestamps.
      */
-    public void BuildTimestampList(){
+    private void BuildTimestampList(){
         for (ForecastTimestamp forecast : parser.GetTimestamps()) {
             timestamps.add(new EstimationTimestamp(forecast.GetTime(), Estimate(forecast.GetWatts(), forecast.GetTemp())));
         }
@@ -49,7 +53,10 @@ public class EnergyEstimator {
     /** Returns the list of timestamps with corresponding electricity production estimate. 
      * @return List with timestamps.
      */
-    public ArrayList<EstimationTimestamp> GetTimestamps(){return timestamps;}
+    public void StoreTimestamps(){
+        BuildTimestampList();
+        SaveTimestamps();
+    }
 
     /** Function to calculate the power temperature coefficient, meaning efficiency at a certain temperature. 
      * @param ambientTemp Ambient (air) temperature (°C).
@@ -68,5 +75,13 @@ public class EnergyEstimator {
      */
     private double CellTemp(double ambientTemp, double irradiance){
         return ambientTemp + ((NOCT - NOCT_AMBIENT)/NOCT_IRRADIANCE) * irradiance;
+    }
+
+    private void SaveTimestamps(){
+        TimestampData timestampData = new TimestampData();
+        for (EstimationTimestamp timestamp : timestamps) {
+            timestampData.Put(timestamp.GetTime().toString(), timestamp.GetWatts());
+        }
+        model.Store("TimestampData", timestampData);
     }
 }

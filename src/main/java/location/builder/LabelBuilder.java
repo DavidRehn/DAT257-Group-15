@@ -28,5 +28,5 @@ public class LabelBuilder implements LBuilder{
     public Label getLabel(){
         return title;
     }
-    
+        public void setLabelName(String labelName ){}
 }
