@@ -21,6 +21,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import location.builder.LabelBuilder;
+import location.builder.LabelDirector;
 import other.AppInterface;
 import other.Direction;
 import other.LocationData;
@@ -35,6 +37,9 @@ import weatherdata.SolarRadiationRetreiver;
 import weatherdata.WeatherParser;
 //import weatherdata.CallWeatherAPI;
 public  class LocationApp extends Application implements SubAppInterface {
+
+    LabelDirector director;
+
 
     private Model appData;
     public void linkAppData(Model m){
@@ -64,14 +69,17 @@ public  class LocationApp extends Application implements SubAppInterface {
         if(appData.Get("ZoneData")!=null){
             zoneData = (ZoneData)appData.Get("ZoneData");
         }
-        
+
+// Create the Directory
+        director = new LabelDirector();
+
  // Create the title
+    
 
         Label title = new Label("Location and Solar Panel Info");
 
-        Label locationTitle = new Label("Location");
+        //Label locationTitle = new Label("Location");
 
-        Label solarPanelTitle = new Label("Solar panel details");
 //Back to main page
 
         Button backButton = new Button("← Back to main page");
@@ -477,57 +485,13 @@ ComboBox<String> zoneList = new ComboBox<>();
             apiThread.start();
                                                 
         });
-        // Create a list of cities
-        /*
-        ComboBox<String> cityList = new ComboBox<>();
-
-        cityList.getItems().addAll(
-                "Göteborg",
-                "Stockholm",
-                "Malmö",
-                "Uppsala"
-        );
-
-        cityList.setPromptText("Choose your city");
-
-        // Create the save button
-        Button saveButton = new Button("Save Location");
-
-        // Create a message for the user
-        Label message = new Label("");
-
-        // Create the location manager
-        LocationManager location = new LocationManager();
-
-        String savedCity = location.getCity();
-
-        if (cityList.getItems().contains(savedCity)) {
-
-            cityList.setValue(savedCity);
-
-        }
-
-        // What happens when the user clicks Save
-        saveButton.setOnAction(event -> {
-
-            String city = cityList.getValue();
-
-            if (city != null) {
-
-                location.saveCity(city);
-
-                message.setText("Saved: " + city);
-
-            } else {
-
-                message.setText("Please choose a city first.");
-
-            }
-        });
+    
 
         // Create the layout
-        */
+        
         VBox layout = new VBox(15);
+        
+
 
 // Put the back button on the left
         HBox backRow = new HBox(backButton);
@@ -546,7 +510,11 @@ ComboBox<String> zoneList = new ComboBox<>();
 // Latitude row
         Label latitudeLabel = new Label("Latitude");
         latitudeLabel.setPrefWidth(90);
-
+        //latitudeField/*
+        //director.constructNameOfLabel(builder, "Zone"); //
+        //HBox zoneRowe = new HBox(15, builder.getLabel(), zoneList);
+        //layout.getChildren().add(zoneRowe);
+        //
         HBox latitudeRow = new HBox(15, latitudeLabel, latitudeField);
         latitudeRow.setAlignment(Pos.CENTER);
 
@@ -556,6 +524,7 @@ ComboBox<String> zoneList = new ComboBox<>();
         areaLabel.setPrefWidth(90);
 
         HBox areaRow = new HBox(15, areaLabel, areaField);
+        areaRow.setAlignment(Pos.CENTER);
 
 // Tilt row
         Label tiltLabel = new Label("Tilt");
@@ -568,68 +537,79 @@ ComboBox<String> zoneList = new ComboBox<>();
         Label efficiencyLabel = new Label("Efficiency");
         efficiencyLabel.setPrefWidth(90);
 
-        HBox efficiencyRow = new HBox(15, efficiencyLabel, efficiencyField);
+        HBox efficiencyRow = new HBox(15, efficiencyLabel); 
+            efficiencyRow.getChildren().add(efficiencyField); //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
         efficiencyRow.setAlignment(Pos.CENTER);
 
+        /*Label efficiencyLabel = new Label("Efficiency");
+        efficiencyLabel.setPrefWidth(90);
+
+        HBox efficiencyRow = new HBox(15, efficiencyLabel, efficiencyField);
+        efficiencyRow.setAlignment(Pos.CENTER); */
 // Direction row
-        Label directionLabel = new Label("Direction");
+        LabelBuilder builder3 = new LabelBuilder();
+        director.constructNameOfLabelWidth(builder3, "Direction"); 
+
+        HBox zoneRow3 = new HBox(15, builder3.getLabel(), directionList);
+        zoneRow3.setAlignment(Pos.CENTER);
+        
+
+        /*Label directionLabel = new Label("Direction");
         directionLabel.setPrefWidth(90);
 
         HBox directionRow = new HBox(15, directionLabel, directionList);
         directionRow.setAlignment(Pos.CENTER);
 
-        areaRow.setAlignment(Pos.CENTER);
-
+*/
         layout.getChildren().add(title);
         layout.getChildren().add(backRow);
         
 // Zone row
+        
+        //Builder
+        LabelBuilder buildera = new LabelBuilder();
+        director.constructNameOfLabelWidth(buildera, "Zone"); //
+        HBox zoneRowe = new HBox(15, buildera.getLabel(), zoneList);
+        zoneRowe.setAlignment(Pos.CENTER);
+        layout.getChildren().add(zoneRowe);               //
+    /* old
         Label zoneLabel = new Label("Zone");
         zoneLabel.setPrefWidth(90);
-
         HBox zoneRow = new HBox(15, zoneLabel, zoneList);
         zoneRow.setAlignment(Pos.CENTER);
-
+        layout.getChildren().add(zoneRow);
+    */
 
 //Button row
     HBox buttonRow = new HBox(15, checkAllButton, getForecastButton);
         buttonRow.setAlignment(Pos.CENTER);
 
 // Location section
-        layout.getChildren().add(locationTitle);
+        //layout.getChildren().add(locationTitle); //old
+        LabelBuilder builder2 = new LabelBuilder(); 
+        director.constructNameOfLabel(builder2, "Location");
+        layout.getChildren().add(builder2.getLabel());  //
 
         layout.getChildren().add(longitudeRow);
-       // layout.getChildren().add(checkButton);
-       // layout.getChildren().add(errorMessage);
 
         layout.getChildren().add(latitudeRow);
-       // layout.getChildren().add(latitudeButton);
-       // layout.getChildren().add(latitudeMessage);
+
+
+//Test of consept
+        LabelBuilder builder = new LabelBuilder();
+        director.constructSolarDetails(builder);
+        layout.getChildren().add(builder.getLabel());
 
 // Solar panel section
-        layout.getChildren().add(solarPanelTitle);
         layout.getChildren().add(areaRow);
-       // layout.getChildren().add(areaButton);
-       // layout.getChildren().add(areaMessage);
-
         layout.getChildren().add(tiltRow);
-        //layout.getChildren().add(tiltButton);
-        // layout.getChildren().add(tiltMessage);
-        
         layout.getChildren().add(efficiencyRow);
-        
-        layout.getChildren().add(directionRow);
-        // layout.getChildren().add(directionButton);
-        //layout.getChildren().add(directionMessage);
+        //layout.getChildren().add(directionRow); old
+        layout.getChildren().add(zoneRow3); //new B
 
         // Check everything
         layout.getChildren().add(buttonRow);
-        //layout.getChildren().add(checkAllButton);
-        //layout.getChildren().add(getForecastButton);
         layout.getChildren().add(allMessage);
-        // layout.getChildren().add(cityList);
-        // layout.getChildren().add(saveButton);
-        // layout.getChildren().add(message);
 
         layout.setAlignment(Pos.CENTER);
 
@@ -643,6 +623,8 @@ ComboBox<String> zoneList = new ComboBox<>();
         stage.setScene(scene);
         stage.show();
     }
+
+    
 
 
 }

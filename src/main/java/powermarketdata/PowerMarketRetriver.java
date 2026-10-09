@@ -7,6 +7,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Locale;
+import java.util.Set;
 
 import javax.json.stream.JsonParser;  
 import javax.json.Json;  
@@ -34,8 +35,8 @@ public class PowerMarketRetriver{
             a = "0" + time.getDayOfMonth();
         }
 
-        // should be a option to switch zones.
-        String swedenZone = "SE3";
+        // should be a option to switch zones.       
+        String swedenZone =  "SE3";
 
         String requestUrl = 
             "https://www.elprisetjustnu.se/api/v1/prices/" //2026/10-01_SE3.json
@@ -58,9 +59,15 @@ public class PowerMarketRetriver{
             return(response.body());
 
         }catch (Exception e){
-            //System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCatch");
+            System.out.println("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxCatch");
             e.printStackTrace();
             return null;
         }
     } 
 }
+/*
+SE1 = Luleå / Norra Sverige
+SE2 = Sundsvall / Norra Mellansverige
+SE3 = Stockholm / Södra Mellansverige
+SE4 = Malmö / Södra Sverige
+ */
