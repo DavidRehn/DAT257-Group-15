@@ -11,8 +11,8 @@ public class LabelBuilder implements LBuilder{
     //private Row row;
 
     @Override 
-    public void setLabelName(String titlee){
-        this.title = new Label("" + titlee);
+    public void setLabelName(String title){
+        this.title = new Label("" + title);
     }
     
     @Override
@@ -28,5 +28,4 @@ public class LabelBuilder implements LBuilder{
     public Label getLabel(){
         return title;
     }
-        public void setLabelName(String labelName ){}
 }
