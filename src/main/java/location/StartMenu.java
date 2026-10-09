@@ -1,10 +1,12 @@
 
 package location;
 
+import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Formatter;
 
 import javax.json.JsonArray;
 
@@ -28,6 +30,7 @@ import javafx.util.Duration;
 import other.AppInterface;
 import other.Model;
 import other.SubAppInterface;
+import other.TimestampData;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 import weatherdata.EstimationTimestamp;
@@ -87,10 +90,16 @@ public class StartMenu extends Application implements SubAppInterface{
         header.setStyle("-fx-background-color: #6096e6;");
         HBox.setHgrow(title, Priority.ALWAYS);
 
-        // Temporary values - APIs will be connected later
+
+        TimestampData prodData = (TimestampData)appData.Get("TimestampData");
+        double prodVal = 0;
+        if (prodData != null){
+            LocalDateTime now = LocalDateTime.now();
+            prodVal = prodData.GetTimestamps().get(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), 0).toString());
+        }
 
         Label production = new Label("Current production");
-        Label productionValue = new Label("100 W");
+        Label productionValue = new Label((int)prodVal + " W");
 
         Label usage = new Label("Current usage");
         Label usageValue = new Label("500 W");
@@ -208,22 +217,13 @@ public class StartMenu extends Application implements SubAppInterface{
                 new XYChart.Series<>();
 
         if (hasForecast) {
-
             // Display real API data
             int count = forecast.size();
 
             for (int i = 0; i < count; i++) {
-
                 String time = String.valueOf(forecast.get(i).GetTime().getHour());
-
                 double irradiance = forecast.get(i).GetWatts();
-
-                // Extract the hour from the timestamp
-                //String hour = time.substring(11, 16);
-
-                data.getData().add(
-                        new XYChart.Data<>(time, irradiance)
-                );
+                data.getData().add(new XYChart.Data<>(time, irradiance));
             }
 
         } else {
