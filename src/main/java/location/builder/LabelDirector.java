@@ -54,7 +54,7 @@ public class LabelDirector {
         */
     }
     public void constructZone(LBuilder lBuilder){
-        lBuilder.setLabelName( "labekName" );
+        lBuilder.setLabelName( "Zone" );
 
     }
 }

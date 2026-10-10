@@ -71,6 +71,8 @@ public class JsonSaveLoad implements SaveLoadInterface {
         File file = new File(filename);
         JsonArrayBuilder builder = Json.createArrayBuilder();
         try(Scanner reader = new Scanner(file)){
+            reader.useDelimiter("\\A");
+
             while (reader.hasNext()) {
                 JsonReader read = Json.createReader(new StringReader(reader.next()));
                 JsonArray arr = read.readArray();

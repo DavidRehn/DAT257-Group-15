@@ -91,13 +91,31 @@ public class StartMenu extends Application implements SubAppInterface{
         HBox.setHgrow(title, Priority.ALWAYS);
 
 
-        TimestampData prodData = (TimestampData)appData.Get("TimestampData");
-        double prodVal = 0;
-        if (prodData != null){
-            LocalDateTime now = LocalDateTime.now();
-            prodVal = prodData.GetTimestamps().get(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), 0).toString());
-        }
+        TimestampData prodData =
+                (TimestampData) appData.Get("TimestampData");
 
+        double prodVal = 0;
+
+        if (prodData != null) {
+
+            LocalDateTime now = LocalDateTime.now();
+
+            String currentHour =
+                    LocalDateTime.of(
+                            now.getYear(),
+                            now.getMonth(),
+                            now.getDayOfMonth(),
+                            now.getHour(),
+                            0
+                    ).toString();
+
+            Double value =
+                    prodData.GetTimestamps().get(currentHour);
+
+            if (value != null) {
+                prodVal = value;
+            }
+        }
         Label production = new Label("Current production");
         Label productionValue = new Label((int)prodVal + " W");
 

@@ -12,6 +12,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+
+import location.builder.LabelBuilder;
+import location.builder.LabelDirector;
+import location.builder.TextInputBuilder;
+import location.builder.ButtonBuilder;
+import location.builder.CheckBoxBuilder;
+import location.builder.Row;
+
 import other.AppInterface;
 import other.ApplianceData;
 import other.Model;
@@ -34,11 +42,19 @@ public class AppliancesApp extends Application implements SubAppInterface{
             appliances=(ApplianceData)appData.Get("ApplianceData");
         }
 
-        Label title = new Label("Appliances");
+        LabelBuilder titleBuilder = new LabelBuilder();
+        LabelDirector labelDirector = new LabelDirector();
 
-        Button backButton = new Button("← Back to main page");
+        labelDirector.constructNameOfLabel(titleBuilder, "Appliances");
 
-        backButton.setOnAction(event -> {
+        Label title = titleBuilder.getLabel();
+
+        ButtonBuilder backButtonBuilder = new ButtonBuilder();
+        backButtonBuilder.setLabelName("← Back to main page");
+
+        Button backButton = backButtonBuilder.getButton();
+
+        backButtonBuilder.setEvent(event -> {
             System.out.println(root);
             root.viewStart(stage);
         });
@@ -49,11 +65,19 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
 
 // أضف هذا الجزء هنا
-        Label currentProduction =
-                new Label("Current production: 100 W");
+        LabelBuilder currentProductionBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                currentProductionBuilder,
+                "Current production: 100 W"
+        );
+        Label currentProduction = currentProductionBuilder.getLabel();
 
-        Label currentUsage =
-                new Label("Current usage: 0 W");
+        LabelBuilder currentUsageBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                currentUsageBuilder,
+                "Current usage: 0 W"
+        );
+        Label currentUsage = currentUsageBuilder.getLabel();
 
         HBox infoRow = new HBox(
                 50,
@@ -66,27 +90,39 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
 
         // Appliance name
-        TextField nameField = new TextField();
+     /*   TextField nameField = new TextField();
         nameField.setPromptText("Appliance name");
         nameField.setPrefWidth(200);
 
+      */
+        TextInputBuilder nameFieldBuilder = new TextInputBuilder();
+        nameFieldBuilder.setPromptText("Appliance name");
+        TextField nameField = nameFieldBuilder.getTextField();
+        nameField.setPrefWidth(200);
+
 // Appliance wattage
-        TextField wattageField = new TextField();
+     /*   TextField wattageField = new TextField();
         wattageField.setPromptText("Wattage");
         wattageField.setPrefWidth(120);
 
+      */
+        TextInputBuilder wattageFieldBuilder = new TextInputBuilder();
+        wattageFieldBuilder.setPromptText("Wattage");
+        TextField wattageField = wattageFieldBuilder.getTextField();
+        wattageField.setPrefWidth(120);
 // Add button
-        Button addButton = new Button("Add");
+      /*  Button addButton = new Button("Add");
 
+       */
+        ButtonBuilder addButtonBuilder = new ButtonBuilder();
+        addButtonBuilder.setLabelName("Add");
+
+        Button addButton = addButtonBuilder.getButton();
 // Put inputs next to each other
-        HBox inputRow = new HBox(
-                10,
-                nameField,
-                wattageField,
-                addButton
-        );
+        Row inputRowBuilder =
+                new Row(nameField, wattageField, addButton);
 
-        inputRow.setAlignment(Pos.CENTER);
+        HBox inputRow = inputRowBuilder.getRow();
 
 // Total electricity usage
         Label totalLabel = new Label("Total usage: 0 W");
@@ -115,10 +151,66 @@ public class AppliancesApp extends Application implements SubAppInterface{
         );
 
         headerRow.setAlignment(Pos.CENTER);
+// Show already saved appliances
+        for (java.util.Map.Entry<String, Double> entry
+                : appliances.GetAppliances().entrySet()) {
 
-        addButton.setOnAction(event -> {
+            String savedName = entry.getKey();
+            double savedWattage = entry.getValue();
 
-            String name = nameField.getText();
+            Label nameLabel = new Label(savedName);
+            Label wattageLabel = new Label(savedWattage + " W");
+
+            nameLabel.setPrefWidth(120);
+            wattageLabel.setPrefWidth(100);
+
+            CheckBoxBuilder inUseCheckBoxBuilder = new CheckBoxBuilder();
+            inUseCheckBoxBuilder.setLabelName("In use");
+
+            CheckBox inUseCheckBox = inUseCheckBoxBuilder.getCheckBox();
+            inUseCheckBox.setPrefWidth(100);
+
+            ButtonBuilder removeButtonBuilder = new ButtonBuilder();
+            removeButtonBuilder.setLabelName("Remove");
+
+            Button removeButton = removeButtonBuilder.getButton();
+
+            Row applianceRowBuilder = new Row(
+                    nameLabel,
+                    wattageLabel,
+                    inUseCheckBox,
+                    removeButton
+            );
+
+            HBox applianceRow = applianceRowBuilder.getRow();
+            applianceRow.setPadding(new Insets(8));
+
+            applianceRow.setStyle(
+                    "-fx-border-color: #CCCCCC;" +
+                            "-fx-border-width: 1;" +
+                            "-fx-background-color: white;"
+            );
+
+            applianceRow.setUserData(savedWattage);
+
+            applianceList.getChildren().add(applianceRow);
+
+            inUseCheckBox.setOnAction(e -> {
+                updateTotal(applianceList, totalLabel, currentUsage);
+            });
+
+            removeButtonBuilder.setEvent(e -> {
+                appliances.Remove(savedName, savedWattage);
+                appData.Store("ApplianceData", appliances);
+                appData.SaveToDisc();
+
+                applianceList.getChildren().remove(applianceRow);
+                updateTotal(applianceList, totalLabel, currentUsage);
+            });
+        }
+        addButtonBuilder.setEvent(event -> {
+
+            String name = nameField.getText().trim();
 
             try {
                 double wattage = Double.parseDouble(wattageField.getText());
@@ -139,23 +231,29 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 Label wattageLabel = new Label(wattage + " W");
                 appliances.Put(name,wattage);
                 appData.Store("ApplianceData",appliances);
+                appData.SaveToDisc();
 
                 nameLabel.setPrefWidth(120);
                 wattageLabel.setPrefWidth(100);
-                CheckBox inUseCheckBox = new CheckBox("In use");
+                CheckBoxBuilder inUseCheckBoxBuilder = new CheckBoxBuilder();
+                inUseCheckBoxBuilder.setLabelName("In use");
+
+                CheckBox inUseCheckBox = inUseCheckBoxBuilder.getCheckBox();
                 inUseCheckBox.setPrefWidth(100);
 
-                Button removeButton = new Button("Remove");
+                ButtonBuilder removeButtonBuilder = new ButtonBuilder();
+                removeButtonBuilder.setLabelName("Remove");
 
-                HBox applianceRow = new HBox(
-                        20,
+                Button removeButton = removeButtonBuilder.getButton();
+
+                Row applianceRowBuilder = new Row(
                         nameLabel,
                         wattageLabel,
                         inUseCheckBox,
                         removeButton
                 );
 
-                applianceRow.setAlignment(Pos.CENTER);
+                HBox applianceRow = applianceRowBuilder.getRow();
                 applianceRow.setPadding(new Insets(8));
 
                 applianceRow.setStyle(
@@ -184,8 +282,10 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 });
 
                 // Remove appliance
-                removeButton.setOnAction(e -> {
-                    appliances.Remove(nameLabel.getText(),Double.parseDouble(wattageLabel.getText()));
+                removeButtonBuilder.setEvent(e -> {
+                    appliances.Remove(nameLabel.getText(), wattage);
+                    appData.SaveToDisc();
+
                     applianceList.getChildren().remove(applianceRow);
                     updateTotal(applianceList, totalLabel, currentUsage);
                 });

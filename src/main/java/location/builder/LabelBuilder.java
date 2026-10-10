@@ -6,18 +6,18 @@ import javafx.scene.layout.HBox;
 
 public class LabelBuilder implements LBuilder{
 
-    private Label title;
+    private Label label;  // private Label title;
     //private int width;
     //private Row row;
 
     @Override 
     public void setLabelName(String title){
-        this.title = new Label("" + title);
+        this.label  = new Label("" + title);
     }
     
     @Override
     public void setWidth(int width){
-        title.setMaxWidth(width); 
+        label.setMaxWidth(width);
     }
 
     /*@Override
@@ -26,6 +26,6 @@ public class LabelBuilder implements LBuilder{
     }*/
 
     public Label getLabel(){
-        return title;
+        return label;
     }
 }

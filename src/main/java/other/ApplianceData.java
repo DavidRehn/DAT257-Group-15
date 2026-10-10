@@ -13,6 +13,16 @@ public class ApplianceData implements SavableData{
     public ApplianceData(){
         appliances = new Hashtable<>();
     }
+    public ApplianceData(JsonObject obj) {
+        appliances = new Hashtable<>();
+
+        for (String key : obj.keySet()) {
+            appliances.put(
+                    key,
+                    obj.getJsonNumber(key).doubleValue()
+            );
+        }
+    }
 
     public void Put(String key, double value){
         appliances.put(key, value);
@@ -24,7 +34,9 @@ public class ApplianceData implements SavableData{
     public Boolean hasKey(String key){
         return appliances.containsKey(key);
     }
-
+    public Hashtable<String, Double> GetAppliances() {
+        return appliances;
+    }
     @Override
     public JsonObject ToJsonObj(String key){
         JsonObjectBuilder builder = Json.createObjectBuilder();
