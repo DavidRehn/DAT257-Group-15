@@ -85,9 +85,40 @@ public class Row {
 
         row.setAlignment(Pos.CENTER);
     }
+    public Row(Button button) {
 
+        row = new HBox(button);
+        row.setAlignment(Pos.CENTER_LEFT);
+    }
+    public Row(Label labelA, Label labelB) {
 
+        row = new HBox(
+                50,
+                labelA,
+                labelB
+        );
+
+        row.setAlignment(Pos.CENTER);
+    }
+    public Row(
+            Label labelA,
+            Label labelB,
+            Label labelC,
+            Label labelD
+    ) {
+
+        row = new HBox(
+                20,
+                labelA,
+                labelB,
+                labelC,
+                labelD
+        );
+
+        row.setAlignment(Pos.CENTER);
+    }
     public HBox getRow() {
+
         return row;
     }
 }

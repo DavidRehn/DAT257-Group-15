@@ -24,6 +24,8 @@ import other.AppInterface;
 import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
+import java.time.LocalDateTime;
+import other.TimestampData;
 
 public class AppliancesApp extends Application implements SubAppInterface{
     private Model appData;
@@ -59,19 +61,47 @@ public class AppliancesApp extends Application implements SubAppInterface{
             root.viewStart(stage);
         });
 
-        HBox backRow = new HBox(backButton);
-        backRow.setAlignment(Pos.CENTER_LEFT);
+        Row backRowBuilder = new Row(backButton);
+
+        HBox backRow = backRowBuilder.getRow();
         backRow.setMaxWidth(Double.MAX_VALUE);
 
 
 // أضف هذا الجزء هنا
+        TimestampData prodData =
+                (TimestampData) appData.Get("TimestampData");
+
+        double prodVal = 0;
+
+        if (prodData != null) {
+
+            LocalDateTime now = LocalDateTime.now();
+
+            String currentHour =
+                    LocalDateTime.of(
+                            now.getYear(),
+                            now.getMonth(),
+                            now.getDayOfMonth(),
+                            now.getHour(),
+                            0
+                    ).toString();
+
+            Double value =
+                    prodData.GetTimestamps().get(currentHour);
+
+            if (value != null) {
+                prodVal = value;
+            }
+        }
+
         LabelBuilder currentProductionBuilder = new LabelBuilder();
+
         labelDirector.constructNameOfLabel(
                 currentProductionBuilder,
-                "Current production: 100 W"
+                "Current production: " + (int) prodVal + " W"
         );
-        Label currentProduction = currentProductionBuilder.getLabel();
 
+        Label currentProduction = currentProductionBuilder.getLabel();
         LabelBuilder currentUsageBuilder = new LabelBuilder();
         labelDirector.constructNameOfLabel(
                 currentUsageBuilder,
@@ -79,13 +109,12 @@ public class AppliancesApp extends Application implements SubAppInterface{
         );
         Label currentUsage = currentUsageBuilder.getLabel();
 
-        HBox infoRow = new HBox(
-                50,
+        Row infoRowBuilder = new Row(
                 currentProduction,
                 currentUsage
         );
 
-        infoRow.setAlignment(Pos.CENTER);
+        HBox infoRow = infoRowBuilder.getRow();
 
 
 
@@ -125,32 +154,70 @@ public class AppliancesApp extends Application implements SubAppInterface{
         HBox inputRow = inputRowBuilder.getRow();
 
 // Total electricity usage
-        Label totalLabel = new Label("Total usage: 0 W");
-        Label errorMessage = new Label("");
+        LabelBuilder totalLabelBuilder = new LabelBuilder();
+
+        labelDirector.constructNameOfLabel(
+                totalLabelBuilder,
+                "Total usage: 0 W"
+        );
+
+        Label totalLabel = totalLabelBuilder.getLabel();
+
+        LabelBuilder errorMessageBuilder = new LabelBuilder();
+
+        labelDirector.constructNameOfLabel(
+                errorMessageBuilder,
+                ""
+        );
+
+        Label errorMessage = errorMessageBuilder.getLabel();
         // List where appliances will be shown
         VBox applianceList = new VBox(10);
         applianceList.setAlignment(Pos.CENTER);
-        Label nameHeader = new Label("Name");
+
+        LabelBuilder nameHeaderBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                nameHeaderBuilder,
+                "Name"
+        );
+        Label nameHeader = nameHeaderBuilder.getLabel();
         nameHeader.setPrefWidth(120);
 
-        Label wattageHeader = new Label("Wattage");
+
+        LabelBuilder wattageHeaderBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                wattageHeaderBuilder,
+                "Wattage"
+        );
+        Label wattageHeader = wattageHeaderBuilder.getLabel();
         wattageHeader.setPrefWidth(100);
 
-        Label inUseHeader = new Label("In use");
+
+        LabelBuilder inUseHeaderBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                inUseHeaderBuilder,
+                "In use"
+        );
+        Label inUseHeader = inUseHeaderBuilder.getLabel();
         inUseHeader.setPrefWidth(100);
 
-        Label removeHeader = new Label("Remove");
+
+        LabelBuilder removeHeaderBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                removeHeaderBuilder,
+                "Remove"
+        );
+        Label removeHeader = removeHeaderBuilder.getLabel();
         removeHeader.setPrefWidth(80);
 
-        HBox headerRow = new HBox(
-                20,
+        Row headerRowBuilder = new Row(
                 nameHeader,
                 wattageHeader,
                 inUseHeader,
                 removeHeader
         );
 
-        headerRow.setAlignment(Pos.CENTER);
+        HBox headerRow = headerRowBuilder.getRow();
 // Show already saved appliances
         for (java.util.Map.Entry<String, Double> entry
                 : appliances.GetAppliances().entrySet()) {
@@ -158,10 +225,21 @@ public class AppliancesApp extends Application implements SubAppInterface{
             String savedName = entry.getKey();
             double savedWattage = entry.getValue();
 
-            Label nameLabel = new Label(savedName);
-            Label wattageLabel = new Label(savedWattage + " W");
-
+            LabelBuilder nameLabelBuilder = new LabelBuilder();
+            labelDirector.constructNameOfLabel(
+                    nameLabelBuilder,
+                    savedName
+            );
+            Label nameLabel = nameLabelBuilder.getLabel();
             nameLabel.setPrefWidth(120);
+
+
+            LabelBuilder wattageLabelBuilder = new LabelBuilder();
+            labelDirector.constructNameOfLabel(
+                    wattageLabelBuilder,
+                    savedWattage + " W"
+            );
+            Label wattageLabel = wattageLabelBuilder.getLabel();
             wattageLabel.setPrefWidth(100);
 
             CheckBoxBuilder inUseCheckBoxBuilder = new CheckBoxBuilder();
@@ -169,6 +247,10 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
             CheckBox inUseCheckBox = inUseCheckBoxBuilder.getCheckBox();
             inUseCheckBox.setPrefWidth(100);
+
+            inUseCheckBox.setSelected(
+                    appliances.IsInUse(savedName)
+            );
 
             ButtonBuilder removeButtonBuilder = new ButtonBuilder();
             removeButtonBuilder.setLabelName("Remove");
@@ -196,7 +278,15 @@ public class AppliancesApp extends Application implements SubAppInterface{
             applianceList.getChildren().add(applianceRow);
 
             inUseCheckBox.setOnAction(e -> {
-                updateTotal(applianceList, totalLabel, currentUsage);
+
+                appliances.SetInUse(savedName, inUseCheckBox.isSelected()
+                );
+
+                appData.Store("ApplianceData", appliances);
+                appData.SaveToDisc();
+
+                updateTotal(applianceList, totalLabel, currentUsage
+                );
             });
 
             removeButtonBuilder.setEvent(e -> {
@@ -227,8 +317,19 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
                 errorMessage.setText("");
 
-                Label nameLabel = new Label(name);
-                Label wattageLabel = new Label(wattage + " W");
+                LabelBuilder nameLabelBuilder = new LabelBuilder();
+                labelDirector.constructNameOfLabel(
+                        nameLabelBuilder,
+                        name
+                );
+                Label nameLabel = nameLabelBuilder.getLabel();
+
+                LabelBuilder wattageLabelBuilder = new LabelBuilder();
+                labelDirector.constructNameOfLabel(
+                        wattageLabelBuilder,
+                        wattage + " W"
+                );
+                Label wattageLabel = wattageLabelBuilder.getLabel();
                 appliances.Put(name,wattage);
                 appData.Store("ApplianceData",appliances);
                 appData.SaveToDisc();
@@ -278,7 +379,17 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
                 // Update total when checkbox changes
                 inUseCheckBox.setOnAction(e -> {
-                    updateTotal(applianceList, totalLabel, currentUsage);
+
+                    appliances.SetInUse(
+                            nameLabel.getText(),
+                            inUseCheckBox.isSelected()
+                    );
+
+                    appData.Store("ApplianceData", appliances);
+                    appData.SaveToDisc();
+
+                    updateTotal(applianceList, totalLabel, currentUsage
+                    );
                 });
 
                 // Remove appliance
