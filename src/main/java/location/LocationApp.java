@@ -41,6 +41,14 @@ import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
 import weatherdata.WeatherParser;
 //import weatherdata.CallWeatherAPI;
+import location.builder.ComboBoxBuilder;
+import location.builder.TextInputBuilder;
+import location.builder.ButtonBuilder;
+import location.builder.Row;
+import location.builder.VBoxBuilder;
+import location.builder.ScrollPaneBuilder;
+
+
 public  class LocationApp extends Application implements SubAppInterface {
 
     LabelDirector director;
@@ -83,24 +91,32 @@ public  class LocationApp extends Application implements SubAppInterface {
         director = new LabelDirector();
 
  // Create the title
-    
 
-        Label title = new Label("Location and Solar Panel Info");
+
+        LabelBuilder titleBuilder = new LabelBuilder();
+        director.constructNameOfLabel(
+                titleBuilder,
+                "Location and Solar Panel Info"
+        ); Label title = titleBuilder.getLabel();
 
         //Label locationTitle = new Label("Location");
 
 //Back to main page
 
-        Button backButton = new Button("← Back to main page");
+        ButtonBuilder backButtonBuilder = new ButtonBuilder();
+        backButtonBuilder.setLabelName("← Back to main page");
 
+        Button backButton = backButtonBuilder.getButton();
 
-        backButton.setOnAction(event -> {
+        backButtonBuilder.setEvent(event -> {
             root.viewStart(stage);
         });
 
 // Longitude
-        TextField longitudeField = new TextField();
-        longitudeField.setPromptText("Enter longitude");
+        TextInputBuilder longitudeFieldBuilder = new TextInputBuilder();
+        longitudeFieldBuilder.setPromptText("Enter longitude");
+
+        TextField longitudeField = longitudeFieldBuilder.getTextField();
         longitudeField.setMaxWidth(220);
         if(appData.Get("LocationData")!=null){
             longitudeField.setText(""+locationData.Longitude());
@@ -108,12 +124,16 @@ public  class LocationApp extends Application implements SubAppInterface {
         
 
 // Check longitude
-        Button checkButton = new Button("Check longitude");
+        ButtonBuilder checkButtonBuilder = new ButtonBuilder();
+        checkButtonBuilder.setLabelName("Check longitude");
 
-        Label errorMessage = new Label("");
+        Button checkButton = checkButtonBuilder.getButton();
 
-        checkButton.setOnAction(event -> {
+        LabelBuilder errorMessageBuilder = new LabelBuilder();
+        director.constructNameOfLabel(errorMessageBuilder, "");
+        Label errorMessage = errorMessageBuilder.getLabel();
 
+        checkButtonBuilder.setEvent(event -> {
             try {
                 double longitude =
                         Double.parseDouble(longitudeField.getText());
@@ -132,19 +152,27 @@ public  class LocationApp extends Application implements SubAppInterface {
 
 
 // Latitude
-        TextField latitudeField = new TextField();
-        latitudeField.setPromptText("Enter latitude");
+        TextInputBuilder latitudeFieldBuilder = new TextInputBuilder();
+        latitudeFieldBuilder.setPromptText("Enter latitude");
+
+        TextField latitudeField = latitudeFieldBuilder.getTextField();
         latitudeField.setMaxWidth(220);
+
         if(appData.Get("LocationData")!=null){
             latitudeField.setText(""+locationData.Latitude());
         }
 
 // Check latitude
-        Button latitudeButton = new Button("Check latitude");
+        ButtonBuilder latitudeButtonBuilder = new ButtonBuilder();
+        latitudeButtonBuilder.setLabelName("Check latitude");
 
-        Label latitudeMessage = new Label("");
+        Button latitudeButton = latitudeButtonBuilder.getButton();
 
-        latitudeButton.setOnAction(event -> {
+        LabelBuilder latitudeMessageBuilder = new LabelBuilder();
+        director.constructNameOfLabel(latitudeMessageBuilder, "");
+        Label latitudeMessage = latitudeMessageBuilder.getLabel();
+
+        latitudeButtonBuilder.setEvent(event -> {
 
             try {
                 double latitude =
@@ -166,37 +194,47 @@ public  class LocationApp extends Application implements SubAppInterface {
 
         });
 //
-ComboBox<String> zoneList = new ComboBox<>();
+        ComboBoxBuilder zoneListBuilder = new ComboBoxBuilder();
 
-        zoneList.getItems().addAll(
+        zoneListBuilder.setItems(
                 "SE1",
                 "SE2",
                 "SE3",
                 "SE4"
         );
 
-        zoneList.setPromptText("Choose zone");
+        zoneListBuilder.setPromptText("Choose zone");
+        zoneListBuilder.setWidth(185);
 
-        zoneList.setPrefWidth(185);
-        zoneList.setMaxWidth(185);
-        if(appData.Get("ZoneData")!=null){
-            zoneList.setValue(zoneData.Zone());
+        if (appData.Get("ZoneData") != null) {
+            zoneListBuilder.setValue(zoneData.Zone());
         }
 
+        ComboBox<String> zoneList =
+                zoneListBuilder.getComboBox();
+
 // Solar panel area
-        TextField areaField = new TextField();
-        areaField.setPromptText("Area (m²)");
+        TextInputBuilder areaFieldBuilder = new TextInputBuilder();
+        areaFieldBuilder.setPromptText("Area (m²)");
+
+        TextField areaField = areaFieldBuilder.getTextField();
         areaField.setMaxWidth(220);
+
         if(appData.Get("SolarPanel")!=null){
             areaField.setText(""+solarPanel.Area());
         }
 
 // Check solar panel area
-        Button areaButton = new Button("Check area");
+        ButtonBuilder areaButtonBuilder = new ButtonBuilder();
+        areaButtonBuilder.setLabelName("Check area");
 
-        Label areaMessage = new Label("");
+        Button areaButton = areaButtonBuilder.getButton();
 
-        areaButton.setOnAction(event -> {
+        LabelBuilder areaMessageBuilder = new LabelBuilder();
+        director.constructNameOfLabel(areaMessageBuilder, "");
+        Label areaMessage = areaMessageBuilder.getLabel();
+
+        areaButtonBuilder.setEvent(event -> {
 
             try {
                 double area =
@@ -215,19 +253,26 @@ ComboBox<String> zoneList = new ComboBox<>();
         });
 
 // Solar panel tilt
-        TextField tiltField = new TextField();
-        tiltField.setPromptText("Tilt (degrees)");
+        TextInputBuilder tiltFieldBuilder = new TextInputBuilder();
+        tiltFieldBuilder.setPromptText("Tilt (degrees)");
+
+        TextField tiltField = tiltFieldBuilder.getTextField();
         tiltField.setMaxWidth(220);
         if(appData.Get("SolarPanel")!=null){
             tiltField.setText(""+solarPanel.Tilt());
         }
 
 // Check solar panel tilt
-        Button tiltButton = new Button("Check tilt");
+        ButtonBuilder tiltButtonBuilder = new ButtonBuilder();
+        tiltButtonBuilder.setLabelName("Check tilt");
 
-        Label tiltMessage = new Label("");
+        Button tiltButton = tiltButtonBuilder.getButton();
 
-        tiltButton.setOnAction(event -> {
+        LabelBuilder tiltMessageBuilder = new LabelBuilder();
+        director.constructNameOfLabel(tiltMessageBuilder, "");
+        Label tiltMessage = tiltMessageBuilder.getLabel();
+
+        tiltButtonBuilder.setEvent(event -> {
 
             try {
                 int tilt = Integer.parseInt(tiltField.getText());
@@ -248,16 +293,19 @@ ComboBox<String> zoneList = new ComboBox<>();
 
         });
 // Solar panel efficiency
-        TextField efficiencyField = new TextField();
-        efficiencyField.setPromptText("efficiency (0.0 to 1.0)");
+        TextInputBuilder efficiencyFieldBuilder = new TextInputBuilder();
+        efficiencyFieldBuilder.setPromptText("efficiency (0.0 to 1.0)");
+
+        TextField efficiencyField = efficiencyFieldBuilder.getTextField();
         efficiencyField.setMaxWidth(220);
+
         if(appData.Get("SolarPanel")!=null){
             efficiencyField.setText(""+solarPanel.Efficiency());
         }
 // Solar panel direction
-        ComboBox<String> directionList = new ComboBox<>();
+        ComboBoxBuilder directionListBuilder = new ComboBoxBuilder();
 
-        directionList.getItems().addAll(
+        directionListBuilder.setItems(
                 "South",
                 "Southwest",
                 "West",
@@ -268,20 +316,28 @@ ComboBox<String> zoneList = new ComboBox<>();
                 "Southeast"
         );
 
-        directionList.setPromptText("Choose direction");
+        directionListBuilder.setPromptText("Choose direction");
+        directionListBuilder.setWidth(185);
 
-        directionList.setPrefWidth(185);
-        directionList.setMaxWidth(185);
-        if(appData.Get("SolarPanel")!=null){
-            directionList.setValue(solarPanel.Direction().toString().toLowerCase());
+        if (appData.Get("SolarPanel") != null) {
+            directionListBuilder.setValue(
+                    solarPanel.Direction().toString().toLowerCase()
+            );
         }
 
+        ComboBox<String> directionList =
+                directionListBuilder.getComboBox();
  // Check solar panel direction
-        Button directionButton = new Button("Check direction");
+        ButtonBuilder directionButtonBuilder = new ButtonBuilder();
+        directionButtonBuilder.setLabelName("Check direction");
 
-        Label directionMessage = new Label("");
+        Button directionButton = directionButtonBuilder.getButton();
 
-        directionButton.setOnAction(event -> {
+        LabelBuilder directionMessageBuilder = new LabelBuilder();
+        director.constructNameOfLabel(directionMessageBuilder, "");
+        Label directionMessage = directionMessageBuilder.getLabel();
+
+        directionButtonBuilder.setEvent(event -> {
 
             String direction = directionList.getValue();
 
@@ -295,12 +351,17 @@ ComboBox<String> zoneList = new ComboBox<>();
 
 
  // Check all user inputs
- 
-        Button checkAllButton = new Button("Check All");
 
-        Label allMessage = new Label("");
+        ButtonBuilder checkAllButtonBuilder = new ButtonBuilder();
+        checkAllButtonBuilder.setLabelName("Check All");
 
-        checkAllButton.setOnAction(event -> {
+        Button checkAllButton = checkAllButtonBuilder.getButton();
+
+        LabelBuilder allMessageBuilder = new LabelBuilder();
+        director.constructNameOfLabel(allMessageBuilder, "");
+        Label allMessage = allMessageBuilder.getLabel();
+
+        checkAllButtonBuilder.setEvent(event -> {
 
             if (longitudeField.getText().isBlank()
                     || latitudeField.getText().isBlank()
@@ -421,8 +482,11 @@ ComboBox<String> zoneList = new ComboBox<>();
             
         });
 
-        Button getForecastButton = new Button("Get Forecast");
-        getForecastButton.setOnAction(event -> {
+        ButtonBuilder getForecastButtonBuilder = new ButtonBuilder();
+        getForecastButtonBuilder.setLabelName("Get Forecast");
+
+        Button getForecastButton = getForecastButtonBuilder.getButton();
+        getForecastButtonBuilder.setEvent(event -> {
             Direction selectedDirection = Direction.valueOf((solarPanel.Direction().toString()).toUpperCase());
                        
             locationData = (LocationData)appData.Get("LocationData");
@@ -456,18 +520,7 @@ ComboBox<String> zoneList = new ComboBox<>();
                     }
                     timestamps.sort(null);
 
-                    /* 
-                        for (;;){
-                            String time = times.getString(i);
-
-                            double irradiance = radiation
-                                .getJsonNumber(i)
-                                .doubleValue();
-
-                            System.out.println(
-                                time + " -> " + irradiance + " W/m²"
-                            );
-                        }*/      // End of for loop
+                       // End of for loop
 
                     Platform.runLater(() -> {
                         StartMenu.setForecastData(timestamps);
@@ -489,135 +542,172 @@ ComboBox<String> zoneList = new ComboBox<>();
     
 
         // Create the layout
-        
-        VBox layout = new VBox(15);
+
+        VBoxBuilder layoutBuilder = new VBoxBuilder();
+        layoutBuilder.setSpacing(15);
+
+        VBox layout = layoutBuilder.getVBox();
         
 
 
 // Put the back button on the left
-        HBox backRow = new HBox(backButton);
+        Row backRowBuilder = new Row(backButton);
 
-        backRow.setAlignment(Pos.CENTER_LEFT);
+        HBox backRow = backRowBuilder.getRow();
+
         backRow.setPadding(new Insets(0, 0, 0, 20));
         backRow.setMaxWidth(Double.MAX_VALUE);
 
-// Longitude row
-        Label longitudeLabel = new Label("Longitude");
-        longitudeLabel.setPrefWidth(90);
 
-        HBox longitudeRow = new HBox(15, longitudeLabel, longitudeField);
-        longitudeRow.setAlignment(Pos.CENTER);
+// Longitude row
+        LabelBuilder longitudeLabelBuilder = new LabelBuilder();
+
+        director.constructNameOfLabelWidth(
+                longitudeLabelBuilder,
+                "Longitude"
+        );
+
+        Label longitudeLabel = longitudeLabelBuilder.getLabel();
+
+        Row longitudeRowBuilder =
+                new Row(longitudeLabel, longitudeField);
+
+        HBox longitudeRow = longitudeRowBuilder.getRow();
+
 
 // Latitude row
-        Label latitudeLabel = new Label("Latitude");
-        latitudeLabel.setPrefWidth(90);
-        //latitudeField/*
-        //director.constructNameOfLabel(builder, "Zone"); //
-        //HBox zoneRowe = new HBox(15, builder.getLabel(), zoneList);
-        //layout.getChildren().add(zoneRowe);
-        //
-        HBox latitudeRow = new HBox(15, latitudeLabel, latitudeField);
-        latitudeRow.setAlignment(Pos.CENTER);
+        LabelBuilder latitudeLabelBuilder = new LabelBuilder();
+
+        director.constructNameOfLabelWidth(
+                latitudeLabelBuilder,
+                "Latitude"
+        );
+
+        Label latitudeLabel = latitudeLabelBuilder.getLabel();
+
+        Row latitudeRowBuilder =
+                new Row(latitudeLabel, latitudeField);
+
+        HBox latitudeRow = latitudeRowBuilder.getRow();
 
 
 // Area row
-        Label areaLabel = new Label("Area");
-        areaLabel.setPrefWidth(90);
+        LabelBuilder areaLabelBuilder = new LabelBuilder();
 
-        HBox areaRow = new HBox(15, areaLabel, areaField);
-        areaRow.setAlignment(Pos.CENTER);
+        director.constructNameOfLabelWidth(
+                areaLabelBuilder,
+                "Area"
+        );
+
+        Label areaLabel = areaLabelBuilder.getLabel();
+
+        Row areaRowBuilder =
+                new Row(areaLabel, areaField);
+
+        HBox areaRow = areaRowBuilder.getRow();
+
 
 // Tilt row
-        Label tiltLabel = new Label("Tilt");
-        tiltLabel.setPrefWidth(90);
+        LabelBuilder tiltLabelBuilder = new LabelBuilder();
 
-        HBox tiltRow = new HBox(15, tiltLabel, tiltField);
-        tiltRow.setAlignment(Pos.CENTER);
+        director.constructNameOfLabelWidth(
+                tiltLabelBuilder,
+                "Tilt"
+        );
+
+        Label tiltLabel = tiltLabelBuilder.getLabel();
+
+        Row tiltRowBuilder =
+                new Row(tiltLabel, tiltField);
+
+        HBox tiltRow = tiltRowBuilder.getRow();
+
 
 // Efficiency row
-        Label efficiencyLabel = new Label("Efficiency");
-        efficiencyLabel.setPrefWidth(90);
+        LabelBuilder efficiencyLabelBuilder = new LabelBuilder();
 
-        HBox efficiencyRow = new HBox(15, efficiencyLabel); 
-            efficiencyRow.getChildren().add(efficiencyField); //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-        efficiencyRow.setAlignment(Pos.CENTER);
+        director.constructNameOfLabelWidth(
+                efficiencyLabelBuilder,
+                "Efficiency"
+        );
 
-        /*Label efficiencyLabel = new Label("Efficiency");
-        efficiencyLabel.setPrefWidth(90);
+        Label efficiencyLabel =
+                efficiencyLabelBuilder.getLabel();
 
-        HBox efficiencyRow = new HBox(15, efficiencyLabel, efficiencyField);
-        efficiencyRow.setAlignment(Pos.CENTER); */
+        Row efficiencyRowBuilder =
+                new Row(efficiencyLabel, efficiencyField);
+
+        HBox efficiencyRow =
+                efficiencyRowBuilder.getRow();
+
 // Direction row
         LabelBuilder builder3 = new LabelBuilder();
-        director.constructNameOfLabelWidth(builder3, "Direction"); 
+        director.constructNameOfLabelWidth(builder3, "Direction");
 
-        HBox zoneRow3 = new HBox(15, builder3.getLabel(), directionList);
-        zoneRow3.setAlignment(Pos.CENTER);
-        
+        Row directionRowBuilder =
+                new Row(builder3.getLabel(), directionList);
 
-        /*Label directionLabel = new Label("Direction");
-        directionLabel.setPrefWidth(90);
+        HBox zoneRow3 = directionRowBuilder.getRow();
 
-        HBox directionRow = new HBox(15, directionLabel, directionList);
-        directionRow.setAlignment(Pos.CENTER);
 
-*/
-        layout.getChildren().add(title);
-        layout.getChildren().add(backRow);
+
+
+        layoutBuilder.addChildren(title);
+        layoutBuilder.addChildren(backRow);
         
 // Zone row
         
         //Builder
         LabelBuilder buildera = new LabelBuilder();
         director.constructNameOfLabelWidth(buildera, "Zone"); //
-        HBox zoneRowe = new HBox(15, buildera.getLabel(), zoneList);
-        zoneRowe.setAlignment(Pos.CENTER);
-        layout.getChildren().add(zoneRowe);               //
-    /* old
-        Label zoneLabel = new Label("Zone");
-        zoneLabel.setPrefWidth(90);
-        HBox zoneRow = new HBox(15, zoneLabel, zoneList);
-        zoneRow.setAlignment(Pos.CENTER);
-        layout.getChildren().add(zoneRow);
-    */
+        Row zoneRowBuilder =
+                new Row(buildera.getLabel(), zoneList);
+
+        HBox zoneRowe = zoneRowBuilder.getRow();
+        layoutBuilder.addChildren(zoneRowe);             //
 
 //Button row
-    HBox buttonRow = new HBox(15, checkAllButton, getForecastButton);
-        buttonRow.setAlignment(Pos.CENTER);
+        Row buttonRowBuilder =
+                new Row(checkAllButton, getForecastButton);
 
+        HBox buttonRow = buttonRowBuilder.getRow();
 // Location section
         //layout.getChildren().add(locationTitle); //old
         LabelBuilder builder2 = new LabelBuilder(); 
         director.constructNameOfLabel(builder2, "Location");
-        layout.getChildren().add(builder2.getLabel());  //
+        layoutBuilder.addChildren(builder2.getLabel());
+        //
 
-        layout.getChildren().add(longitudeRow);
+        layoutBuilder.addChildren(longitudeRow);
+        layoutBuilder.addChildren(latitudeRow);
 
-        layout.getChildren().add(latitudeRow);
 
-
-//Test of consept
         LabelBuilder builder = new LabelBuilder();
         director.constructSolarDetails(builder);
-        layout.getChildren().add(builder.getLabel());
+        layoutBuilder.addChildren(builder.getLabel());
 
 // Solar panel section
-        layout.getChildren().add(areaRow);
-        layout.getChildren().add(tiltRow);
-        layout.getChildren().add(efficiencyRow);
+        layoutBuilder.addChildren(areaRow);
+        layoutBuilder.addChildren(tiltRow);
+        layoutBuilder.addChildren(efficiencyRow);
         //layout.getChildren().add(directionRow); old
-        layout.getChildren().add(zoneRow3); //new B
+        layoutBuilder.addChildren(zoneRow3); //new B
 
         // Check everything
-        layout.getChildren().add(buttonRow);
-        layout.getChildren().add(allMessage);
+        layoutBuilder.addChildren(buttonRow);
+        layoutBuilder.addChildren(allMessage);
 
-        layout.setAlignment(Pos.CENTER);
+        layoutBuilder.setAlignment(Pos.CENTER);
 
 // Create and display the window
 
-        ScrollPane scrollPane = new ScrollPane(layout);
-        scrollPane.setFitToWidth(true);
+        ScrollPaneBuilder scrollPaneBuilder = new ScrollPaneBuilder();
+
+        scrollPaneBuilder.setContent(layout);
+        scrollPaneBuilder.setFitToWidth(true);
+
+        ScrollPane scrollPane = scrollPaneBuilder.getScrollPane();
+
         Scene scene = new Scene(scrollPane, 520, 650);
 
         stage.setTitle("Solar App");

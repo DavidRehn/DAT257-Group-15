@@ -19,7 +19,6 @@ public class LabelDirector {
     
     public void constructRowLabelTextfild(LBuilder lBuilder, String string, TextField textField){
         lBuilder.setLabelName(string);
-        //lBuilder.setRow(new Row(this.title, textField));
         lBuilder.setWidth(90);
     }
 
@@ -35,7 +34,7 @@ public class LabelDirector {
         
         Conditions[] con = {new NumberNotZero()}
         builder.setConditions(con);
-        */
+        *///؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟
     }
 
     public void constructBackButton(BBuilder bBuilder){
@@ -51,7 +50,7 @@ public class LabelDirector {
         setAlignment(Pos.CENTER_LEFT);
         backRow.setPadding(new Insets(0, 0, 0, 20));
         backRow.setMaxWidth(Double.MAX_VALUE);
-        */
+        *///؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟
     }
     public void constructZone(LBuilder lBuilder){
         lBuilder.setLabelName( "Zone" );

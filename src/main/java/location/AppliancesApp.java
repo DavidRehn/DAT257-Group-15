@@ -119,30 +119,23 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
 
         // Appliance name
-     /*   TextField nameField = new TextField();
-        nameField.setPromptText("Appliance name");
-        nameField.setPrefWidth(200);
 
-      */
         TextInputBuilder nameFieldBuilder = new TextInputBuilder();
         nameFieldBuilder.setPromptText("Appliance name");
         TextField nameField = nameFieldBuilder.getTextField();
         nameField.setPrefWidth(200);
 
 // Appliance wattage
-     /*   TextField wattageField = new TextField();
-        wattageField.setPromptText("Wattage");
-        wattageField.setPrefWidth(120);
 
-      */
+
         TextInputBuilder wattageFieldBuilder = new TextInputBuilder();
         wattageFieldBuilder.setPromptText("Wattage");
         TextField wattageField = wattageFieldBuilder.getTextField();
         wattageField.setPrefWidth(120);
 // Add button
-      /*  Button addButton = new Button("Add");
 
-       */
+
+
         ButtonBuilder addButtonBuilder = new ButtonBuilder();
         addButtonBuilder.setLabelName("Add");
 

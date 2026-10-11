@@ -17,8 +17,8 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
+//import javafx.scene.chart.CategoryAxis;
+//import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -34,6 +34,13 @@ import other.TimestampData;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 import weatherdata.EstimationTimestamp;
+
+import location.builder.LabelBuilder;
+import location.builder.LabelDirector;
+import location.builder.ButtonBuilder;
+import location.builder.VBoxBuilder;
+import location.builder.Row;
+import location.builder.BarChartBuilder;
 
 public class StartMenu extends Application implements SubAppInterface{
     private static ArrayList<EstimationTimestamp> forecast;
@@ -53,16 +60,21 @@ public class StartMenu extends Application implements SubAppInterface{
 
     @Override
     public void start(Stage stage) {
+        LabelDirector labelDirector = new LabelDirector();
 
 
         // Header
         DateTimeFormatter formatter =
                 DateTimeFormatter.ofPattern("EEE HH:mm");
 
-        Label date = new Label(
+        LabelBuilder dateBuilder = new LabelBuilder();
+
+        labelDirector.constructNameOfLabel(
+                dateBuilder,
                 LocalDateTime.now().format(formatter)
         );
 
+        Label date = dateBuilder.getLabel();
 
 // Update the clock automatically
         Timeline clock = new Timeline(
@@ -76,16 +88,26 @@ public class StartMenu extends Application implements SubAppInterface{
         clock.setCycleCount(Timeline.INDEFINITE);
         clock.play();
 
-        Label title = new Label("Solar App");
-        Button appliances = new Button("Appliances");
-        Button settings = new Button("Settings");
+        LabelBuilder titleBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                titleBuilder,
+                "Solar App"
+        );
 
+        Label title = titleBuilder.getLabel();
+        ButtonBuilder appliancesButtonBuilder = new ButtonBuilder();
+        appliancesButtonBuilder.setLabelName("Appliances");
+        Button appliances = appliancesButtonBuilder.getButton();
+
+        ButtonBuilder settingsButtonBuilder = new ButtonBuilder();
+        settingsButtonBuilder.setLabelName("Settings");
+        Button settings = settingsButtonBuilder.getButton();
         title.setStyle("-fx-font-size: 22px;");
         title.setAlignment(Pos.CENTER);
         title.setMaxWidth(Double.MAX_VALUE);
 
-        HBox header = new HBox(20, date, title, appliances, settings);
-        header.setAlignment(Pos.CENTER);
+        Row headerRowBuilder = new Row(20, date, title, appliances, settings);
+        HBox header = headerRowBuilder.getRow();
         header.setPadding(new Insets(15));
         header.setStyle("-fx-background-color: #6096e6;");
         HBox.setHgrow(title, Priority.ALWAYS);
@@ -116,15 +138,53 @@ public class StartMenu extends Application implements SubAppInterface{
                 prodVal = value;
             }
         }
-        Label production = new Label("Current production");
-        Label productionValue = new Label((int)prodVal + " W");
+        LabelBuilder productionBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                productionBuilder,
+                "Current production"
+        );
+        Label production = productionBuilder.getLabel();
 
-        Label usage = new Label("Current usage");
-        Label usageValue = new Label("500 W");
 
-        Label price = new Label("Current electricity price");
-        Label priceValue = new Label(" SEK/kWh");
-        
+        LabelBuilder productionValueBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                productionValueBuilder,
+                (int) prodVal + " W"
+        );
+        Label productionValue = productionValueBuilder.getLabel();
+
+
+        LabelBuilder usageBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                usageBuilder,
+                "Current usage"
+        );
+        Label usage = usageBuilder.getLabel();
+
+
+        LabelBuilder usageValueBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                usageValueBuilder,
+                "500 W"
+        );
+        Label usageValue = usageValueBuilder.getLabel();
+
+
+        LabelBuilder priceBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                priceBuilder,
+                "Current electricity price"
+        );
+        Label price = priceBuilder.getLabel();
+
+
+        LabelBuilder priceValueBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(
+                priceValueBuilder,
+                " SEK/kWh"
+        );
+        Label priceValue = priceValueBuilder.getLabel();
+
 
 // Uppdate Live
         PowerMarketRetriver x = new PowerMarketRetriver();
@@ -170,14 +230,34 @@ public class StartMenu extends Application implements SubAppInterface{
 
         // Create three information boxes
 
-        VBox productionBox =
-                new VBox(8, production, productionValue);
+        VBoxBuilder productionBoxBuilder = new VBoxBuilder();
+        productionBoxBuilder.setSpacing(8);
+        productionBoxBuilder.addChildren(
+                production,
+                productionValue
+        );
 
-        VBox usageBox =
-                new VBox(8, usage, usageValue);
+        VBox productionBox = productionBoxBuilder.getVBox();
 
-        VBox priceBox =
-                new VBox(8, price, priceValue);
+
+        VBoxBuilder usageBoxBuilder = new VBoxBuilder();
+        usageBoxBuilder.setSpacing(8);
+        usageBoxBuilder.addChildren(
+                usage,
+                usageValue
+        );
+
+        VBox usageBox = usageBoxBuilder.getVBox();
+
+
+        VBoxBuilder priceBoxBuilder = new VBoxBuilder();
+        priceBoxBuilder.setSpacing(8);
+        priceBoxBuilder.addChildren(
+                price,
+                priceValue
+        );
+
+        VBox priceBox = priceBoxBuilder.getVBox();
 
         // Style the boxes
         for (VBox box : new VBox[]{
@@ -197,38 +277,32 @@ public class StartMenu extends Application implements SubAppInterface{
         }
 
         // Put the boxes next to each other
-        HBox information = new HBox(
-                15, productionBox, usageBox, priceBox
-        );
-
-        information.setAlignment(Pos.CENTER);
+        Row informationRowBuilder = new Row(15, productionBox, usageBox, priceBox);
+        HBox information = informationRowBuilder.getRow();
         information.setPadding(new Insets(20));
 
 
         // Create the chart axes
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
-
-
-        xAxis.setLabel("Time (local)");
-
         boolean hasForecast = forecast != null;
 
-        yAxis.setLabel("W");
+        BarChartBuilder chartBuilder =
+                new BarChartBuilder();
 
-// Create the bar chart
-        BarChart<String, Number> chart =
-                new BarChart<>(xAxis, yAxis);
+        chartBuilder.setXAxisLabel("Time (local)");
+        chartBuilder.setYAxisLabel("W");
 
-        chart.setTitle(
+        chartBuilder.setTitle(
                 hasForecast
                         ? "Hourly solar irradiance"
                         : "Hourly production (demo)"
         );
 
-        chart.setLegendVisible(false);
-        chart.setAnimated(false);
-        chart.setPrefHeight(330);
+        chartBuilder.setLegendVisible(false);
+        chartBuilder.setAnimated(false);
+        chartBuilder.setPrefHeight(330);
+
+        BarChart<String, Number> chart =
+                chartBuilder.getChart();
 
 // Data for the chart
         XYChart.Series<String, Number> data =
@@ -277,18 +351,25 @@ public class StartMenu extends Application implements SubAppInterface{
         }
 
         // Open the existing settings page
-        appliances.setOnAction(event -> {
+        appliancesButtonBuilder.setEvent(event -> {
             clock.stop();
             root.viewAppliances(stage);
         });
-        settings.setOnAction(event -> {
+
+        settingsButtonBuilder.setEvent(event -> {
             clock.stop();
             root.viewSettings(stage);
         });
-
         // Main layout
-        VBox layout = new VBox(20, header, information, chart);
-        layout.setAlignment(Pos.TOP_CENTER);
+        VBoxBuilder layoutBuilder = new VBoxBuilder();
+
+        layoutBuilder.setSpacing(20);
+
+        layoutBuilder.addChildren(header, information, chart);
+
+        layoutBuilder.setAlignment(Pos.TOP_CENTER);
+
+        VBox layout = layoutBuilder.getVBox();
 
         Scene scene = new Scene(layout, 800, 550);
 

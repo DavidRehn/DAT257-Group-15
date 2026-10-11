@@ -1,0 +1,11 @@
+location\builder\ScrollPaneBuilder.class
+location\builder\BarChartBuilder.class
+location\builder\ChartBuilder.class
+location\builder\CheckBoxBuilder.class
+location\builder\ScrollBuilder.class
+location\builder\VBuilder.class
+location\builder\ComboBoxBuilder.class
+location\builder\ComboBuilder.class
+location\builder\ButtonBuilder.class
+location\builder\VBoxBuilder.class
+location\builder\CBuilder.class

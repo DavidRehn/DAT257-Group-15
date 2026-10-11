@@ -7,6 +7,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.CheckBox;
+import javafx.scene.Node;
 
 
 public class Row {
@@ -115,6 +116,11 @@ public class Row {
                 labelD
         );
 
+        row.setAlignment(Pos.CENTER);
+    }
+    public Row(double spacing, Node... nodes) {
+
+        row = new HBox(spacing, nodes);
         row.setAlignment(Pos.CENTER);
     }
     public HBox getRow() {
