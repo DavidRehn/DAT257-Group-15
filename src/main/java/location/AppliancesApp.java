@@ -26,6 +26,7 @@ import other.Model;
 import other.SubAppInterface;
 import java.time.LocalDateTime;
 import other.TimestampData;
+import location.builder.VBoxBuilder;
 
 public class AppliancesApp extends Application implements SubAppInterface{
     private Model appData;
@@ -165,8 +166,11 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
         Label errorMessage = errorMessageBuilder.getLabel();
         // List where appliances will be shown
-        VBox applianceList = new VBox(10);
-        applianceList.setAlignment(Pos.CENTER);
+        VBoxBuilder applianceListBuilder = new VBoxBuilder();
+        applianceListBuilder.setSpacing(10);
+        applianceListBuilder.setAlignment(Pos.CENTER);
+
+        VBox applianceList = applianceListBuilder.getVBox();
 
         LabelBuilder nameHeaderBuilder = new LabelBuilder();
         labelDirector.constructNameOfLabel(
@@ -403,10 +407,13 @@ public class AppliancesApp extends Application implements SubAppInterface{
             }
         });
 
-        
 
-        VBox layout = new VBox(
-                20,
+
+        VBoxBuilder layoutBuilder = new VBoxBuilder();
+
+        layoutBuilder.setSpacing(20);
+
+        layoutBuilder.addChildren(
                 backRow,
                 infoRow,
                 title,
@@ -416,6 +423,12 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 applianceList,
                 totalLabel
         );
+
+        layoutBuilder.setAlignment(Pos.TOP_CENTER);
+
+        VBox layout = layoutBuilder.getVBox();
+
+        layout.setPadding(new Insets(20));
         layout.setPadding(new Insets(20));
         layout.setAlignment(Pos.TOP_CENTER);
 

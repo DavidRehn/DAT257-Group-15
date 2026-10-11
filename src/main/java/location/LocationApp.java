@@ -393,7 +393,7 @@ public  class LocationApp extends Application implements SubAppInterface {
                 } catch (NumberFormatException e) {
 
                     allMessage.setText("Please enter a valid longitude");
-
+                    return;
                 }
                     
  // Check Latitude
@@ -413,7 +413,7 @@ public  class LocationApp extends Application implements SubAppInterface {
                 } catch (NumberFormatException e) {
 
                     allMessage.setText("Please enter a valid latitude");
-
+                    return;
                 }
 
  // Check solar panel area
@@ -429,7 +429,7 @@ public  class LocationApp extends Application implements SubAppInterface {
                 } catch (NumberFormatException e) {
 
                     allMessage.setText("Please enter a valid area");
-
+                    return;
                 }
 
 // Check solar panel tilt
@@ -445,8 +445,8 @@ public  class LocationApp extends Application implements SubAppInterface {
                     }
                 } catch (NumberFormatException e) {
 
-                    allMessage.setText("Please enter a valid whole number for tilt");
-
+                    allMessage.setText("Please enter a valid whole number for efficiency");
+                    return;
                 }
                     
 // Check solar panel efficiency
@@ -463,7 +463,7 @@ public  class LocationApp extends Application implements SubAppInterface {
                 } catch (NumberFormatException e) {
 
                     allMessage.setText("Please enter a valid number for tilt");
-                    
+                    return;
                 }
 
                 allMessage.setText("All inputs are valid");
