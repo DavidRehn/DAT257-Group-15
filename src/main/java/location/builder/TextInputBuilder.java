@@ -1,38 +1,54 @@
 package location.builder;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import other.LocationData;
+import other.Model;
+import other.SolarPanel;
+import other.TimestampData;
+import other.ZoneData;
 
-public class TextInputBuilder implements TBuilder {
-
-    private Label title;
-    private TextField defult;
+public class TextInputBuilder implements LBuilder {
+    
+    private TextField defultTitle;
+    private RowMaker rowMaker;
 
     @Override 
-    public void setLabelName(String titlee){
-        this.title = new Label("" + titlee);
+    public void setLabelName(String[] defultTitle){
+        //this should be fixt
+        if(defultTitle[3] != null){
+            this.defultTitle = new TextField("" + defultTitle[1]);
+        }else{
+            this.defultTitle = new TextField("" + defultTitle[0]);
+        }
+     
+    }
+    
+    @Override
+    public void setWidth(int width){
+        defultTitle.setMaxWidth(width);
+
     }
 
     @Override
-    public void setRow(Label label){
-        label.setPrefWidth(90);
-
-        HBox latitudeRow = new HBox(15, title, defult);
-        latitudeRow.setAlignment(Pos.CENTER);
+    public void setRow(RowMaker rowMaker){
+        this.rowMaker = rowMaker;
+    }
+        //interface functions
+//--------------------------------
+        //get functions
+    public TextField getTextField(){
+        return defultTitle;
     }
 
-    public void ssetLabelName(String labekName) {
-        TextField tiltField = new TextField();
-        tiltField.setPromptText("Tilt (degrees)");
-        tiltField.setMaxWidth(220);
-        /*if(appData.Get("SolarPanel")!=null){
-            tiltField.setText(""+solarPanel.Tilt());
-        }*/
+    public HBox getHBox(){
+        return this.rowMaker.getRow15();
     }
-
-    public Label getLabel(){
-        return title;
+    public ArrayList<LBuilder> getRowList(){
+        return this.rowMaker.getListOfRow();
     }
 }

@@ -1,5 +1,7 @@
 package location.builder;
 
+import java.util.ArrayList;
+
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -9,52 +11,66 @@ import location.builder.LBuilder;
 //Wene only a text is wanted.
 public class LabelDirector {
 
-    public void constructNameOfLabelWidth(LBuilder lBuilder, String string){
+    /** Builds a Label with input value and a preset width.
+     * @param lBuilder the Concreat Builder were the data is stored.
+     * @param string the text on the Label.
+     */
+    public void constructNameW(LBuilder lBuilder, String[] string){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(90);
     }
-    public void constructNameOfLabel(LBuilder lBuilder, String string){
+
+    /** Builds a Label with input value.
+     * @param lBuilder the Concreat Builder were the data is stored.
+     * @param string the text on the Label.
+     */
+    public void constructName(LBuilder lBuilder, String[] string){
         lBuilder.setLabelName(string);
     }
+    //-------------------------
+        // event & actions
+    public void constructEventB(LBuilder lBuilder, String[] string){
+        lBuilder.setLabelName(string);
+        //((ButtonBuilder)lBuilder).setEvent(new CallWetherAPI());
+    }
+
+        // event & actions
+    //-------------------------
+        //MultiChoise construktor
+    public void constructMCW(LBuilder lBuilder, String[] string, String[] Alternativs){
+        lBuilder.setLabelName(string);
+        lBuilder.setWidth(185);
+        ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
+    }
+
+        //MultiChoise construktor
+    //-------------------------
+        // constructors with Row's
+    public void constructFirstRowW(LBuilder lBuilder, String[] string){
+        lBuilder.setLabelName(string);
+        lBuilder.setWidth(90);
+        lBuilder.setRow(new RowMaker(lBuilder));
+    }
+
+    //Perset comon TextField width of (90)
+    public void constructAddingRowTF(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
+        lBuilder.setLabelName(string);
+        lBuilder.setWidth(220);
+        lBuilder.setRow(new RowMaker(rowList, lBuilder));
+    }
+    //Perset comon Label width (90)
+    public void constructAddingRowL(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
+        lBuilder.setLabelName(string);
+        lBuilder.setWidth(90);
+        lBuilder.setRow(new RowMaker(rowList, lBuilder));
+    } 
     
-    public void constructRowLabelTextfild(LBuilder lBuilder, String string, TextField textField){
-        lBuilder.setLabelName(string);
-        //lBuilder.setRow(new Row(this.title, textField));
-        lBuilder.setWidth(90);
-    }
+        // constructors with Row's
+    //------------------------------------------------
+        // Hard coded constructors 
 
-    public void constructSolarDetails(LBuilder lBuilder){
-        lBuilder.setLabelName("Solar panel details");
-        //lBuilder.setWidth(90);
-    }
-
-    public void constructArea(LBuilder builder){
-        /*builder.reset();
-        builder.setLabelName("Area");
-        builder.setInput(new TextField("Area (m²)"));
-        
-        Conditions[] con = {new NumberNotZero()}
-        builder.setConditions(con);
-        */
-    }
-
-    public void constructBackButton(BBuilder bBuilder){
-        /*
-        Button backButton = new Button("← Back to main page");
-
-        backButton.setOnAction(event -> {
-            root.viewStart(stage);
-        });
-
-        HBox backRow = new HBox(backButton);
-
-        setAlignment(Pos.CENTER_LEFT);
-        backRow.setPadding(new Insets(0, 0, 0, 20));
-        backRow.setMaxWidth(Double.MAX_VALUE);
-        */
-    }
-    public void constructZone(LBuilder lBuilder){
-        lBuilder.setLabelName( "labekName" );
-
-    }
 }
+/*
+TextInputBuilder.setLabelName -> if sats är fucked,
+    -needs fixing.
+*/
