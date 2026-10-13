@@ -1,3 +1,5 @@
+//BINGUS
+
 package location.builder;
 
 import javafx.scene.control.Button;

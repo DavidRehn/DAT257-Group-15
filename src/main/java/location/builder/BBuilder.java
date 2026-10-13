@@ -1,3 +1,4 @@
+//BINGUS
 package location.builder;
 
 public interface BBuilder {

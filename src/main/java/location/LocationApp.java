@@ -1,3 +1,4 @@
+//BINGUS
 
 package location;
 import java.io.StringReader;
