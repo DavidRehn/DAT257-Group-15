@@ -336,19 +336,7 @@ public  class LocationApp extends Application implements SubAppInterface {
   
     HBox efficiencyRow = builderEfficiencyTL.getHBox();
 
-// Solar panel direction
-        String[] ad = {"Direction"};
-        LabelBuilder builder3 = new LabelBuilder();
-        director.constructWFR(builder3, ad); 
-    // Direction row
-        String[] tempb = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
-        String[] tempb2={"Choose direction", ""+solarPanel.Direction().toString().toLowerCase(), "SolarPanel"};
-        MultiChoiceBuilder builderDirectionM = new MultiChoiceBuilder();
-        director.constructMCWAR(builderDirectionM, tempb2, tempb, builder3.getRowList());
- 
-        HBox zoneRow3 = builderDirectionM.getHBox();
-        //new HBox(15, builder3.getLabel(), builderDirectionM.getComboBox());
-        //zoneRow3.setAlignment(Pos.CENTER);
+
 
 // Create the title
         Label title = new Label("Location and Solar Panel Info");
@@ -361,7 +349,19 @@ public  class LocationApp extends Application implements SubAppInterface {
         backRow.setPadding(new Insets(0, 0, 0, 20));
         backRow.setMaxWidth(Double.MAX_VALUE);
         layout.getChildren().add(backRow);
-        
+
+// Solar panel direction
+        String[] ad = {"Direction"};
+        LabelBuilder builder3 = new LabelBuilder();
+        director.constructWFR(builder3, ad); 
+    // Direction row
+        String[] tempb = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
+        String[] tempb2={"Choose direction", ""+solarPanel.Direction().toString().toLowerCase(), "SolarPanel"};
+        MultiChoiceBuilder builderDirectionM = new MultiChoiceBuilder();
+        director.constructMCWAR(builderDirectionM, tempb2, tempb, builder3.getRowList());
+ 
+        HBox zoneRow3 = builderDirectionM.getHBox(); 
+
 // Zone 
         String[] as = {"Zone" };
         LabelBuilder buildera = new LabelBuilder();
@@ -372,8 +372,7 @@ public  class LocationApp extends Application implements SubAppInterface {
         MultiChoiceBuilder builderZoneM = new MultiChoiceBuilder();
         director.constructMCWAR(builderZoneM,tempa2 , tempa, buildera.getRowList());
 
-        HBox zoneRowe = new HBox(15, buildera.getLabel(), builderZoneM.getComboBox());
-        zoneRowe.setAlignment(Pos.CENTER);
+        HBox zoneRowe = builderZoneM.getHBox();
         layout.getChildren().add(zoneRowe);               
 
 
