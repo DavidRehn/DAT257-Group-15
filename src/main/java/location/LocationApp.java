@@ -85,10 +85,7 @@ public  class LocationApp extends Application implements SubAppInterface {
 // Create the Directory
         director = new LabelDirector();
 
- // Create the title
-    
-        Label title = new Label("Location and Solar Panel Info");
-
+ 
 //Back to main page
 
         Button backButton = new Button("← Back to main page");
@@ -96,18 +93,6 @@ public  class LocationApp extends Application implements SubAppInterface {
         backButton.setOnAction(event -> {
             root.viewStart(stage);
         });
-
-// Zone 
-    MultiChoiceBuilder builderZoneM = new MultiChoiceBuilder();
-    String[] tempa = {"SE1", "SE2", "SE3", "SE4"};
-    String[] tempa2 ={ "Choose zone",""+zoneData.Zone(), "ZoneData"};
-    director.constructMCW(builderZoneM,tempa2 , tempa );
-
-// Solar panel direction
-    MultiChoiceBuilder builderDirectionM = new MultiChoiceBuilder();
-    String[] tempb = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
-    String[] tempb2={"Choose direction", ""+solarPanel.Direction().toString().toLowerCase(), "SolarPanel"};
-    director.constructMCW(builderDirectionM, tempb2, tempb );
 
  // Check all user inputs
         Button checkAllButton = new Button("Check All");
@@ -294,32 +279,25 @@ public  class LocationApp extends Application implements SubAppInterface {
         
         VBox layout = new VBox(15);
         
-// Put the back button on the left
-        HBox backRow = new HBox(backButton);
-
-        backRow.setAlignment(Pos.CENTER_LEFT);
-        backRow.setPadding(new Insets(0, 0, 0, 20));
-        backRow.setMaxWidth(Double.MAX_VALUE);
-
 // Longitude row
-    LabelBuilder builderLongitudeL = new LabelBuilder();
-    //String[] a = {"Longitude"};
-    String[] aq = { "Enter longitude", ""+locationData.Longitude(), "LocationData"};
-    director.constructFirstRowW(builderLongitudeL, new String[]{"Longitude"} );
-    TextInputBuilder builderLongitudeTL = new TextInputBuilder();    
-    director.constructAddingRowTF(builderLongitudeTL, aq, builderLongitudeL.getRowList());
-    HBox longitudeRow =builderLongitudeTL.getHBox();
-        //HBox longitudeRow = new HBox(15, builderLongitudeL.getLabel(), builderLongitudeTL.getTextField());
-        //longitudeRow.setAlignment(Pos.CENTER);
+        LabelBuilder builderLongitudeL = new LabelBuilder();
+        //String[] a = {"Longitude"};
+        String[] aq = { "Enter longitude", ""+locationData.Longitude(), "LocationData"};
+        director.constructWFR(builderLongitudeL, new String[]{"Longitude"} );
+        TextInputBuilder builderLongitudeTL = new TextInputBuilder();    
+        director.constructTFWAR(builderLongitudeTL, aq, builderLongitudeL.getRowList());
+        HBox longitudeRow = builderLongitudeTL.getHBox();
+            //HBox longitudeRow = new HBox(15, builderLongitudeL.getLabel(), builderLongitudeTL.getTextField());
+            //longitudeRow.setAlignment(Pos.CENTER);
 
 // Latitude row
-       
-    LabelBuilder builderLatitudeL = new LabelBuilder();
-    String[] ads = {"Latitude"};
-    String[] tempd={ "Enter latitude", ""+locationData.Latitude(), "LocationData"};
-    director.constructFirstRowW(builderLatitudeL, ads); 
-    TextInputBuilder builderLatitudeTL = new TextInputBuilder();
-    director.constructAddingRowTF(builderLatitudeTL, tempd, builderLatitudeL.getRowList());
+        String[] ads = {"Latitude"};
+        String[] tempd={"Enter latitude", ""+locationData.Latitude(), "LocationData"};
+        LabelBuilder builderLatitudeL = new LabelBuilder();
+        director.constructWFR(builderLatitudeL, ads); 
+
+        TextInputBuilder builderLatitudeTL = new TextInputBuilder();
+        director.constructTFWAR(builderLatitudeTL, tempd, builderLatitudeL.getRowList());
 
     HBox latitudeRow = builderLatitudeTL.getHBox();
     //new HBox(15, builderLatitudeL.getLabel(), builderLatitudeTL.getTextField());
@@ -327,52 +305,72 @@ public  class LocationApp extends Application implements SubAppInterface {
 
 
 // Area row 
-    LabelBuilder builderAreaL = new LabelBuilder();
-    String[] ars = {""+solarPanel.Area(),  "Area"};
-    String[] ar = {  "Area (m²)", ""+solarPanel.Area(), "SolarPanel"};
-    director.constructFirstRowW(builderAreaL, ars); 
+        String[] ars = {"Area"};
+        String[] ar = {  "Area (m²)", ""+solarPanel.Area(), "SolarPanel"};
+        LabelBuilder builderAreaL = new LabelBuilder();
+        director.constructWFR(builderAreaL, ars); 
 
-    TextInputBuilder builderAreaTL = new TextInputBuilder();
-        director.constructAddingRowTF(builderAreaTL, ar,builderAreaL.getRowList());
+        TextInputBuilder builderAreaTL = new TextInputBuilder();
+        director.constructTFWAR(builderAreaTL, ar,builderAreaL.getRowList());
+        
     HBox areaRow = builderAreaTL.getHBox();
       
 // Tilt row
-    LabelBuilder builderTiltL = new LabelBuilder();
-        String[] afs = {"Tilt"};
+        String[] afs = {"Tilt"};    
         String[] af = {"Tilt (degrees)", ""+solarPanel.Tilt(), "SolarPanel"};
-    director.constructFirstRowW(builderTiltL, afs); 
-    TextInputBuilder builderTiltTL = new TextInputBuilder();
-    director.constructAddingRowTF(builderTiltTL, af, builderTiltL.getRowList()); 
+        LabelBuilder builderTiltL = new LabelBuilder();   
+        director.constructWFR(builderTiltL, afs); 
+
+        TextInputBuilder builderTiltTL = new TextInputBuilder();
+        director.constructTFWAR(builderTiltTL, af, builderTiltL.getRowList()); 
     HBox tiltRow = builderTiltTL.getHBox();
 
 // Efficiency row
-    String[] aww = {"Efficiency"};
-    String[] aw = {"efficiency (0.0 to 1.0)", ""+solarPanel.Efficiency(), "SolarPanel"};
-    LabelBuilder builderEfficiencyL = new LabelBuilder(); 
-    director.constructFirstRowW(builderEfficiencyL, aww);
+        String[] aww = {"Efficiency"};
+        String[] aw = {"efficiency (0.0 to 1.0)", ""+solarPanel.Efficiency(), "SolarPanel"};
+        LabelBuilder builderEfficiencyL = new LabelBuilder(); 
+        director.constructWFR(builderEfficiencyL, aww);
 
-    TextInputBuilder builderEfficiencyTL = new TextInputBuilder();
-    director.constructAddingRowTF(builderEfficiencyTL, aw, builderEfficiencyL.getRowList());
+        TextInputBuilder builderEfficiencyTL = new TextInputBuilder();
+        director.constructTFWAR(builderEfficiencyTL, aw, builderEfficiencyL.getRowList());
   
-        HBox efficiencyRow = new HBox(15, builderEfficiencyL.getLabel()); 
-        efficiencyRow.getChildren().add(builderEfficiencyTL.getTextField()); //DDDDDDDDDDDDDDDDDDDDDDDDDDDDDD
-        efficiencyRow.setAlignment(Pos.CENTER);
+    HBox efficiencyRow = builderEfficiencyTL.getHBox();
 
-// Direction row
-        String[] ad = { "Direction"};
+// Solar panel direction
+        String[] ad = {"Direction"};
         LabelBuilder builder3 = new LabelBuilder();
-        director.constructNameW(builder3, ad); 
+        director.constructWFR(builder3, ad); 
+    // Direction row
+        String[] tempb = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
+        String[] tempb2={"Choose direction", ""+solarPanel.Direction().toString().toLowerCase(), "SolarPanel"};
+        MultiChoiceBuilder builderDirectionM = new MultiChoiceBuilder();
+        director.constructMCWAR(builderDirectionM, tempb2, tempb, builder3.getRowList());
+ 
+        HBox zoneRow3 = builderDirectionM.getHBox();
+        //new HBox(15, builder3.getLabel(), builderDirectionM.getComboBox());
+        //zoneRow3.setAlignment(Pos.CENTER);
 
-        HBox zoneRow3 = new HBox(15, builder3.getLabel(), builderDirectionM.getComboBox());
-        zoneRow3.setAlignment(Pos.CENTER);
-
+// Create the title
+        Label title = new Label("Location and Solar Panel Info");
         layout.getChildren().add(title);
+
+// Put the back button on the left
+        HBox backRow = new HBox(backButton);
+
+        backRow.setAlignment(Pos.CENTER_LEFT);
+        backRow.setPadding(new Insets(0, 0, 0, 20));
+        backRow.setMaxWidth(Double.MAX_VALUE);
         layout.getChildren().add(backRow);
         
-// Zone row
+// Zone 
         String[] as = {"Zone" };
         LabelBuilder buildera = new LabelBuilder();
-        director.constructNameW(buildera, as); 
+        director.constructWFR(buildera, as);
+// Zone row
+        String[] tempa = {"SE1", "SE2", "SE3", "SE4"};
+        String[] tempa2 ={ "Choose zone",""+zoneData.Zone(), "ZoneData"};
+        MultiChoiceBuilder builderZoneM = new MultiChoiceBuilder();
+        director.constructMCWAR(builderZoneM,tempa2 , tempa, buildera.getRowList());
 
         HBox zoneRowe = new HBox(15, buildera.getLabel(), builderZoneM.getComboBox());
         zoneRowe.setAlignment(Pos.CENTER);

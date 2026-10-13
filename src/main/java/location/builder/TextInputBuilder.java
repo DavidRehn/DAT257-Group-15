@@ -20,7 +20,10 @@ public class TextInputBuilder implements LBuilder {
     @Override 
     public void setLabelName(String[] defultTitle){
         //this should be fixt
-        if(defultTitle[3] != null){
+        if(defultTitle.length <= 1 ){
+            this.defultTitle = new TextField("" + defultTitle[0]);
+        }
+        else if(defultTitle[2] != null){
             this.defultTitle = new TextField("" + defultTitle[1]);
         }else{
             this.defultTitle = new TextField("" + defultTitle[0]);

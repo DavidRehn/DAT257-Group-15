@@ -52,8 +52,12 @@ public class RowMaker {
             System.out.println("KKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKKK");
         }
         //this.rowFormat = new HBox(15, temp);  getComboBox MultiChoiceBuilder
+        //System.out.println("IIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII");
 
-        for(int i=1; i<= rows.size(); i++){
+        for(int i=1; i< rows.size(); i++){
+            //int s = rows.size();
+            //System.out.println("Size : " + s);
+
             if (rows.get(i) instanceof LabelBuilder){
                 Label temp = ((LabelBuilder)rows.get(i)).getLabel();
                 this.rowFormat.getChildren().add(temp);
@@ -71,6 +75,8 @@ public class RowMaker {
             }
 
         }
+        //System.out.println("TTTTTTTTTTTTTTTTTTTTTTUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU");
+
         rowFormat.setAlignment(Pos.CENTER);
         return rowFormat;
     }

@@ -10,6 +10,21 @@ import location.builder.LBuilder;
 
 //Wene only a text is wanted.
 public class LabelDirector {
+    /**Naming of Directori constructor
+     (constructor made for a Specifific Concreat Builder type. The absens of this means the constructor woks for allConcreat Builder) [Concreat Builder= LabelBuilder, TextInputBuilder ...]
+     * L : LabelBuilder
+     * TF: TextInputBuilder
+     * MC: MultiChoiceBuilder
+     (Indicates unique functunalitis/propetis of any given constructor)
+     * W : Width is set in constructor.
+     * FR: First Row.       for the first element of a row.
+     * AR: Added/ing Row.   for any aditional element row (NOT the first one) 
+     * /
+    
+    /* 
+     * @param lBuilder
+     * @param string
+     */
 
     /** Builds a Label with input value and a preset width.
      * @param lBuilder the Concreat Builder were the data is stored.
@@ -37,29 +52,37 @@ public class LabelDirector {
         // event & actions
     //-------------------------
         //MultiChoise construktor
-    public void constructMCW(LBuilder lBuilder, String[] string, String[] Alternativs){
+    public void constructMCWFR(LBuilder lBuilder, String[] string, String[] Alternativs){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(185);
         ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
+        lBuilder.setRow(new RowMaker(lBuilder));
+
+    }
+    public void constructMCWAR(LBuilder lBuilder, String[] string, String[] Alternativs, ArrayList<LBuilder> rowList){
+        lBuilder.setLabelName(string);
+        lBuilder.setWidth(185);
+        ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
+        lBuilder.setRow(new RowMaker(rowList, lBuilder));
     }
 
         //MultiChoise construktor
     //-------------------------
         // constructors with Row's
-    public void constructFirstRowW(LBuilder lBuilder, String[] string){
+    public void constructWFR(LBuilder lBuilder, String[] string){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(90);
         lBuilder.setRow(new RowMaker(lBuilder));
     }
 
     //Perset comon TextField width of (90)
-    public void constructAddingRowTF(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
+    public void constructTFWAR(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(220);
         lBuilder.setRow(new RowMaker(rowList, lBuilder));
     }
     //Perset comon Label width (90)
-    public void constructAddingRowL(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
+    public void constructLWAR(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(90);
         lBuilder.setRow(new RowMaker(rowList, lBuilder));
