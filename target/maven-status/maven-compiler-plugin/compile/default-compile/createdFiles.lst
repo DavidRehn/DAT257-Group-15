@@ -8,4 +8,5 @@ location\builder\ComboBoxBuilder.class
 location\builder\ComboBuilder.class
 location\builder\ButtonBuilder.class
 location\builder\VBoxBuilder.class
+weatherdata\HTTPSolarRequest$1.class
 location\builder\CBuilder.class

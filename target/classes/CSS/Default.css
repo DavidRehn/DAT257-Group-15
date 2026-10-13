@@ -1,0 +1,21 @@
+/* ----------- Start menu ----------- */
+
+
+
+.header{
+    -fx-background-color: #6096e6;
+}
+
+.infoBox{
+    -fx-background-color: white;
+    -fx-border-color: #DDE3EC;
+}
+
+/* ----------- Settings menu ----------- */
+
+/* ----------- Appliance menu ----------- */
+
+.headerRow{
+    -fx-border-color: #CCCCCC;
+    -fx-background-color: #F5F5F5;
+}

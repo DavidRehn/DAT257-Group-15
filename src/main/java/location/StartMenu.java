@@ -42,6 +42,8 @@ import location.builder.VBoxBuilder;
 import location.builder.Row;
 import location.builder.BarChartBuilder;
 
+import CSS.CSSPath;
+
 public class StartMenu extends Application implements SubAppInterface{
     private static ArrayList<EstimationTimestamp> forecast;
 
@@ -102,14 +104,14 @@ public class StartMenu extends Application implements SubAppInterface{
         ButtonBuilder settingsButtonBuilder = new ButtonBuilder();
         settingsButtonBuilder.setLabelName("Settings");
         Button settings = settingsButtonBuilder.getButton();
-        title.setStyle("-fx-font-size: 22px;");
+        title.getStyleClass().add("title"); 
         title.setAlignment(Pos.CENTER);
         title.setMaxWidth(Double.MAX_VALUE);
 
         Row headerRowBuilder = new Row(20, date, title, appliances, settings);
         HBox header = headerRowBuilder.getRow();
         header.setPadding(new Insets(15));
-        header.setStyle("-fx-background-color: #6096e6;");
+        header.getStyleClass().add("header"); 
         HBox.setHgrow(title, Priority.ALWAYS);
 
 
@@ -191,10 +193,7 @@ public class StartMenu extends Application implements SubAppInterface{
         ArrayList<Double> r = new ArrayList<>( PowerMarketParser.ParseToJson(x.GetPowerMarketInfo() ));
         double a = r.get(LocalTime.now().getHour()*4);
 
-        priceValue.setText(
-            a
-            +" SEK/kWh"
-        );
+        priceValue.setText(a + " SEK/kWh");
 
         Timeline priceClock = new Timeline(
             //
@@ -204,28 +203,16 @@ public class StartMenu extends Application implements SubAppInterface{
                 ArrayList<Double> priceList = new ArrayList<>( PowerMarketParser.ParseToJson(pmsrr.GetPowerMarketInfo() ));
                 double pris = priceList.get(LocalTime.now().getHour()*4);
 
-                priceValue.setText(
-                    pris
-                    +" SEK/kWh"
-                );
+                priceValue.setText(pris + " SEK/kWh");
             })
         );
 
         priceClock.setCycleCount(Timeline.INDEFINITE);
         priceClock.play();
 
-// Make the numbers bigger and bold
-        productionValue.setStyle(
-                "-fx-font-size: 25px; -fx-font-weight: bold;"
-        );
-
-        usageValue.setStyle(
-                "-fx-font-size: 25px; -fx-font-weight: bold;"
-        );
-
-        priceValue.setStyle(
-                "-fx-font-size: 25px; -fx-font-weight: bold;"
-        );
+        productionValue.getStyleClass().add("boxText"); 
+        usageValue.getStyleClass().add("boxText"); 
+        priceValue.getStyleClass().add("boxText"); 
 
 
         // Create three information boxes
@@ -267,13 +254,7 @@ public class StartMenu extends Application implements SubAppInterface{
             box.setMinHeight(95);
             box.setPadding(new Insets(20));
             box.setAlignment(Pos.CENTER_LEFT);
-
-            box.setStyle(
-                    "-fx-background-color: white;" +
-                            "-fx-border-color: #DDE3EC;" +
-                            "-fx-border-radius: 8;" +
-                            "-fx-background-radius: 8;"
-            );
+            box.getStyleClass().add("infoBox");
         }
 
         // Put the boxes next to each other
@@ -372,6 +353,10 @@ public class StartMenu extends Application implements SubAppInterface{
         VBox layout = layoutBuilder.getVBox();
 
         Scene scene = new Scene(layout, 800, 550);
+
+        // Add stylesheets (layout and style are seperate)
+        scene.getStylesheets().add(CSSPath.layoutPath);
+        scene.getStylesheets().add(CSSPath.stylePath);
 
         stage.setTitle("Solar App");
         stage.setScene(scene);

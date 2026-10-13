@@ -25,6 +25,8 @@ import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
 import java.time.LocalDateTime;
+
+import CSS.CSSPath;
 import other.TimestampData;
 import location.builder.VBoxBuilder;
 
@@ -264,12 +266,6 @@ public class AppliancesApp extends Application implements SubAppInterface{
             HBox applianceRow = applianceRowBuilder.getRow();
             applianceRow.setPadding(new Insets(8));
 
-            applianceRow.setStyle(
-                    "-fx-border-color: #CCCCCC;" +
-                            "-fx-border-width: 1;" +
-                            "-fx-background-color: white;"
-            );
-
             applianceRow.setUserData(savedWattage);
 
             applianceList.getChildren().add(applianceRow);
@@ -353,19 +349,11 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
                 HBox applianceRow = applianceRowBuilder.getRow();
                 applianceRow.setPadding(new Insets(8));
+                applianceRow.getStyleClass().add("applianceRow"); 
 
-                applianceRow.setStyle(
-                        "-fx-border-color: #CCCCCC;" +
-                                "-fx-border-width: 1;" +
-                                "-fx-background-color: white;"
-                );
                 headerRow.setPadding(new Insets(8));
+                headerRow.getStyleClass().add("headerRow"); 
 
-                headerRow.setStyle(
-                        "-fx-border-color: #CCCCCC;" +
-                                "-fx-border-width: 1;" +
-                                "-fx-background-color: #F5F5F5;"
-                );
                 applianceList.setMaxWidth(600);
                 headerRow.setMaxWidth(600);
 
@@ -433,6 +421,10 @@ public class AppliancesApp extends Application implements SubAppInterface{
         layout.setAlignment(Pos.TOP_CENTER);
 
         Scene scene = new Scene(layout, 800, 550);
+
+        // Add stylesheets (layout and style are seperate)
+        scene.getStylesheets().add(CSSPath.layoutPath);
+        scene.getStylesheets().add(CSSPath.stylePath);
 
         stage.setTitle("Solar App");
         stage.setScene(scene);

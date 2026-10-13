@@ -2,6 +2,8 @@ package location;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import CSS.CSSPath;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -95,6 +97,11 @@ public class LocationApp extends Application implements SubAppInterface {
         scrollBuilder.setFitToWidth(true);
         ScrollPane scrollPane = scrollBuilder.getScrollPane();
         Scene scene = new Scene(scrollPane, 520, 650);
+
+        // Add stylesheets (layout and style are seperate)
+        scene.getStylesheets().add(CSSPath.layoutPath);
+        scene.getStylesheets().add(CSSPath.stylePath);
+        
         stage.setTitle("Solar App");
         stage.setScene(scene);
         stage.show();

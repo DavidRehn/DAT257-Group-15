@@ -1,0 +1,25 @@
+/* ----------- Start menu ----------- */
+.title{
+    -fx-font-size: 22px;
+}
+
+.infoBox{
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.boxText{
+    -fx-font-size: 25px; -fx-font-weight: bold;
+}
+
+/* ----------- Settings menu ----------- */
+
+/* ----------- Appliance menu ----------- */
+
+.applianceRow{
+    -fx-border-width: 1;
+}
+
+.headerRow{
+    -fx-border-width: 1;
+}

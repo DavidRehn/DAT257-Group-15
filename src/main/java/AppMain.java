@@ -16,7 +16,7 @@ public class AppMain extends Application implements AppInterface{
 
     private SaveLoadInterface SL = new JsonSaveLoad();
     private Model appData = new Model(SL);
-
+    
     public void start(Stage stage) {
         appData.LoadFromDisc();
         initSubApp(startMenu);
