@@ -15,6 +15,11 @@
 
 /* ----------- Appliance menu ----------- */
 
+.applianceRow{
+    -fx-background-color: white;
+    -fx-border-color: #CCCCCC;
+}
+
 .headerRow{
     -fx-border-color: #CCCCCC;
     -fx-background-color: #F5F5F5;
