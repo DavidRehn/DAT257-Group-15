@@ -3,6 +3,7 @@
     backgroundColor : rgb(59, 59, 59);
     textColor : rgb(240, 240, 240);
     dataBackgroundColor : rgb(85, 85, 85);
+    dataBorderColor : rgb(0, 0, 0);
 }
 
 /* ----------- Start menu ----------- */
@@ -20,7 +21,7 @@
 
 .infoBox{
     -fx-background-color: dataBackgroundColor;
-    -fx-border-color: rgb(0, 0, 0);
+    -fx-border-color:  dataBorderColor;
 }
 
 .chart-plot-background{
@@ -41,14 +42,18 @@
 
 /* ----------- Settings menu ----------- */
 
+
 /* ----------- Appliance menu ----------- */
-
-.applianceRow{
-    -fx-background-color: white;
-    -fx-border-color: #CCCCCC;
-}
-
 .headerRow{
     -fx-border-color: #CCCCCC;
-    -fx-background-color: #F5F5F5;
 }
+
+.applianceRow{
+    -fx-background-color: dataBackgroundColor;
+    -fx-border-color: dataBorderColor;
+}
+
+.check-box{
+    -fx-text-fill : textColor;
+}
+

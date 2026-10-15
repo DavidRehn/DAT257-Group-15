@@ -48,7 +48,8 @@ public class LocationApp extends Application implements SubAppInterface {
     private LabelDirector director;
     @Override
     public void start(Stage stage) {  loadSavedData(); director = new LabelDirector();
-        Label title = createLabel("Location and Solar Panel Info");                                                     //  TITLE
+        Label title = createLabel("Location and Solar Panel Info");
+        title.getStyleClass().add("text");                                                     //  TITLE
         Button backButton = createButton("← Back to main page", e -> root.viewStart(stage));                 //  BACK BUTTON
         String[] prompts = {"Enter longitude", "Enter latitude", "Area (m²)", "Tilt (degrees)", "Efficiency (0.0 to 1.0)"};  //  TEXT FIELDS
         String[] savedValues = {locationData == null ? null : String.valueOf(locationData.Longitude()),
@@ -70,6 +71,7 @@ public class LocationApp extends Application implements SubAppInterface {
          solarPanel == null ? null : directionText(solarPanel.Direction()), directions);
         //  MESSAGE
         Label allMessage = createLabel("");
+        allMessage.getStyleClass().add("text");  
         //  CHECK ALL
         Button checkAllButton = createButton("Check All", e -> validateAndSave(
          longitudeField, latitudeField, areaField, tiltField, efficiencyField, zoneList, directionList, allMessage));
@@ -88,9 +90,14 @@ public class LocationApp extends Application implements SubAppInterface {
         VBoxBuilder layoutBuilder = new VBoxBuilder();
         layoutBuilder.setSpacing(15);
         layoutBuilder.setAlignment(Pos.CENTER);
-        layoutBuilder.addChildren(title, backRow, zoneRow, createLabel("Location"), rows[0], rows[1],
-        createLabel("Solar panel details"), rows[2], rows[3], rows[4], directionRow, buttonRow, allMessage);
+        Label locationLabel = createLabel("Location");
+        locationLabel.getStyleClass().add("text");
+        Label detailsLabel = createLabel("Solar panel details");
+        detailsLabel.getStyleClass().add("text");
+        layoutBuilder.addChildren(title, backRow, zoneRow, locationLabel, rows[0], rows[1],
+        detailsLabel, rows[2], rows[3], rows[4], directionRow, buttonRow, allMessage);
         VBox layout = layoutBuilder.getVBox();
+        layout.getStyleClass().add("layout");
         //  SCROLL
         ScrollPaneBuilder scrollBuilder = new ScrollPaneBuilder();
         scrollBuilder.setContent(layout);
@@ -201,12 +208,16 @@ public class LocationApp extends Application implements SubAppInterface {
     private HBox createInputRow(String name, TextField field) {
         LabelBuilder builder = new LabelBuilder();
         director.constructNameOfLabelWidth(builder, name);
-        return new Row(builder.getLabel(), field).getRow();
+        Label label = builder.getLabel();
+        label.getStyleClass().add("text");
+        return new Row(label, field).getRow();
     }
     private HBox createComboRow(String name, ComboBox<String> comboBox) {
         LabelBuilder builder = new LabelBuilder();
         director.constructNameOfLabelWidth(builder, name);
-        return new Row(builder.getLabel(), comboBox).getRow();
+        Label label = builder.getLabel();
+        label.getStyleClass().add("text");
+        return new Row(label, comboBox).getRow();
     }
     // VALIDATION HELPERS
     private Double readDouble(TextField field, Label message, String error) {

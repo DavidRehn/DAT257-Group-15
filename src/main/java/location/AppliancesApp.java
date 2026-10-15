@@ -198,7 +198,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
         wattageHeader.getStyleClass().add("text");
         wattageHeader.setPrefWidth(100);
 
-
+        
         LabelBuilder inUseHeaderBuilder = new LabelBuilder();
         labelDirector.constructNameOfLabel(
                 inUseHeaderBuilder,
@@ -207,7 +207,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
         Label inUseHeader = inUseHeaderBuilder.getLabel();
         inUseHeader.getStyleClass().add("text");
         inUseHeader.setPrefWidth(100);
-
+        
 
         LabelBuilder removeHeaderBuilder = new LabelBuilder();
         labelDirector.constructNameOfLabel(
