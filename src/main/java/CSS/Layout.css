@@ -12,6 +12,13 @@
     -fx-font-size: 25px; -fx-font-weight: bold;
 }
 
+.chart{
+    /* For margin */
+    -fx-padding: 30px;
+    -fx-border-insets: 30px;
+    -fx-background-insets: 30px;
+}
+
 /* ----------- Settings menu ----------- */
 
 /* ----------- Appliance menu ----------- */

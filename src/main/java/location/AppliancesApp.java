@@ -53,6 +53,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
         labelDirector.constructNameOfLabel(titleBuilder, "Appliances");
 
         Label title = titleBuilder.getLabel();
+        title.getStyleClass().add("text");
 
         ButtonBuilder backButtonBuilder = new ButtonBuilder();
         backButtonBuilder.setLabelName("← Back to main page");
@@ -105,12 +106,14 @@ public class AppliancesApp extends Application implements SubAppInterface{
         );
 
         Label currentProduction = currentProductionBuilder.getLabel();
+        currentProduction.getStyleClass().add("text");
         LabelBuilder currentUsageBuilder = new LabelBuilder();
         labelDirector.constructNameOfLabel(
                 currentUsageBuilder,
                 "Current usage: 0 W"
         );
         Label currentUsage = currentUsageBuilder.getLabel();
+        currentUsage.getStyleClass().add("text");
 
         Row infoRowBuilder = new Row(
                 currentProduction,
@@ -158,6 +161,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
         );
 
         Label totalLabel = totalLabelBuilder.getLabel();
+        totalLabel.getStyleClass().add("text");
 
         LabelBuilder errorMessageBuilder = new LabelBuilder();
 
@@ -167,6 +171,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
         );
 
         Label errorMessage = errorMessageBuilder.getLabel();
+        errorMessage.getStyleClass().add("text");
         // List where appliances will be shown
         VBoxBuilder applianceListBuilder = new VBoxBuilder();
         applianceListBuilder.setSpacing(10);
@@ -180,6 +185,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 "Name"
         );
         Label nameHeader = nameHeaderBuilder.getLabel();
+        nameHeader.getStyleClass().add("text");
         nameHeader.setPrefWidth(120);
 
 
@@ -189,6 +195,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 "Wattage"
         );
         Label wattageHeader = wattageHeaderBuilder.getLabel();
+        wattageHeader.getStyleClass().add("text");
         wattageHeader.setPrefWidth(100);
 
 
@@ -198,6 +205,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 "In use"
         );
         Label inUseHeader = inUseHeaderBuilder.getLabel();
+        inUseHeader.getStyleClass().add("text");
         inUseHeader.setPrefWidth(100);
 
 
@@ -207,6 +215,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                 "Remove"
         );
         Label removeHeader = removeHeaderBuilder.getLabel();
+        removeHeader.getStyleClass().add("text");
         removeHeader.setPrefWidth(80);
 
         Row headerRowBuilder = new Row(
@@ -230,6 +239,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                     savedName
             );
             Label nameLabel = nameLabelBuilder.getLabel();
+            nameLabel.getStyleClass().add("text");
             nameLabel.setPrefWidth(120);
 
 
@@ -239,6 +249,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                     savedWattage + " W"
             );
             Label wattageLabel = wattageLabelBuilder.getLabel();
+            wattageLabel.getStyleClass().add("text");
             wattageLabel.setPrefWidth(100);
 
             CheckBoxBuilder inUseCheckBoxBuilder = new CheckBoxBuilder();
@@ -316,6 +327,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                         name
                 );
                 Label nameLabel = nameLabelBuilder.getLabel();
+                nameLabel.getStyleClass().add("text");
 
                 LabelBuilder wattageLabelBuilder = new LabelBuilder();
                 labelDirector.constructNameOfLabel(
@@ -323,6 +335,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
                         wattage + " W"
                 );
                 Label wattageLabel = wattageLabelBuilder.getLabel();
+                wattageLabel.getStyleClass().add("text");
                 appliances.Put(name,wattage);
                 appData.Store("ApplianceData",appliances);
                 appData.SaveToDisc();
@@ -415,6 +428,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
         layoutBuilder.setAlignment(Pos.TOP_CENTER);
 
         VBox layout = layoutBuilder.getVBox();
+        layout.getStyleClass().add("layout");
 
         layout.setPadding(new Insets(20));
         layout.setPadding(new Insets(20));

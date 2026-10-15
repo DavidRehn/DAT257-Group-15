@@ -146,6 +146,7 @@ public class StartMenu extends Application implements SubAppInterface{
                 "Current production"
         );
         Label production = productionBuilder.getLabel();
+        production.getStyleClass().add("text"); 
 
 
         LabelBuilder productionValueBuilder = new LabelBuilder();
@@ -154,6 +155,7 @@ public class StartMenu extends Application implements SubAppInterface{
                 (int) prodVal + " W"
         );
         Label productionValue = productionValueBuilder.getLabel();
+        productionValue.getStyleClass().add("text"); 
 
 
         LabelBuilder usageBuilder = new LabelBuilder();
@@ -162,6 +164,7 @@ public class StartMenu extends Application implements SubAppInterface{
                 "Current usage"
         );
         Label usage = usageBuilder.getLabel();
+        usage.getStyleClass().add("text"); 
 
 
         LabelBuilder usageValueBuilder = new LabelBuilder();
@@ -170,6 +173,7 @@ public class StartMenu extends Application implements SubAppInterface{
                 "500 W"
         );
         Label usageValue = usageValueBuilder.getLabel();
+        usageValue.getStyleClass().add("text"); 
 
 
         LabelBuilder priceBuilder = new LabelBuilder();
@@ -178,7 +182,7 @@ public class StartMenu extends Application implements SubAppInterface{
                 "Current electricity price"
         );
         Label price = priceBuilder.getLabel();
-
+        price.getStyleClass().add("text"); 
 
         LabelBuilder priceValueBuilder = new LabelBuilder();
         labelDirector.constructNameOfLabel(
@@ -186,6 +190,7 @@ public class StartMenu extends Application implements SubAppInterface{
                 " SEK/kWh"
         );
         Label priceValue = priceValueBuilder.getLabel();
+        priceValue.getStyleClass().add("text"); 
 
 
 // Uppdate Live
@@ -271,6 +276,7 @@ public class StartMenu extends Application implements SubAppInterface{
 
         chartBuilder.setXAxisLabel("Time (local)");
         chartBuilder.setYAxisLabel("W");
+        
 
         chartBuilder.setTitle(
                 hasForecast
@@ -282,8 +288,7 @@ public class StartMenu extends Application implements SubAppInterface{
         chartBuilder.setAnimated(false);
         chartBuilder.setPrefHeight(330);
 
-        BarChart<String, Number> chart =
-                chartBuilder.getChart();
+        BarChart<String, Number> chart = chartBuilder.getChart();
 
 // Data for the chart
         XYChart.Series<String, Number> data =
@@ -351,6 +356,7 @@ public class StartMenu extends Application implements SubAppInterface{
         layoutBuilder.setAlignment(Pos.TOP_CENTER);
 
         VBox layout = layoutBuilder.getVBox();
+        layout.getStyleClass().add("layout"); 
 
         Scene scene = new Scene(layout, 800, 550);
 
