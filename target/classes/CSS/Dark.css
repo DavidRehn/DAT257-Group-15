@@ -166,7 +166,10 @@
     -fx-border-color: #425774;
 }
 
-/* Sidebar for modern dashboard */
+
+/* ---------------------------------------- Sidebar ---------------------------------------- */
+
+
 .sidebar {
     -fx-background-color: #142646;
 }
@@ -183,6 +186,7 @@
 .sidebar-button:hover,
 .sidebar-active {
     -fx-background-color: #28519A;
+    -fx-font-weight: bold;
 }
 
 
@@ -197,28 +201,7 @@
     -fx-background-color: #101827;
 }
 
-/* Sidebar */
-.sidebar {
-    -fx-background-color: #142646;
-}
 
-.sidebar-title {
-    -fx-text-fill: white;
-}
-
-.sidebar-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #E2E8F0;
-}
-
-.sidebar-button:hover {
-    -fx-background-color: #28519A;
-}
-
-.sidebar-active {
-    -fx-background-color: #3467B9;
-    -fx-font-weight: bold;
-}
 
 /* Home header */
 .header.home-header {
@@ -457,51 +440,46 @@
     -fx-text-fill: #0F172A;
 }
 
-/* Main surfaces */
+
+/* ---------------------------------------- Card surfaces throughout Home ---------------------------------------- */
+
+
 .app-settings-page,
 .app-appliances-page {
     -fx-background-color: #101827;
 }
 
-.app-settings-page .app-card,
-.app-appliances-page .app-card,
-.app-appliances-page .app-stat-card {
+.app-card,
+.app-stat-card {
     -fx-background-color: #1D2A40;
     -fx-border-color: #34455F;
-    -fx-border-width: 1;
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 16, 0, 0, 5);
-}
-
-.app-settings-page .app-card,
-.app-appliances-page .app-card,
-.app-appliances-page .app-stat-card {
     -fx-padding: 24;
 }
+
 
 /* Headings and important numbers */
 .app-page-title,
 .app-section-heading {
     -fx-text-fill: #F8FAFC;
-    -fx-font-weight: bold;
 }
-.app-page-title { -fx-font-size: 29px; }
-.app-section-heading { -fx-font-size: 19px; }
+
 .app-stat-value {
     -fx-text-fill: #93C5FD;
-    -fx-font-size: 20px;
-    -fx-font-weight: bold;
 }
+
 .app-total-label {
     -fx-text-fill: #93C5FD;
-    -fx-font-weight: bold;
-    -fx-font-size: 17px;
-    -fx-padding: 12 0 0 0;
 }
-.app-message { -fx-text-fill: #BACCE7; -fx-font-size: 13px; }
 
-/* Inputs */
+.app-message { 
+    -fx-text-fill: #BACCE7; 
+}
+
+
+/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
+
+
 .app-card .text-field,
 .app-card .combo-box-base,
 .app-input {
@@ -509,72 +487,82 @@
     -fx-text-fill: #F1F5F9;
     -fx-prompt-text-fill: #9AAEC9;
     -fx-border-color: #425774;
-    -fx-border-width: 1;
-    -fx-border-radius: 9;
-    -fx-background-radius: 9;
-    -fx-pref-height: 42px;
 }
+
 .app-card .text-field:focused,
 .app-input:focused {
     -fx-border-color: #60A5FA;
     -fx-background-color: #2A3D57;
 }
-.app-card .combo-box .list-cell { -fx-text-fill: #F1F5F9; }
+
+.app-card .combo-box .list-cell { 
+    -fx-text-fill: #F1F5F9; 
+}
 
 /* Primary / secondary / remove buttons */
 .app-primary-button {
     -fx-background-color: #397BEE;
     -fx-text-fill: #FFFFFF;
-    -fx-font-weight: bold;
-    -fx-background-radius: 10;
-    -fx-padding: 11 20;
-    -fx-cursor: hand;
 }
-.app-primary-button:hover { -fx-background-color: #5293FF; }
+
+.app-primary-button:hover { 
+    -fx-background-color: #5293FF; 
+}
+
 .app-secondary-button {
     -fx-background-color: #304866;
     -fx-text-fill: #DBEAFE;
-    -fx-font-weight: bold;
-    -fx-background-radius: 10;
-    -fx-padding: 11 20;
-    -fx-cursor: hand;
 }
-.app-secondary-button:hover { -fx-background-color: #3D597E; }
+
+.app-secondary-button:hover { 
+    -fx-background-color: #3D597E; 
+}
+
 .app-delete-button {
     -fx-background-color: #483044;
     -fx-text-fill: #FFCFD6;
     -fx-border-color: #704052;
-    -fx-border-radius: 9;
-    -fx-background-radius: 9;
-    -fx-padding: 8 14;
-    -fx-cursor: hand;
 }
-.app-delete-button:hover { -fx-background-color: #65394C; }
 
-/* Appliance table */
+.app-delete-button:hover { 
+    -fx-background-color: #65394C; 
+}
+
+
+/* ---------------------------------------- Appliance table ---------------------------------------- */
+
+
 .app-table-header {
     -fx-background-color: #2A3C57;
-    -fx-background-radius: 10;
 }
+
 .app-table-header .label {
     -fx-text-fill: #D6E4F7;
-    -fx-font-size: 13px;
-    -fx-font-weight: bold;
 }
+
 .app-table-row {
     -fx-background-color: #24334C;
-    -fx-background-radius: 10;
     -fx-border-color: #374B68;
-    -fx-border-radius: 10;
 }
-.app-table-row:hover { -fx-background-color: #2D4365; }
+
+.app-table-row:hover { 
+    -fx-background-color: #2D4365; 
+}
+
 .app-table-row .label,
-.app-table-row .check-box { -fx-text-fill: #ECF3FF; }
+.app-table-row .check-box { 
+    -fx-text-fill: #ECF3FF; 
+}
+
 .app-table-row .check-box .box {
     -fx-background-color: #1A2941;
     -fx-border-color: #7892B5;
-    -fx-border-radius: 5;
-    -fx-background-radius: 5;
 }
-.app-table-row .check-box:selected .box { -fx-background-color: #3B82F6; }
-.app-table-row .check-box:selected .mark { -fx-background-color: #FFFFFF; }
+
+.app-table-row .check-box:selected .box { 
+    -fx-background-color: #3B82F6; 
+}
+
+.app-table-row .check-box:selected .mark { 
+    -fx-background-color: #FFFFFF; 
+}
