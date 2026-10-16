@@ -1,0 +1,645 @@
+
+/*
+   SOLAR APP - DARK MODE
+  */
+
+/* Main background */
+.root,
+.layout {   -fx-background-color: #101827;  -fx-font-family: "Segoe UI";}
+
+/* Normal text */
+.label,
+.text,
+.check-box {-fx-text-fill: #E2E8F0;
+}
+
+/* Header */
+.header {-fx-background-color: #1D376B;
+}
+
+.header .label {   -fx-text-fill: white;
+}
+
+/* Main title */
+.title {  -fx-text-fill: white;  -fx-font-size: 26px; -fx-font-weight: bold;
+}
+
+/* Information cards */
+.infoBox {  -fx-background-color: #1D2A40; -fx-border-color: #34455F;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.25),
+        16, 0, 0, 5
+    );
+}
+
+.infoBox .label {
+    -fx-text-fill: #E2E8F0;
+}
+
+/* Card numbers */
+.boxText {
+    -fx-text-fill: #8CB9FF;
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+}
+
+/* All normal buttons */
+.button {
+    -fx-background-color: #293B56;
+    -fx-text-fill: #F1F5F9;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #385478;
+}
+
+/* Header buttons */
+.header .button {
+    -fx-background-color: #304E83;
+    -fx-text-fill: white;
+}
+
+.header .button:hover {
+    -fx-background-color: #4169AA;
+}
+
+/* Language and theme buttons */
+.language-button,
+.theme-button,
+.header .language-button,
+.header .theme-button {
+    -fx-background-color: #304E83;
+    -fx-text-fill: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-pref-width: 55px;
+    -fx-min-width: 55px;
+    -fx-padding: 8 10;
+}
+
+.language-button:hover,
+.theme-button:hover,
+.header .language-button:hover,
+.header .theme-button:hover {
+    -fx-background-color: #4169AA;
+}
+
+/* Input fields */
+.text-field {
+    -fx-background-color: #25354E;
+    -fx-text-fill: #FFFFFF;
+    -fx-prompt-text-fill: #9AAEC9;
+    -fx-border-color: #425774;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+}
+
+.text-field:focused {
+    -fx-border-color: #60A5FA;
+}
+
+/* Combo boxes */
+.combo-box-base {
+    -fx-background-color: #25354E;
+    -fx-border-color: #425774;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: #FFFFFF;
+}
+
+.combo-box-popup .list-view {
+    -fx-background-color: #25354E;
+}
+
+.combo-box-popup .list-cell {
+    -fx-background-color: #25354E;
+    -fx-text-fill: white;
+}
+
+.combo-box-popup .list-cell:hover,
+.combo-box-popup .list-cell:selected {
+    -fx-background-color: #3461A2;
+}
+
+/* Checkboxes */
+.check-box .box {
+    -fx-background-color: #25354E;
+    -fx-border-color: #5B708E;
+}
+
+.check-box:selected .mark {
+    -fx-background-color: #60A5FA;
+}
+
+/* Scroll panes */
+.scroll-pane,
+.scroll-pane > .viewport {
+    -fx-background-color: #101827;
+}
+
+/* Charts */
+.chart {
+    -fx-background-color: #1D2A40;
+    -fx-background-radius: 18;
+    -fx-padding: 20;
+}
+
+.chart-title {
+    -fx-text-fill: #E2E8F0;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}
+
+.chart-plot-background {
+    -fx-background-color: #1D2A40;
+}
+
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: #38485F;
+}
+
+.axis {
+    -fx-tick-label-fill: #B9C9E0;
+}
+
+.axis-label {
+    -fx-text-fill: #B9C9E0;
+}
+
+/* Existing BarChart */
+.default-color0.chart-bar {
+    -fx-bar-fill: #60A5FA;
+}
+
+/* Future LineChart */
+.default-color0.chart-series-line {
+    -fx-stroke: #60A5FA;
+    -fx-stroke-width: 3px;
+}
+
+.default-color0.chart-line-symbol {
+    -fx-background-color: #60A5FA, #1D2A40;
+    -fx-background-radius: 6px;
+}
+
+/* Appliances rows */
+.applianceRow {
+    -fx-background-color: #1D2A40;
+    -fx-border-color: #34455F;
+}
+
+.headerRow {
+    -fx-background-color: #25354E;
+    -fx-border-color: #425774;
+}
+
+/* Sidebar for modern dashboard */
+.sidebar {
+    -fx-background-color: #142646;
+}
+
+.sidebar-title {
+    -fx-text-fill: white;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.sidebar-button:hover,
+.sidebar-active {
+    -fx-background-color: #28519A;
+}
+
+
+
+/* ==============================
+   MODERN HOME - DARK MODE
+   ============================== */
+
+.home-content,
+.home-scroll,
+.home-scroll > .viewport {
+    -fx-background-color: #101827;
+}
+
+/* Sidebar */
+.sidebar {
+    -fx-background-color: #142646;
+}
+
+.sidebar-title {
+    -fx-text-fill: white;
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 35 5;
+}
+
+.sidebar-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #E2E8F0;
+    -fx-font-size: 16px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 12;
+    -fx-padding: 14 16;
+    -fx-cursor: hand;
+}
+
+.sidebar-button:hover {
+    -fx-background-color: #28519A;
+}
+
+.sidebar-active {
+    -fx-background-color: #3467B9;
+    -fx-font-weight: bold;
+}
+
+/* Home header */
+.header.home-header {
+    -fx-background-color: transparent;
+    -fx-padding: 5 0 5 0;
+}
+
+.header.home-header .label {
+    -fx-text-fill: #F8FAFC;
+}
+
+/* Welcome text */
+.home-welcome {
+    -fx-text-fill: #F8FAFC;
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+}
+
+.home-subtitle {
+    -fx-text-fill: #AFC1DC;
+    -fx-font-size: 15px;
+}
+
+/* Information cards */
+.infoBox {
+    -fx-background-color: #1D2A40;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #34455F;
+    -fx-effect: dropshadow(
+        gaussian, rgba(0, 0, 0, 0.25),
+        16, 0, 0, 5
+    );
+}
+
+/* Information values */
+.boxText {
+    -fx-text-fill: #8CB9FF;
+    -fx-font-weight: bold;
+}
+
+/* Modern LineChart */
+.modern-line-chart {
+    -fx-background-color: #1D2A40;
+    -fx-background-radius: 18;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-padding: 24;
+    -fx-effect: dropshadow(
+        gaussian, rgba(0, 0, 0, 0.25),
+        14, 0, 0, 4
+    );
+}
+
+/* Chart background */
+.modern-line-chart .chart-plot-background {
+    -fx-background-color: #1D2A40;
+}
+
+/* Chart title */
+.modern-line-chart .chart-title {
+    -fx-text-fill: #F8FAFC;
+    -fx-font-size: 19px;
+    -fx-font-weight: bold;
+}
+
+/* Horizontal grid */
+.modern-line-chart .chart-horizontal-grid-lines {
+    -fx-stroke: #38485F;
+    -fx-stroke-dash-array: 4 6;
+}
+
+/* Blue line */
+.modern-line-chart .default-color0.chart-series-line {
+    -fx-stroke: #60A5FA;
+    -fx-stroke-width: 3px;
+}
+
+/* Circular points */
+.modern-line-chart .default-color0.chart-line-symbol {
+    -fx-background-color: #60A5FA, #1D2A40;
+    -fx-background-radius: 7px;
+    -fx-background-insets: 0, 3;
+    -fx-padding: 6px;
+}
+
+/* Chart axes */
+.modern-line-chart .axis {
+    -fx-tick-label-fill: #B9C9E0;
+}
+
+.modern-line-chart .axis-label {
+    -fx-text-fill: #B9C9E0;
+}
+
+/* =============================
+   INTERACTIVE CHART - DARK
+   ============================= */
+
+/* Light blue line */
+.modern-line-chart .default-color0.chart-series-area-line {
+    -fx-stroke: #60A5FA;
+    -fx-stroke-width: 3px;
+}
+
+/* Dark mode area gradient */
+.modern-line-chart .default-color0.chart-series-area-fill {
+    -fx-fill: linear-gradient(
+        to bottom,
+        rgba(59, 130, 246, 0.35),
+        rgba(59, 130, 246, 0.03)
+    );
+}
+
+/* Circular points */
+.modern-line-chart .default-color0.chart-area-symbol {
+    -fx-background-color: #60A5FA, #1D2A40;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 10;
+    -fx-padding: 7;
+    -fx-cursor: hand;
+}
+
+/* Floating tooltip */
+.chart-hover-card {
+    -fx-background-color: #0F172A;
+    -fx-border-color: #3B82F6;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.35),
+        15, 0, 0, 5
+    );
+}
+
+/* Tooltip text */
+.chart-hover-time {
+    -fx-text-fill: #94A3B8;
+    -fx-font-size: 13px;
+}
+
+.chart-hover-value {
+    -fx-text-fill: #93C5FD;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* Vertical guide */
+.chart-hover-guide {
+    -fx-stroke: #60A5FA;
+    -fx-stroke-width: 1.5;
+    -fx-stroke-dash-array: 5 5;
+}
+
+/* Chart panel */
+.modern-line-chart {
+    -fx-background-color: #1D2A40;
+    -fx-background-radius: 20;
+}
+
+
+/* Interactive chart panel - Dark Mode */
+
+.solar-chart-panel {
+    -fx-background-color: #1D2A40;
+    -fx-background-radius: 20;
+    -fx-padding: 22;
+    -fx-effect: dropshadow(
+        gaussian,
+        rgba(0, 0, 0, 0.25),
+        16, 0, 0, 5
+    );
+}
+
+.solar-chart-title {
+    -fx-text-fill: #F8FAFC;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+.chart-day-selector {
+    -fx-background-color: #304E83;
+    -fx-background-radius: 10;
+    -fx-border-color: transparent;
+    -fx-cursor: hand;
+}
+
+.chart-day-selector .list-cell {
+    -fx-text-fill: white;
+}
+
+.solar-chart-panel .modern-line-chart {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-padding: 5 0 0 0;
+    -fx-effect: null;
+}
+
+.solar-chart-panel .chart-plot-background {
+    -fx-background-color: #1D2A40;
+}
+
+.solar-chart-panel .default-color0.chart-series-area-line {
+    -fx-stroke: #60A5FA;
+    -fx-stroke-width: 3px;
+}
+
+.solar-chart-panel .default-color0.chart-series-area-fill {
+    -fx-fill: linear-gradient(
+        to bottom,
+        rgba(59, 130, 246, 0.35),
+        rgba(59, 130, 246, 0.02)
+    );
+}
+
+.solar-chart-panel .default-color0.chart-area-symbol {
+    -fx-background-color: #60A5FA, #1D2A40;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 10;
+    -fx-padding: 9;
+    -fx-cursor: hand;
+}
+
+.solar-chart-panel .chart-horizontal-grid-lines {
+    -fx-stroke: #38485F;
+    -fx-stroke-dash-array: 4 6;
+}
+
+.chart-status {
+    -fx-text-fill: #AFC1DC;
+    -fx-font-size: 12px;
+}
+
+.day-tab {
+    -fx-background-color: #304E83;
+    -fx-text-fill: #DCEBFF;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 14;
+    -fx-padding: 8 18;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.day-tab:hover {
+    -fx-background-color: #3E629E;
+}
+
+.day-tab-active {
+    -fx-background-color: #60A5FA;
+    -fx-text-fill: #0F172A;
+}
+
+/* Main surfaces */
+.app-settings-page,
+.app-appliances-page {
+    -fx-background-color: #101827;
+}
+
+.app-settings-page .app-card,
+.app-appliances-page .app-card,
+.app-appliances-page .app-stat-card {
+    -fx-background-color: #1D2A40;
+    -fx-border-color: #34455F;
+    -fx-border-width: 1;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 16, 0, 0, 5);
+}
+
+.app-settings-page .app-card,
+.app-appliances-page .app-card,
+.app-appliances-page .app-stat-card {
+    -fx-padding: 24;
+}
+
+/* Headings and important numbers */
+.app-page-title,
+.app-section-heading {
+    -fx-text-fill: #F8FAFC;
+    -fx-font-weight: bold;
+}
+.app-page-title { -fx-font-size: 29px; }
+.app-section-heading { -fx-font-size: 19px; }
+.app-stat-value {
+    -fx-text-fill: #93C5FD;
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+.app-total-label {
+    -fx-text-fill: #93C5FD;
+    -fx-font-weight: bold;
+    -fx-font-size: 17px;
+    -fx-padding: 12 0 0 0;
+}
+.app-message { -fx-text-fill: #BACCE7; -fx-font-size: 13px; }
+
+/* Inputs */
+.app-card .text-field,
+.app-card .combo-box-base,
+.app-input {
+    -fx-background-color: #25364E;
+    -fx-text-fill: #F1F5F9;
+    -fx-prompt-text-fill: #9AAEC9;
+    -fx-border-color: #425774;
+    -fx-border-width: 1;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-pref-height: 42px;
+}
+.app-card .text-field:focused,
+.app-input:focused {
+    -fx-border-color: #60A5FA;
+    -fx-background-color: #2A3D57;
+}
+.app-card .combo-box .list-cell { -fx-text-fill: #F1F5F9; }
+
+/* Primary / secondary / remove buttons */
+.app-primary-button {
+    -fx-background-color: #397BEE;
+    -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 11 20;
+    -fx-cursor: hand;
+}
+.app-primary-button:hover { -fx-background-color: #5293FF; }
+.app-secondary-button {
+    -fx-background-color: #304866;
+    -fx-text-fill: #DBEAFE;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 11 20;
+    -fx-cursor: hand;
+}
+.app-secondary-button:hover { -fx-background-color: #3D597E; }
+.app-delete-button {
+    -fx-background-color: #483044;
+    -fx-text-fill: #FFCFD6;
+    -fx-border-color: #704052;
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-padding: 8 14;
+    -fx-cursor: hand;
+}
+.app-delete-button:hover { -fx-background-color: #65394C; }
+
+/* Appliance table */
+.app-table-header {
+    -fx-background-color: #2A3C57;
+    -fx-background-radius: 10;
+}
+.app-table-header .label {
+    -fx-text-fill: #D6E4F7;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+.app-table-row {
+    -fx-background-color: #24334C;
+    -fx-background-radius: 10;
+    -fx-border-color: #374B68;
+    -fx-border-radius: 10;
+}
+.app-table-row:hover { -fx-background-color: #2D4365; }
+.app-table-row .label,
+.app-table-row .check-box { -fx-text-fill: #ECF3FF; }
+.app-table-row .check-box .box {
+    -fx-background-color: #1A2941;
+    -fx-border-color: #7892B5;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+.app-table-row .check-box:selected .box { -fx-background-color: #3B82F6; }
+.app-table-row .check-box:selected .mark { -fx-background-color: #FFFFFF; }

@@ -4,9 +4,4 @@ import javafx.application.Application;
 public class StartMenuMain {
     
     
-    public static void main(String[] args) {
-        
-        
-        Application.launch(StartMenu.class, args);
-    }
-}
+    public static void main(String[] args) {Application.launch(StartMenu.class, args);}}

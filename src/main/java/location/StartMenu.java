@@ -1,49 +1,38 @@
-
 package location;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Formatter;
+import java.util.Map;
 
-import javax.json.JsonArray;
-
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-//import javafx.scene.chart.CategoryAxis;
-//import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import other.AppInterface;
+import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
 import other.TimestampData;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 import weatherdata.EstimationTimestamp;
-
 import location.builder.LabelBuilder;
 import location.builder.LabelDirector;
-import location.builder.ButtonBuilder;
-import location.builder.VBoxBuilder;
 import location.builder.Row;
-import location.builder.BarChartBuilder;
-
-import CSS.CSSPath;
-
+import i18n.LanguageManager;
+import ui.PageNavigator;
+import location.builder.VBoxBuilder;
 public class StartMenu extends Application implements SubAppInterface{
     private static ArrayList<EstimationTimestamp> forecast;
 
@@ -62,181 +51,100 @@ public class StartMenu extends Application implements SubAppInterface{
 
     @Override
     public void start(Stage stage) {
+        restoreSavedForecast();
         LabelDirector labelDirector = new LabelDirector();
 
-
-        // Header
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("EEE HH:mm");
-
-        LabelBuilder dateBuilder = new LabelBuilder();
-
-        labelDirector.constructNameOfLabel(
-                dateBuilder,
-                LocalDateTime.now().format(formatter)
-        );
-
-        Label date = dateBuilder.getLabel();
-
-// Update the clock automatically
-        Timeline clock = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> {
-                    date.setText(
-                            LocalDateTime.now().format(formatter)
-                    );
-                })
-        );
-
-        clock.setCycleCount(Timeline.INDEFINITE);
-        clock.play();
-
-        LabelBuilder titleBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                titleBuilder,
-                "Solar App"
-        );
-
-        Label title = titleBuilder.getLabel();
-        ButtonBuilder appliancesButtonBuilder = new ButtonBuilder();
-        appliancesButtonBuilder.setLabelName("Appliances");
-        Button appliances = appliancesButtonBuilder.getButton();
-
-        ButtonBuilder settingsButtonBuilder = new ButtonBuilder();
-        settingsButtonBuilder.setLabelName("Settings");
-        Button settings = settingsButtonBuilder.getButton();
-        title.getStyleClass().add("title"); 
-        title.setAlignment(Pos.CENTER);
-        title.setMaxWidth(Double.MAX_VALUE);
-
-        Row headerRowBuilder = new Row(20, date, title, appliances, settings);
-        HBox header = headerRowBuilder.getRow();
-        header.setPadding(new Insets(15));
-        header.getStyleClass().add("header"); 
-        HBox.setHgrow(title, Priority.ALWAYS);
-
-
-        TimestampData prodData =
-                (TimestampData) appData.Get("TimestampData");
+        TimestampData prodData = (TimestampData) appData.Get("TimestampData");
 
         double prodVal = 0;
 
         if (prodData != null) {
-
             LocalDateTime now = LocalDateTime.now();
+            String currentHour = LocalDateTime.of(
+                    now.getYear(),
+                    now.getMonth(),
+                    now.getDayOfMonth(),
+                    now.getHour(),
+                    0).toString();
 
-            String currentHour =
-                    LocalDateTime.of(
-                            now.getYear(),
-                            now.getMonth(),
-                            now.getDayOfMonth(),
-                            now.getHour(),
-                            0
-                    ).toString();
-
-            Double value =
-                    prodData.GetTimestamps().get(currentHour);
-
-            if (value != null) {
-                prodVal = value;
-            }
+            Double value = prodData.GetTimestamps().get(currentHour);
+            if (value != null) {prodVal = value;}
         }
         LabelBuilder productionBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                productionBuilder,
-                "Current production"
-        );
+        labelDirector.constructNameOfLabel(productionBuilder, LanguageManager.get("production"));
         Label production = productionBuilder.getLabel();
-        production.getStyleClass().add("text"); 
+        production.getStyleClass().add("text");
 
 
         LabelBuilder productionValueBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                productionValueBuilder,
-                (int) prodVal + " W"
+        labelDirector.constructNameOfLabel(productionValueBuilder, (int) prodVal + " W"
         );
         Label productionValue = productionValueBuilder.getLabel();
-        productionValue.getStyleClass().add("text"); 
+        productionValue.getStyleClass().add("text");
 
 
         LabelBuilder usageBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                usageBuilder,
-                "Current usage"
+        labelDirector.constructNameOfLabel(usageBuilder, LanguageManager.get("usage")
         );
         Label usage = usageBuilder.getLabel();
-        usage.getStyleClass().add("text"); 
+        usage.getStyleClass().add("text");
 
 
         LabelBuilder usageValueBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                usageValueBuilder,
-                "500 W"
-        );
+        labelDirector.constructNameOfLabel(usageValueBuilder, formatCurrentUsage());
         Label usageValue = usageValueBuilder.getLabel();
-        usageValue.getStyleClass().add("text"); 
+        usageValue.getStyleClass().add("text");
 
 
         LabelBuilder priceBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                priceBuilder,
-                "Current electricity price"
-        );
+        labelDirector.constructNameOfLabel(priceBuilder, LanguageManager.get("price") );
         Label price = priceBuilder.getLabel();
-        price.getStyleClass().add("text"); 
+        price.getStyleClass().add("text");
 
         LabelBuilder priceValueBuilder = new LabelBuilder();
-        labelDirector.constructNameOfLabel(
-                priceValueBuilder,
-                " SEK/kWh"
-        );
+        labelDirector.constructNameOfLabel(priceValueBuilder, " SEK/kWh");
         Label priceValue = priceValueBuilder.getLabel();
-        priceValue.getStyleClass().add("text"); 
+        priceValue.getStyleClass().add("text");
 
 
-// Uppdate Live
-        PowerMarketRetriver x = new PowerMarketRetriver();
-        ArrayList<Double> r = new ArrayList<>( PowerMarketParser.ParseToJson(x.GetPowerMarketInfo() ));
-        double a = r.get(LocalTime.now().getHour()*4);
-
-        priceValue.setText(a + " SEK/kWh");
-
-        Timeline priceClock = new Timeline(
-            //
-            new KeyFrame(Duration.minutes(15), event -> {
-                //
-                PowerMarketRetriver pmsrr = new PowerMarketRetriver();
-                ArrayList<Double> priceList = new ArrayList<>( PowerMarketParser.ParseToJson(pmsrr.GetPowerMarketInfo() ));
-                double pris = priceList.get(LocalTime.now().getHour()*4);
-
-                priceValue.setText(pris + " SEK/kWh");
-            })
-        );
-
+        // Fetch electricity price without freezing the UI.
+        priceValue.setText("— SEK/kWh");
+        Runnable refreshPrice = () -> {Thread worker = new Thread(() -> {
+            try {PowerMarketRetriver provider = new PowerMarketRetriver();
+                ArrayList<Double> prices = new ArrayList<>(PowerMarketParser.ParseToJson(provider.GetPowerMarketInfo()));
+                int index = LocalTime.now().getHour() * 4;
+                if (index >= 0 && index < prices.size()) {double value = prices.get(index);
+                    javafx.application.Platform.runLater(() -> priceValue.setText(value + " SEK/kWh"));}
+            } catch (Exception exception) {System.err.println("Could not update electricity price: " + exception.getMessage());
+            }
+        });
+            worker.setDaemon(true);
+            worker.start();
+        };
+        refreshPrice.run();
+        Timeline priceClock = new Timeline(new KeyFrame(Duration.minutes(15), e -> refreshPrice.run()));
         priceClock.setCycleCount(Timeline.INDEFINITE);
         priceClock.play();
 
-        productionValue.getStyleClass().add("boxText"); 
-        usageValue.getStyleClass().add("boxText"); 
-        priceValue.getStyleClass().add("boxText"); 
+        productionValue.getStyleClass().add("boxText");
+        usageValue.getStyleClass().add("boxText");
+        priceValue.getStyleClass().add("boxText");
+        priceValue.setStyle("-fx-font-size: 18px;");
+        priceValue.setWrapText(true);
 
 
         // Create three information boxes
 
         VBoxBuilder productionBoxBuilder = new VBoxBuilder();
         productionBoxBuilder.setSpacing(8);
-        productionBoxBuilder.addChildren(
-                production,
-                productionValue
-        );
+        productionBoxBuilder.addChildren(production, productionValue);
 
         VBox productionBox = productionBoxBuilder.getVBox();
 
 
         VBoxBuilder usageBoxBuilder = new VBoxBuilder();
         usageBoxBuilder.setSpacing(8);
-        usageBoxBuilder.addChildren(
-                usage,
-                usageValue
+        usageBoxBuilder.addChildren(usage, usageValue
         );
 
         VBox usageBox = usageBoxBuilder.getVBox();
@@ -244,17 +152,13 @@ public class StartMenu extends Application implements SubAppInterface{
 
         VBoxBuilder priceBoxBuilder = new VBoxBuilder();
         priceBoxBuilder.setSpacing(8);
-        priceBoxBuilder.addChildren(
-                price,
-                priceValue
+        priceBoxBuilder.addChildren(price, priceValue
         );
 
         VBox priceBox = priceBoxBuilder.getVBox();
 
         // Style the boxes
-        for (VBox box : new VBox[]{
-                productionBox, usageBox, priceBox
-        }) {
+        for (VBox box : new VBox[]{productionBox, usageBox, priceBox}) {
             box.setPrefWidth(220);
             box.setMinHeight(95);
             box.setPadding(new Insets(20));
@@ -267,109 +171,94 @@ public class StartMenu extends Application implements SubAppInterface{
         HBox information = informationRowBuilder.getRow();
         information.setPadding(new Insets(20));
 
+        // Modern interactive chart
+        VBox chartBox = SolarChartView.create(forecast);
 
-        // Create the chart axes
-        boolean hasForecast = forecast != null;
+        // MODERN HOME CONTENT
+        Label welcome = new Label(LanguageManager.get("home.welcome"));
 
-        BarChartBuilder chartBuilder =
-                new BarChartBuilder();
+        welcome.getStyleClass().add("home-welcome");
 
-        chartBuilder.setXAxisLabel("Time (local)");
-        chartBuilder.setYAxisLabel("W");
-        
+        Label subtitle = new Label(LanguageManager.get("home.subtitle"));
 
-        chartBuilder.setTitle(
-                hasForecast
-                        ? "Hourly solar irradiance"
-                        : "Hourly production (demo)"
+        subtitle.getStyleClass().add("home-subtitle");
+        subtitle.setWrapText(true);
+        VBox welcomeBox = new VBox(6, welcome, subtitle);
+
+        // Make information cards flexible
+        for (VBox box : new VBox[]{productionBox, usageBox, priceBox}) {
+            HBox.setHgrow(box, Priority.ALWAYS);
+            box.setMaxWidth(Double.MAX_VALUE);
+        }
+
+        information.setPadding(new Insets(0));
+        information.setMaxWidth(Double.MAX_VALUE);
+
+        // Main vertical content
+        VBox layout = new VBox(20, welcomeBox, information, chartBox);
+        layout.setPadding(new Insets(24));
+        layout.setAlignment(Pos.TOP_LEFT);
+        layout.getStyleClass().addAll("layout", "home-content"
         );
 
-        chartBuilder.setLegendVisible(false);
-        chartBuilder.setAnimated(false);
-        chartBuilder.setPrefHeight(330);
+        // Allow scrolling on small windows
+        ScrollPane homeScroll = new ScrollPane(layout);
 
-        BarChart<String, Number> chart = chartBuilder.getChart();
+        homeScroll.setFitToWidth(true);
+        homeScroll.getStyleClass().add("home-scroll");
 
-// Data for the chart
-        XYChart.Series<String, Number> data =
-                new XYChart.Series<>();
+        // Reuse the existing window and fixed sidebar/header.
+        PageNavigator.show(stage, root, homeScroll, "home", priceClock::stop);
 
-        if (hasForecast) {
-            // Display real API data
-            int count = forecast.size();
+// Smooth chart appearance
+        FadeTransition chartFade = new FadeTransition(Duration.millis(350), chartBox);
+        chartFade.setFromValue(0);
+        chartFade.setToValue(1);
+        chartFade.play();
 
-            for (int i = 0; i < count; i++) {
-                String time = String.valueOf(forecast.get(i).GetTime().getHour());
-                double irradiance = forecast.get(i).GetWatts();
-                data.getData().add(new XYChart.Data<>(time, irradiance));
-            }
-
-        } else {
-
-            // Temporary data until the API is connected
-            data.getData().add(new XYChart.Data<>("9:00", 100));
-            data.getData().add(new XYChart.Data<>("10:00", 120));
-            data.getData().add(new XYChart.Data<>("11:00", 200));
-            data.getData().add(new XYChart.Data<>("12:00", 180));
-            data.getData().add(new XYChart.Data<>("13:00", 140));
-            data.getData().add(new XYChart.Data<>("14:00", 150));
-            data.getData().add(new XYChart.Data<>("15:00", 70));
-        }
-
-        chart.getData().add(data);
-        new XYChart.Series<>();
-
-
-
-        // Change the bars to yellow
-        for (XYChart.Data<String, Number> item : data.getData()) {
-
-            item.nodeProperty().addListener(
-                    (obs, oldNode, newNode) -> {
-                        if (newNode != null) {
-                            newNode.setStyle("-fx-bar-fill: #4A90E2;");                        }
-                    }
-            );
-
-            if (item.getNode() != null) {
-                item.getNode().setStyle("-fx-bar-fill: #4A90E2;");
-            }
-        }
-
-        // Open the existing settings page
-        appliancesButtonBuilder.setEvent(event -> {
-            clock.stop();
-            root.viewAppliances(stage);
-        });
-
-        settingsButtonBuilder.setEvent(event -> {
-            clock.stop();
-            root.viewSettings(stage);
-        });
-        // Main layout
-        VBoxBuilder layoutBuilder = new VBoxBuilder();
-
-        layoutBuilder.setSpacing(20);
-
-        layoutBuilder.addChildren(header, information, chart);
-
-        layoutBuilder.setAlignment(Pos.TOP_CENTER);
-
-        VBox layout = layoutBuilder.getVBox();
-        layout.getStyleClass().add("layout"); 
-
-        Scene scene = new Scene(layout, 800, 550);
-
-        // Add stylesheets (layout and style are seperate)
-        scene.getStylesheets().add(CSSPath.layoutPath);
-        scene.getStylesheets().add(CSSPath.stylePath);
-
-        stage.setTitle("Solar App");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+    // Use the same saved appliance data as Appliances, never a fixed "500 W".
+    private String formatCurrentUsage() {
+        ApplianceData devices = (ApplianceData) appData.Get("ApplianceData");
+        if (devices == null) return "0 W";double total = 0;
+        for (Map.Entry<String, Double> entry : devices.GetAppliances().entrySet()) {
+            if (devices.IsInUse(entry.getKey())) {total += entry.getValue();
+            }
+        }
+        return String.format(java.util.Locale.US, "%.1f W", total);
+    }
+    private void restoreSavedForecast() {
+
+        // If forecast is already in memory, keep it
+        if (forecast != null && !forecast.isEmpty()) {return;}
+        // Read saved forecast from Model
+        TimestampData savedData = (TimestampData) appData.Get("TimestampData");
+
+        if (savedData == null) {System.out.println("No saved forecast found");return;}
+        // Convert saved data into chart data
+        ArrayList<EstimationTimestamp> restored = new ArrayList<>();
+
+        for (Map.Entry<String, Double> entry : savedData.GetTimestamps().entrySet()) {
+
+            try {LocalDateTime time = LocalDateTime.parse(entry.getKey());Double watts = entry.getValue();
+
+                if (watts != null && Double.isFinite(watts)) {restored.add(new EstimationTimestamp(time, watts));}
+            } catch (Exception e) {System.err.println("Invalid saved timestamp: " + entry.getKey()
+            );
+            }
+        }
+
+        // Sort by time
+        restored.sort(null);
+        // Restore forecast in memory
+        forecast = restored;
+        System.out.println("Restored forecast points: " + forecast.size()
+        );
+    }
+
 }
