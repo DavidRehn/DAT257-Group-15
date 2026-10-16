@@ -6,12 +6,31 @@ import javax.json.JsonObjectBuilder;
 
 import java.util.HashMap;
 import java.util.Hashtable;
-
+import javax.json.JsonNumber;
 public class TimestampData implements SavableData {
     private Hashtable<String, Double> timestamps;
 
     public TimestampData(){
         timestamps = new Hashtable<>();
+    }
+
+    public TimestampData(JsonObject json) {
+
+        // Create an empty list
+        this();
+
+        // Restore saved timestamps from JSON
+        for (String key : json.keySet()) {
+
+            JsonNumber number = json.getJsonNumber(key);
+
+            if (number != null) {
+                timestamps.put(
+                        key,
+                        number.doubleValue()
+                );
+            }
+        }
     }
 
     public void Put(String key, double value){

@@ -1,0 +1,32 @@
+/* ----------- Start menu ----------- */
+.title{
+    -fx-font-size: 22px;
+}
+
+.infoBox{
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+.boxText{
+    -fx-font-size: 25px; -fx-font-weight: bold;
+}
+
+.chart{
+    /* For margin */
+    -fx-padding: 30px;
+    -fx-border-insets: 30px;
+    -fx-background-insets: 30px;
+}
+
+/* ----------- Settings menu ----------- */
+
+/* ----------- Appliance menu ----------- */
+
+.applianceRow{
+    -fx-border-width: 1;
+}
+
+.headerRow{
+    -fx-border-width: 1;
+}

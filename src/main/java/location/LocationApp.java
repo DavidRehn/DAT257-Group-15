@@ -1,22 +1,14 @@
-//BINGUS
-
 package location;
-import java.io.StringReader;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Hashtable;
-
-import javax.json.Json;
-import javax.json.JsonArray;
-import javax.json.JsonObject;
-import javax.json.JsonReader;
 
 import javafx.application.Application;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -25,10 +17,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import location.builder.LBuilder;
+import location.builder.ButtonBuilder;
+import location.builder.ComboBoxBuilder;
 import location.builder.LabelBuilder;
 import location.builder.LabelDirector;
-import location.builder.MultiChoiceBuilder;
+import location.builder.Row;
 import location.builder.TextInputBuilder;
 import other.AppInterface;
 import other.Direction;
@@ -38,395 +31,281 @@ import other.SolarPanel;
 import other.SubAppInterface;
 import other.TimestampData;
 import other.ZoneData;
-import saveload.JsonSaveLoad;
-import saveload.SaveLoadInterface;
 import weatherdata.EstimationTimestamp;
 import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
 import weatherdata.WeatherParser;
-//import weatherdata.CallWeatherAPI;
-public  class LocationApp extends Application implements SubAppInterface {
-
-    LabelDirector director;
-
-
+import i18n.LanguageManager;
+import javafx.util.StringConverter;
+import ui.PageNavigator;
+public class LocationApp extends Application implements SubAppInterface {
     private Model appData;
-    public void linkAppData(Model m){
-        this.appData=m;
-    }
-
     private AppInterface root;
-    public void linkRoot(AppInterface root){
-        this.root=root;
-    }
-
-
-    //CallWeatherAPI apiAccess = new CallWeatherAPI();
-    private SaveLoadInterface saveLoad = new JsonSaveLoad();
-    private Hashtable<String, Object> saveData = new Hashtable<>();
     private SolarPanel solarPanel;
     private LocationData locationData;
     private ZoneData zoneData;
-    private TimestampData timestampData;
+    private LabelDirector director;
     @Override
     public void start(Stage stage) {
-        if(appData.Get("SolarPanel")!=null){
-            solarPanel = (SolarPanel)appData.Get("SolarPanel");
-        }
-        if(appData.Get("LocationData")!=null){
-            locationData = (LocationData)appData.Get("LocationData");
-        }
-        if(appData.Get("ZoneData")!=null){
-            zoneData = (ZoneData)appData.Get("ZoneData");
-        }
-        if(appData.Get("TimestampData")!=null){
-            timestampData = (TimestampData)appData.Get("TimestampData");
-        }
-
-// Create the Directory
+        loadSavedData();
         director = new LabelDirector();
-
- 
-//Back to main page
-
-        Button backButton = new Button("← Back to main page");
-
-        backButton.setOnAction(event -> {
-            root.viewStart(stage);
-        });
-
- // Check all user inputs
-        Button checkAllButton = new Button("Check All");
-        Label allMessage = new Label("");
-/*
-        checkAllButton.setOnAction(event -> {
-
-            if (longitudeField.getText().isBlank()
-                    || latitudeField.getText().isBlank()
-                    || areaField.getText().isBlank()
-                    || tiltField.getText().isBlank()
-                    || efficiencyField.getText().isBlank()
-                    || directionList.getValue() == null
-                    || zoneList.getValue() == null) {
-
-                allMessage.setText("Please fill in all fields");
-
-            } else {
-
-//Check Longitude
-                double longitude=0;
-                try {
-
-                    longitude = Double.parseDouble(longitudeField.getText());
-
-                    if (longitude < -180 || longitude > 180 || !Double.isFinite(longitude)) {
-                        //Sets message at the bottom of the setting screen
-                        allMessage.setText("Longitude must be between -180 and 180");
-                        
-                        //Exit early
-                        return;
-
-
-                    } 
-                } catch (NumberFormatException e) {
-
-                    allMessage.setText("Please enter a valid longitude");
-
-                }
-                    
- // Check Latitude
-                double latitude=0;
-                try {
-
-                    latitude = Double.parseDouble(latitudeField.getText());
-
-                    if (latitude < -90 || latitude > 90 || !Double.isFinite(latitude)) {
-
-                        allMessage.setText(
-                            "Latitude must be between -90 and 90"
-                        );
-                        return;
-
-                    }
-                } catch (NumberFormatException e) {
-
-                    allMessage.setText("Please enter a valid latitude");
-
-                }
-
- // Check solar panel area
-                double area=0;
-                try {
-                    area = Double.parseDouble(areaField.getText());
-
-                    if (area <= 0 || !Double.isFinite(area)) {
-
-                        allMessage.setText("Area must be greater than 0");
-                        return;
-                    }
-                } catch (NumberFormatException e) {
-
-                    allMessage.setText("Please enter a valid area");
-
-                }
-
-// Check solar panel tilt
-                int tilt=0;
-                try {
-
-                    tilt = Integer.parseInt(tiltField.getText());
-
-                    if (tilt < 0 || tilt > 90) {
-
-                        allMessage.setText("Tilt must be between 0 and 90");
-                        return;
-                    }
-                } catch (NumberFormatException e) {
-
-                    allMessage.setText("Please enter a valid whole number for tilt");
-
-                }
-                    
-// Check solar panel efficiency
-                double efficiency=0;
-                try {
-                    efficiency = Double.parseDouble(efficiencyField.getText());
-
-                    if (efficiency <= 0.0||efficiency > 1.0|| !Double.isFinite(efficiency)) {
-
-                        allMessage.setText("Efficiency must be between 0.0 and 1.0");
-                        return;
-                    }
-                    
-                } catch (NumberFormatException e) {
-
-                    allMessage.setText("Please enter a valid number for tilt");
-                    
-                }
-
-                allMessage.setText("All inputs are valid");
-
-                                                
-// Save the user's information
-                
-                appData.Store("LocationData",new LocationData(longitude, latitude));
-                appData.Store("ZoneData",new ZoneData(zoneList.getValue()));
-                appData.Store("SolarPanel", new SolarPanel(area,tilt,SolarPanel.directionConverter(directionList.getValue().toUpperCase()),efficiency));
-                
-                appData.SaveToDisc();
-
-            }//end of else
-        });
-        */
-
-     
-//WetherAPI Call button
-        Button getForecastButton = new Button("Get Forecast");
-        /* 
-        getForecastButton.setOnAction(event -> {
-            Direction selectedDirection = Direction.valueOf((solarPanel.Direction().toString()).toUpperCase());
-                       
-            locationData = (LocationData)appData.Get("LocationData");
-            HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
-                locationData.Longitude(),
-                locationData.Latitude(),
-                solarPanel.Tilt(),
-                1,
-                selectedDirection
-                );
-
-            System.out.println(
-                "Latitude: " + weatherRequest.Latitude()
-                );
-
-            Thread apiThread;
-            apiThread = new Thread(() -> {
-                SolarRadiationRetreiver retriever =
-                    new SolarRadiationRetreiver(weatherRequest, new WeatherParser(), appData);
-
-                boolean success = retriever.GetWeatherInfo();
-
-                if (success) {
-                    System.out.println("API data received successfully!");
-
-                    timestampData = (TimestampData)appData.Get("TimestampData");
-                    ArrayList<EstimationTimestamp> timestamps = new ArrayList<>();
-
-                    for (HashMap.Entry<String, Double> en : timestampData.GetTimestamps().entrySet()) {
-                        timestamps.add(new EstimationTimestamp(LocalDateTime.parse(en.getKey()), en.getValue()));
-                    }
-                    timestamps.sort(null);
-
-                    Platform.runLater(() -> {
-                        StartMenu.setForecastData(timestamps);
-                        allMessage.setText(
-                            "Forecast loaded! Back to main page."
-                        );
-                    });
-
-                } else {
-                    System.out.println("Failed to receive API data.");
-                }
-
-            }); // End of Thread
-
-            apiThread.setDaemon(true);
-            apiThread.start();
-                                                
-        });
-    */
-
-        // Create the layout
-        
-        VBox layout = new VBox(15);
-        
-// Longitude row
-        LabelBuilder builderLongitudeL = new LabelBuilder();
-        //String[] a = {"Longitude"};
-        String[] aq = { "Enter longitude", ""+locationData.Longitude(), "LocationData"};
-        director.constructWFR(builderLongitudeL, new String[]{"Longitude"} );
-        TextInputBuilder builderLongitudeTL = new TextInputBuilder();    
-        director.constructTFWAR(builderLongitudeTL, aq, builderLongitudeL.getRowList());
-        HBox longitudeRow = builderLongitudeTL.getHBox();
-            //HBox longitudeRow = new HBox(15, builderLongitudeL.getLabel(), builderLongitudeTL.getTextField());
-            //longitudeRow.setAlignment(Pos.CENTER);
-
-// Latitude row
-        String[] ads = {"Latitude"};
-        String[] tempd={"Enter latitude", ""+locationData.Latitude(), "LocationData"};
-        LabelBuilder builderLatitudeL = new LabelBuilder();
-        director.constructWFR(builderLatitudeL, ads); 
-
-        TextInputBuilder builderLatitudeTL = new TextInputBuilder();
-        director.constructTFWAR(builderLatitudeTL, tempd, builderLatitudeL.getRowList());
-
-    HBox latitudeRow = builderLatitudeTL.getHBox();
-    //new HBox(15, builderLatitudeL.getLabel(), builderLatitudeTL.getTextField());
-    //latitudeRow.setAlignment(Pos.CENTER);
-
-
-// Area row 
-        String[] ars = {"Area"};
-        String[] ar = {  "Area (m²)", ""+solarPanel.Area(), "SolarPanel"};
-        LabelBuilder builderAreaL = new LabelBuilder();
-        director.constructWFR(builderAreaL, ars); 
-
-        TextInputBuilder builderAreaTL = new TextInputBuilder();
-        director.constructTFWAR(builderAreaTL, ar,builderAreaL.getRowList());
-        
-    HBox areaRow = builderAreaTL.getHBox();
-      
-// Tilt row
-        String[] afs = {"Tilt"};    
-        String[] af = {"Tilt (degrees)", ""+solarPanel.Tilt(), "SolarPanel"};
-        LabelBuilder builderTiltL = new LabelBuilder();   
-        director.constructWFR(builderTiltL, afs); 
-
-        TextInputBuilder builderTiltTL = new TextInputBuilder();
-        director.constructTFWAR(builderTiltTL, af, builderTiltL.getRowList()); 
-    HBox tiltRow = builderTiltTL.getHBox();
-
-// Efficiency row
-        String[] aww = {"Efficiency"};
-        String[] aw = {"efficiency (0.0 to 1.0)", ""+solarPanel.Efficiency(), "SolarPanel"};
-        LabelBuilder builderEfficiencyL = new LabelBuilder(); 
-        director.constructWFR(builderEfficiencyL, aww);
-
-        TextInputBuilder builderEfficiencyTL = new TextInputBuilder();
-        director.constructTFWAR(builderEfficiencyTL, aw, builderEfficiencyL.getRowList());
-  
-    HBox efficiencyRow = builderEfficiencyTL.getHBox();
-
-
-
-// Create the title
-        Label title = new Label("Location and Solar Panel Info");
-        layout.getChildren().add(title);
-
-// Put the back button on the left
-        HBox backRow = new HBox(backButton);
-
-        backRow.setAlignment(Pos.CENTER_LEFT);
-        backRow.setPadding(new Insets(0, 0, 0, 20));
-        backRow.setMaxWidth(Double.MAX_VALUE);
-        layout.getChildren().add(backRow);
-
-// Solar panel direction
-        String[] ad = {"Direction"};
-        LabelBuilder builder3 = new LabelBuilder();
-        director.constructWFR(builder3, ad); 
-    // Direction row
-        String[] tempb = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
-        String[] tempb2={"Choose direction", ""+solarPanel.Direction().toString().toLowerCase(), "SolarPanel"};
-        MultiChoiceBuilder builderDirectionM = new MultiChoiceBuilder();
-        director.constructMCWAR(builderDirectionM, tempb2, tempb, builder3.getRowList());
- 
-        HBox zoneRow3 = builderDirectionM.getHBox(); 
-
-// Zone 
-        String[] as = {"Zone" };
-        LabelBuilder buildera = new LabelBuilder();
-        director.constructWFR(buildera, as);
-// Zone row
-        String[] tempa = {"SE1", "SE2", "SE3", "SE4"};
-        String[] tempa2 ={ "Choose zone",""+zoneData.Zone(), "ZoneData"};
-        MultiChoiceBuilder builderZoneM = new MultiChoiceBuilder();
-        director.constructMCWAR(builderZoneM,tempa2 , tempa, buildera.getRowList());
-
-        HBox zoneRowe = builderZoneM.getHBox();
-        layout.getChildren().add(zoneRowe);               
-
-
-//Button row
-    HBox buttonRow = new HBox(15, checkAllButton, getForecastButton);
-        buttonRow.setAlignment(Pos.CENTER);
-
-// Location section
-        //layout.getChildren().add(locationTitle); //old
-        LabelBuilder builder2 = new LabelBuilder(); 
-            String[] ag = {"Location" };
-
-        director.constructName(builder2, ag);
-        layout.getChildren().add(builder2.getLabel());  //
-
-        layout.getChildren().add(longitudeRow);
-
-        layout.getChildren().add(latitudeRow);
-
-
-//Test of consept
-        //LBuilder a[] = new LBuilder[2];
-
-        LabelBuilder builder = new LabelBuilder();
-        String[] oo={"Solar panel details"};
-        director.constructName(builder, oo);
-        layout.getChildren().add(builder.getLabel());
-
-// Solar panel section
-        layout.getChildren().add(areaRow);
-        layout.getChildren().add(tiltRow);
-        layout.getChildren().add(efficiencyRow);
-        //layout.getChildren().add(directionRow); old
-        layout.getChildren().add(zoneRow3); //new B
-
-        // Check everything
-        layout.getChildren().add(buttonRow);
-        layout.getChildren().add(allMessage);
-
-        layout.setAlignment(Pos.CENTER);
-
-// Create and display the window
+        Label title = createLabel(LanguageManager.get("location.title"));                                                     //  TITLE
+        String[] prompts = {
+                LanguageManager.get("input.longitude"),
+                LanguageManager.get("input.latitude"),
+                LanguageManager.get("input.area"),
+                LanguageManager.get("input.tilt"),
+                LanguageManager.get("input.efficiency")};  //  TEXT FIELDS
+        String[] savedValues = {locationData == null ? null : String.valueOf(locationData.Longitude()),
+                locationData == null ? null : String.valueOf(locationData.Latitude()),
+                solarPanel == null ? null : String.valueOf(solarPanel.Area()),
+                solarPanel == null ? null : String.valueOf(solarPanel.Tilt()),
+                solarPanel == null ? null : String.valueOf(solarPanel.Efficiency())
+        };
+        TextField[] fields = createTextFields(prompts, savedValues);
+        // Give the fields clear names
+        TextField longitudeField = fields[0]; TextField latitudeField = fields[1]; TextField areaField = fields[2];
+        TextField tiltField = fields[3];TextField efficiencyField = fields[4];
+        //  ZONE
+        String[] zones = {"SE1", "SE2", "SE3", "SE4"};
+        ComboBox<String> zoneList = createComboBox(LanguageManager.get("input.zone"), 185, zoneData == null ? null : zoneData.Zone(), zones);
+        //  DIRECTION
+        String[] directions = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
+        ComboBox<String> directionList = createComboBox(LanguageManager.get("input.direction"), 185,
+                solarPanel == null ? null : directionText(solarPanel.Direction()), directions);
+
+        directionList.setConverter(new StringConverter<String>() {
+            @Override
+            public String toString(String direction) {if (direction == null) {return "";}
+                return LanguageManager.get("direction." + direction.toLowerCase(java.util.Locale.ROOT));}
+            @Override public String fromString(String text) {return text;}});
+
+        //  MESSAGE
+        Label allMessage = createLabel("");
+        allMessage.getStyleClass().add("text");
+        //  CHECK ALL
+        Button checkAllButton = createButton(LanguageManager.get("check.all"), e -> validateAndSave(
+                longitudeField, latitudeField, areaField, tiltField, efficiencyField, zoneList, directionList, allMessage));
+        //  FORECAST
+        Button getForecastButton = createButton(LanguageManager.get("get.forecast"), e -> loadForecast(allMessage));
+        checkAllButton.setPrefWidth(160);
+        getForecastButton.setPrefWidth(160);
+        //  ROWS
+        String[] rowNames = {LanguageManager.get("longitude"), LanguageManager.get("latitude"),
+                LanguageManager.get("area"), LanguageManager.get("tilt"), LanguageManager.get("efficiency")};
+
+        HBox[] rows = createInputRows(rowNames, fields);
+        HBox zoneRow = createComboRow(LanguageManager.get("zone"), zoneList);
+        HBox directionRow = createComboRow(LanguageManager.get("direction"), directionList);
+        for (HBox row : rows) {
+            row.setAlignment(Pos.CENTER_LEFT);
+            ((Label) row.getChildren().get(0)).setPrefWidth(160);
+            ((TextField) row.getChildren().get(1)).setPrefWidth(270);
+            row.getStyleClass().add("app-form-row");
+        }
+        zoneRow.setAlignment(Pos.CENTER_LEFT);
+        directionRow.setAlignment(Pos.CENTER_LEFT);
+        ((Label) zoneRow.getChildren().get(0)).setPrefWidth(160);
+        ((Label) directionRow.getChildren().get(0)).setPrefWidth(160);
+        zoneList.setPrefWidth(270);
+        directionList.setPrefWidth(270);
+        HBox buttonRow = new Row(checkAllButton, getForecastButton).getRow();
+        buttonRow.setAlignment(Pos.CENTER_LEFT);
+        checkAllButton.getStyleClass().add("app-secondary-button");
+        getForecastButton.getStyleClass().add("app-primary-button");
+        // Fix button widths
+        checkAllButton.setPrefWidth(170);  checkAllButton.setMinWidth(170);
+        getForecastButton.setPrefWidth(170); getForecastButton.setMinWidth(170);
+        // Settings within the unified dashboard: two modern cards.
+        Label locationHeading = createLabel(LanguageManager.get("location"));
+        locationHeading.getStyleClass().addAll("solar-chart-title", "app-section-heading");
+        VBox locationCard = new VBox(14, locationHeading, zoneRow, rows[0], rows[1]);
+        locationCard.setPadding(new Insets(24));
+        locationCard.getStyleClass().add("app-card");
+        locationCard.setMaxWidth(Double.MAX_VALUE);
+
+        Label panelsHeading = createLabel(LanguageManager.get("panel.details"));
+        panelsHeading.getStyleClass().addAll("solar-chart-title", "app-section-heading");
+        VBox solarCard = new VBox(14, panelsHeading, rows[2], rows[3], rows[4], directionRow);
+        solarCard.setPadding(new Insets(24));
+        solarCard.getStyleClass().add("app-card");
+        solarCard.setMaxWidth(Double.MAX_VALUE);
+
+        title.getStyleClass().addAll("home-welcome", "app-page-title");
+        allMessage.getStyleClass().add("app-message");
+        VBox layout = new VBox(22, title, locationCard, solarCard, buttonRow, allMessage);
+        layout.setPadding(new Insets(25, 32, 35, 32));
+        layout.setAlignment(Pos.TOP_LEFT);
+        layout.getStyleClass().addAll("layout", "home-content", "app-settings-page");
 
         ScrollPane scrollPane = new ScrollPane(layout);
         scrollPane.setFitToWidth(true);
-        Scene scene = new Scene(scrollPane, 520, 650);
-
-        stage.setTitle("Solar App");
-        stage.setScene(scene);
-        stage.show();
+        scrollPane.getStyleClass().add("home-scroll");
+        PageNavigator.show(stage, root, scrollPane, "settings", null);
     }
 
-    
+    // VALIDATION + SAVE
 
+    private void validateAndSave(
+            TextField longitudeField, TextField latitudeField, TextField areaField, TextField tiltField,
+            TextField efficiencyField, ComboBox<String> zoneList, ComboBox<String> directionList, Label message)
+    {
 
+        // 1. Check empty fields
+        if (hasBlank(longitudeField, latitudeField, areaField, tiltField, efficiencyField)  || zoneList.getValue() == null || directionList.getValue() == null) {message.setText(LanguageManager.get("validation.empty"));return;
+        }
+        // 2. Validate longitude
+        Double longitude = readDouble(longitudeField, message, LanguageManager.get("validation.longitude"));
+        if (longitude == null) {return;}
+
+        if (!check(longitude >= -180 && longitude <= 180 && Double.isFinite(longitude),
+                message, LanguageManager.get("validation.longitude.range"))) {return;}
+
+        // 3. Validate latitude
+        Double latitude = readDouble(latitudeField, message, LanguageManager.get("validation.latitude"));
+        if (latitude == null) {return;}
+        if (!check(latitude >= -90 && latitude <= 90 && Double.isFinite(latitude),
+                message, LanguageManager.get("validation.latitude.range"))) {return;}
+
+        // 4. Validate panel area
+        Double area = readDouble(areaField, message, LanguageManager.get("validation.area"));
+        if (area == null) {return;}
+
+        if (!check(area > 0 && Double.isFinite(area), message, LanguageManager.get("validation.area.range")))
+        {return;
+        }
+
+        // 5. Validate panel tilt
+        Integer tilt = readInt(tiltField, message, LanguageManager.get("validation.tilt"));
+        if (tilt == null) {return;}
+        if (!check(tilt >= 0 && tilt <= 90, message, LanguageManager.get("validation.tilt.range"))) {return;
+        }
+        // 6. Validate panel efficiency
+        Double efficiency = readDouble(efficiencyField, message, LanguageManager.get("validation.efficiency"));
+        if (efficiency == null) {return;
+        }
+        if (!check(efficiency > 0 && efficiency <= 1 && Double.isFinite(efficiency),
+                message, LanguageManager.get("validation.efficiency.range"))) {return;
+        }
+
+        // 7. Create valid data
+        locationData = new LocationData(longitude, latitude);
+        zoneData = new ZoneData(zoneList.getValue());
+        solarPanel = new SolarPanel(area, tilt, SolarPanel.directionConverter(directionList.getValue().toUpperCase(
+                java.util.Locale.ROOT)), efficiency);
+
+        // 8. Save data
+        appData.Store("LocationData", locationData);
+        appData.Store("ZoneData", zoneData);
+        appData.Store("SolarPanel", solarPanel);
+        appData.SaveToDisc();
+
+        // 9. Show success message
+        message.setText(LanguageManager.get("validation.success"));
+    }
+
+    // FORECAST
+    private void loadForecast(Label message) {
+        if (locationData == null || solarPanel == null) {message.setText(LanguageManager.get("forecast.save.first")
+        );  return;}
+        HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
+                // Latitude first
+                locationData.Latitude(),  locationData.Longitude(), solarPanel.Tilt(), 2, solarPanel.Direction());
+        Thread apiThread = new Thread(() -> {SolarRadiationRetreiver retriever = new SolarRadiationRetreiver(weatherRequest, new WeatherParser(), appData);
+            if (!retriever.GetWeatherInfo()) {Platform.runLater(() -> message.setText(  LanguageManager.get("forecast.failed")));return;}
+            TimestampData timestampData = (TimestampData) appData.Get("TimestampData");
+            if (timestampData == null) {Platform.runLater(() -> message.setText( LanguageManager.get("forecast.empty")));return;}
+            boolean saved = appData.SaveToDisc();
+            if (saved) {System.out.println("Forecast saved successfully");}
+            else {System.err.println("Could not save forecast");}
+
+            ArrayList<EstimationTimestamp> timestamps = new ArrayList<>();
+            for (HashMap.Entry<String, Double> entry : timestampData.GetTimestamps().entrySet()) {
+                timestamps.add(new EstimationTimestamp(LocalDateTime.parse(entry.getKey()), entry.getValue())
+                );}
+            timestamps.sort(null);
+            Platform.runLater(() -> {StartMenu.setForecastData(timestamps);
+                message.setText( LanguageManager.get("forecast.success"));   });
+        });     apiThread.setDaemon(true);apiThread.start();
+    }
+
+    // ARRAY HELPERS
+    private TextField[] createTextFields(String[] prompts, String[] values) {
+        TextField[] fields = new TextField[prompts.length];
+        for (int i = 0; i < prompts.length; i++) {fields[i] = createTextField(prompts[i], values[i]);  }return fields;
+    }
+    private HBox[] createInputRows(String[] names, TextField[] fields) {
+        HBox[] rows = new HBox[names.length];
+        for (int i = 0; i < names.length; i++) { rows[i] = createInputRow(names[i], fields[i]);  }return rows;
+    }
+    private boolean hasBlank(TextField... fields) { for (TextField field : fields) {
+        if (field.getText().isBlank()) {return true;}}  return false;
+    }
+    // UI HELPERS
+    private Label createLabel(String text) {
+        LabelBuilder builder = new LabelBuilder();
+        director.constructNameOfLabel(builder, text);
+        return builder.getLabel();
+    }
+    private TextField createTextField(String prompt, String value) {
+        TextInputBuilder builder = new TextInputBuilder();
+        builder.setPromptText(prompt);
+        TextField field = builder.getTextField();
+        if (value != null) {field.setText(value);}  return field;
+    }
+    private Button createButton(String text, EventHandler<ActionEvent> event) {
+        ButtonBuilder builder = new ButtonBuilder();
+        builder.setLabelName(text);
+        builder.setEvent(event);
+        return builder.getButton();
+    }
+    private ComboBox<String> createComboBox(String prompt, double width, String value, String... items) {
+        ComboBoxBuilder builder = new ComboBoxBuilder();
+        builder.setItems(items);
+        builder.setPromptText(prompt);
+        builder.setWidth(width);
+        if (value != null) {builder.setValue(value);}
+        return builder.getComboBox();
+    }
+    private HBox createInputRow(String name, TextField field) {
+        LabelBuilder builder = new LabelBuilder();
+        director.constructNameOfLabelWidth(builder, name);
+        Label label = builder.getLabel();
+        label.getStyleClass().add("text");
+        return new Row(label, field).getRow();
+    }
+    private HBox createComboRow(String name, ComboBox<String> comboBox) {
+        LabelBuilder builder = new LabelBuilder();
+        director.constructNameOfLabelWidth(builder, name);
+        Label label = builder.getLabel();
+        label.getStyleClass().add("text");
+        return new Row(label, comboBox).getRow();
+    }
+    // VALIDATION HELPERS
+    private Double readDouble(TextField field, Label message, String error) {
+        try {return Double.parseDouble(field.getText());}
+        catch (NumberFormatException e) {message.setText(error);return null;}
+    }
+    private Integer readInt(TextField field, Label message, String error) {
+        try {return Integer.parseInt(field.getText());}
+        catch (NumberFormatException e) {message.setText(error);return null;}
+    }
+    private boolean check(boolean condition, Label message, String error) {
+        if (!condition) {message.setText(error); return false;} return true;
+    }
+    // SAVED DATA
+    private void loadSavedData() {
+        solarPanel = (SolarPanel) appData.Get("SolarPanel");
+        locationData = (LocationData) appData.Get("LocationData");
+        zoneData = (ZoneData) appData.Get("ZoneData");
+    }
+    private String directionText(Direction direction) {
+        String text = direction.toString().toLowerCase();
+        return Character.toUpperCase(text.charAt(0)) + text.substring(1);
+    }
+    // LINKS
+    @Override
+    public void linkAppData(Model model) {this.appData = model;}
+    @Override
+    public void linkRoot(AppInterface root) {this.root = root;}
 }

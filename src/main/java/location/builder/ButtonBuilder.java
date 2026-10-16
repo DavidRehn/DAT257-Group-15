@@ -1,34 +1,24 @@
-//BINGUS
-
 package location.builder;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 
-public class ButtonBuilder implements LBuilder {
-    private Button defultTitle;
-    private RowMaker rowMaker;
-    private BBuilder a;
+public class ButtonBuilder implements BBuilder {
 
-    @Override 
-    public void setLabelName(String[] labelName ){
-        this.defultTitle = new Button(labelName[0]);
-    }
+    private Button button = new Button();
 
-    @Override 
-    public void setWidth(int width){
-        this.defultTitle.setPrefWidth(width);        
+    @Override
+    public void setLabelName(String labelName) {
+        button.setText(labelName);
     }
 
     @Override
-    public void setRow(RowMaker rowMaker){
-        this.rowMaker = rowMaker;
-    }
-        //interface functions
-//--------------------------------
-    public void setEvent(BBuilder bBuilder){
-        this.a = bBuilder;
+    public void setEvent(EventHandler<ActionEvent> eventHandler) {
+        button.setOnAction(eventHandler);
     }
 
-
+    public Button getButton() {
+        return button;
+    }
 }

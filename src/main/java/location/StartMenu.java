@@ -1,40 +1,38 @@
-
 package location;
 
-import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Formatter;
+import java.util.Map;
 
-import javax.json.JsonArray;
-
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+
 import other.AppInterface;
+import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
 import other.TimestampData;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 import weatherdata.EstimationTimestamp;
-
+import location.builder.LabelBuilder;
+import location.builder.LabelDirector;
+import location.builder.Row;
+import i18n.LanguageManager;
+import ui.PageNavigator;
+import location.builder.VBoxBuilder;
 public class StartMenu extends Application implements SubAppInterface{
     private static ArrayList<EstimationTimestamp> forecast;
 
@@ -53,233 +51,214 @@ public class StartMenu extends Application implements SubAppInterface{
 
     @Override
     public void start(Stage stage) {
+        restoreSavedForecast();
+        LabelDirector labelDirector = new LabelDirector();
 
+        TimestampData prodData = (TimestampData) appData.Get("TimestampData");
 
-        // Header
-        DateTimeFormatter formatter =
-                DateTimeFormatter.ofPattern("EEE HH:mm");
-
-        Label date = new Label(
-                LocalDateTime.now().format(formatter)
-        );
-
-
-// Update the clock automatically
-        Timeline clock = new Timeline(
-                new KeyFrame(Duration.seconds(1), event -> {
-                    date.setText(
-                            LocalDateTime.now().format(formatter)
-                    );
-                })
-        );
-
-        clock.setCycleCount(Timeline.INDEFINITE);
-        clock.play();
-
-        Label title = new Label("Solar App");
-        Button appliances = new Button("Appliances");
-        Button settings = new Button("Settings");
-
-        title.setStyle("-fx-font-size: 22px;");
-        title.setAlignment(Pos.CENTER);
-        title.setMaxWidth(Double.MAX_VALUE);
-
-        HBox header = new HBox(20, date, title, appliances, settings);
-        header.setAlignment(Pos.CENTER);
-        header.setPadding(new Insets(15));
-        header.setStyle("-fx-background-color: #6096e6;");
-        HBox.setHgrow(title, Priority.ALWAYS);
-
-
-        TimestampData prodData = (TimestampData)appData.Get("TimestampData");
         double prodVal = 0;
-        if (prodData != null){
+
+        if (prodData != null) {
             LocalDateTime now = LocalDateTime.now();
-            prodVal = prodData.GetTimestamps().get(LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), 0).toString());
+            String currentHour = LocalDateTime.of(
+                    now.getYear(),
+                    now.getMonth(),
+                    now.getDayOfMonth(),
+                    now.getHour(),
+                    0).toString();
+
+            Double value = prodData.GetTimestamps().get(currentHour);
+            if (value != null) {prodVal = value;}
         }
+        LabelBuilder productionBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(productionBuilder, LanguageManager.get("production"));
+        Label production = productionBuilder.getLabel();
+        production.getStyleClass().add("text");
 
-        Label production = new Label("Current production");
-        Label productionValue = new Label((int)prodVal + " W");
 
-        Label usage = new Label("Current usage");
-        Label usageValue = new Label("500 W");
-
-        Label price = new Label("Current electricity price");
-        Label priceValue = new Label(" SEK/kWh");
-        
-
-// Uppdate Live
-        PowerMarketRetriver x = new PowerMarketRetriver();
-        ArrayList<Double> r = new ArrayList<>( PowerMarketParser.ParseToJson(x.GetPowerMarketInfo() ));
-        double a = r.get(LocalTime.now().getHour()*4);
-
-        priceValue.setText(
-            a
-            +" SEK/kWh"
+        LabelBuilder productionValueBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(productionValueBuilder, (int) prodVal + " W"
         );
+        Label productionValue = productionValueBuilder.getLabel();
+        productionValue.getStyleClass().add("text");
 
-        Timeline priceClock = new Timeline(
-            //
-            new KeyFrame(Duration.minutes(15), event -> {
-                //
-                PowerMarketRetriver pmsrr = new PowerMarketRetriver();
-                ArrayList<Double> priceList = new ArrayList<>( PowerMarketParser.ParseToJson(pmsrr.GetPowerMarketInfo() ));
-                double pris = priceList.get(LocalTime.now().getHour()*4);
 
-                priceValue.setText(
-                    pris
-                    +" SEK/kWh"
-                );
-            })
+        LabelBuilder usageBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(usageBuilder, LanguageManager.get("usage")
         );
+        Label usage = usageBuilder.getLabel();
+        usage.getStyleClass().add("text");
 
+
+        LabelBuilder usageValueBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(usageValueBuilder, formatCurrentUsage());
+        Label usageValue = usageValueBuilder.getLabel();
+        usageValue.getStyleClass().add("text");
+
+
+        LabelBuilder priceBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(priceBuilder, LanguageManager.get("price") );
+        Label price = priceBuilder.getLabel();
+        price.getStyleClass().add("text");
+
+        LabelBuilder priceValueBuilder = new LabelBuilder();
+        labelDirector.constructNameOfLabel(priceValueBuilder, " SEK/kWh");
+        Label priceValue = priceValueBuilder.getLabel();
+        priceValue.getStyleClass().add("text");
+
+
+        // Fetch electricity price without freezing the UI.
+        priceValue.setText("— SEK/kWh");
+        Runnable refreshPrice = () -> {Thread worker = new Thread(() -> {
+            try {PowerMarketRetriver provider = new PowerMarketRetriver();
+                ArrayList<Double> prices = new ArrayList<>(PowerMarketParser.ParseToJson(provider.GetPowerMarketInfo()));
+                int index = LocalTime.now().getHour() * 4;
+                if (index >= 0 && index < prices.size()) {double value = prices.get(index);
+                    javafx.application.Platform.runLater(() -> priceValue.setText(value + " SEK/kWh"));}
+            } catch (Exception exception) {System.err.println("Could not update electricity price: " + exception.getMessage());
+            }
+        });
+            worker.setDaemon(true);
+            worker.start();
+        };
+        refreshPrice.run();
+        Timeline priceClock = new Timeline(new KeyFrame(Duration.minutes(15), e -> refreshPrice.run()));
         priceClock.setCycleCount(Timeline.INDEFINITE);
         priceClock.play();
 
-// Make the numbers bigger and bold
-        productionValue.setStyle(
-                "-fx-font-size: 25px; -fx-font-weight: bold;"
-        );
-
-        usageValue.setStyle(
-                "-fx-font-size: 25px; -fx-font-weight: bold;"
-        );
-
-        priceValue.setStyle(
-                "-fx-font-size: 25px; -fx-font-weight: bold;"
-        );
+        productionValue.getStyleClass().add("boxText");
+        usageValue.getStyleClass().add("boxText");
+        priceValue.getStyleClass().add("boxText");
+        priceValue.setStyle("-fx-font-size: 18px;");
+        priceValue.setWrapText(true);
 
 
         // Create three information boxes
 
-        VBox productionBox =
-                new VBox(8, production, productionValue);
+        VBoxBuilder productionBoxBuilder = new VBoxBuilder();
+        productionBoxBuilder.setSpacing(8);
+        productionBoxBuilder.addChildren(production, productionValue);
 
-        VBox usageBox =
-                new VBox(8, usage, usageValue);
+        VBox productionBox = productionBoxBuilder.getVBox();
 
-        VBox priceBox =
-                new VBox(8, price, priceValue);
+
+        VBoxBuilder usageBoxBuilder = new VBoxBuilder();
+        usageBoxBuilder.setSpacing(8);
+        usageBoxBuilder.addChildren(usage, usageValue
+        );
+
+        VBox usageBox = usageBoxBuilder.getVBox();
+
+
+        VBoxBuilder priceBoxBuilder = new VBoxBuilder();
+        priceBoxBuilder.setSpacing(8);
+        priceBoxBuilder.addChildren(price, priceValue
+        );
+
+        VBox priceBox = priceBoxBuilder.getVBox();
 
         // Style the boxes
-        for (VBox box : new VBox[]{
-                productionBox, usageBox, priceBox
-        }) {
+        for (VBox box : new VBox[]{productionBox, usageBox, priceBox}) {
             box.setPrefWidth(220);
             box.setMinHeight(95);
             box.setPadding(new Insets(20));
             box.setAlignment(Pos.CENTER_LEFT);
-
-            box.setStyle(
-                    "-fx-background-color: white;" +
-                            "-fx-border-color: #DDE3EC;" +
-                            "-fx-border-radius: 8;" +
-                            "-fx-background-radius: 8;"
-            );
+            box.getStyleClass().add("infoBox");
         }
 
         // Put the boxes next to each other
-        HBox information = new HBox(
-                15, productionBox, usageBox, priceBox
-        );
-
-        information.setAlignment(Pos.CENTER);
+        Row informationRowBuilder = new Row(15, productionBox, usageBox, priceBox);
+        HBox information = informationRowBuilder.getRow();
         information.setPadding(new Insets(20));
 
+        // Modern interactive chart
+        VBox chartBox = SolarChartView.create(forecast);
 
-        // Create the chart axes
-        CategoryAxis xAxis = new CategoryAxis();
-        NumberAxis yAxis = new NumberAxis();
+        // MODERN HOME CONTENT
+        Label welcome = new Label(LanguageManager.get("home.welcome"));
 
+        welcome.getStyleClass().add("home-welcome");
 
-        xAxis.setLabel("Time (local)");
+        Label subtitle = new Label(LanguageManager.get("home.subtitle"));
 
-        boolean hasForecast = forecast != null;
+        subtitle.getStyleClass().add("home-subtitle");
+        subtitle.setWrapText(true);
+        VBox welcomeBox = new VBox(6, welcome, subtitle);
 
-        yAxis.setLabel("W");
+        // Make information cards flexible
+        for (VBox box : new VBox[]{productionBox, usageBox, priceBox}) {
+            HBox.setHgrow(box, Priority.ALWAYS);
+            box.setMaxWidth(Double.MAX_VALUE);
+        }
 
-// Create the bar chart
-        BarChart<String, Number> chart =
-                new BarChart<>(xAxis, yAxis);
+        information.setPadding(new Insets(0));
+        information.setMaxWidth(Double.MAX_VALUE);
 
-        chart.setTitle(
-                hasForecast
-                        ? "Hourly solar irradiance"
-                        : "Hourly production (demo)"
+        // Main vertical content
+        VBox layout = new VBox(20, welcomeBox, information, chartBox);
+        layout.setPadding(new Insets(24));
+        layout.setAlignment(Pos.TOP_LEFT);
+        layout.getStyleClass().addAll("layout", "home-content"
         );
 
-        chart.setLegendVisible(false);
-        chart.setAnimated(false);
-        chart.setPrefHeight(330);
+        // Allow scrolling on small windows
+        ScrollPane homeScroll = new ScrollPane(layout);
 
-// Data for the chart
-        XYChart.Series<String, Number> data =
-                new XYChart.Series<>();
+        homeScroll.setFitToWidth(true);
+        homeScroll.getStyleClass().add("home-scroll");
 
-        if (hasForecast) {
-            // Display real API data
-            int count = forecast.size();
+        // Reuse the existing window and fixed sidebar/header.
+        PageNavigator.show(stage, root, homeScroll, "home", priceClock::stop);
 
-            for (int i = 0; i < count; i++) {
-                String time = String.valueOf(forecast.get(i).GetTime().getHour());
-                double irradiance = forecast.get(i).GetWatts();
-                data.getData().add(new XYChart.Data<>(time, irradiance));
-            }
+// Smooth chart appearance
+        FadeTransition chartFade = new FadeTransition(Duration.millis(350), chartBox);
+        chartFade.setFromValue(0);
+        chartFade.setToValue(1);
+        chartFade.play();
 
-        } else {
-
-            // Temporary data until the API is connected
-            data.getData().add(new XYChart.Data<>("9:00", 100));
-            data.getData().add(new XYChart.Data<>("10:00", 120));
-            data.getData().add(new XYChart.Data<>("11:00", 200));
-            data.getData().add(new XYChart.Data<>("12:00", 180));
-            data.getData().add(new XYChart.Data<>("13:00", 140));
-            data.getData().add(new XYChart.Data<>("14:00", 150));
-            data.getData().add(new XYChart.Data<>("15:00", 70));
-        }
-
-        chart.getData().add(data);
-        new XYChart.Series<>();
-
-
-
-        // Change the bars to yellow
-        for (XYChart.Data<String, Number> item : data.getData()) {
-
-            item.nodeProperty().addListener(
-                    (obs, oldNode, newNode) -> {
-                        if (newNode != null) {
-                            newNode.setStyle("-fx-bar-fill: #4A90E2;");                        }
-                    }
-            );
-
-            if (item.getNode() != null) {
-                item.getNode().setStyle("-fx-bar-fill: #4A90E2;");
-            }
-        }
-
-        // Open the existing settings page
-        appliances.setOnAction(event -> {
-            clock.stop();
-            root.viewAppliances(stage);
-        });
-        settings.setOnAction(event -> {
-            clock.stop();
-            root.viewSettings(stage);
-        });
-
-        // Main layout
-        VBox layout = new VBox(20, header, information, chart);
-        layout.setAlignment(Pos.TOP_CENTER);
-
-        Scene scene = new Scene(layout, 800, 550);
-
-        stage.setTitle("Solar App");
-        stage.setScene(scene);
-        stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+    // Use the same saved appliance data as Appliances, never a fixed "500 W".
+    private String formatCurrentUsage() {
+        ApplianceData devices = (ApplianceData) appData.Get("ApplianceData");
+        if (devices == null) return "0 W";double total = 0;
+        for (Map.Entry<String, Double> entry : devices.GetAppliances().entrySet()) {
+            if (devices.IsInUse(entry.getKey())) {total += entry.getValue();
+            }
+        }
+        return String.format(java.util.Locale.US, "%.1f W", total);
+    }
+    private void restoreSavedForecast() {
+
+        // If forecast is already in memory, keep it
+        if (forecast != null && !forecast.isEmpty()) {return;}
+        // Read saved forecast from Model
+        TimestampData savedData = (TimestampData) appData.Get("TimestampData");
+
+        if (savedData == null) {System.out.println("No saved forecast found");return;}
+        // Convert saved data into chart data
+        ArrayList<EstimationTimestamp> restored = new ArrayList<>();
+
+        for (Map.Entry<String, Double> entry : savedData.GetTimestamps().entrySet()) {
+
+            try {LocalDateTime time = LocalDateTime.parse(entry.getKey());Double watts = entry.getValue();
+
+                if (watts != null && Double.isFinite(watts)) {restored.add(new EstimationTimestamp(time, watts));}
+            } catch (Exception e) {System.err.println("Invalid saved timestamp: " + entry.getKey()
+            );
+            }
+        }
+
+        // Sort by time
+        restored.sort(null);
+        // Restore forecast in memory
+        forecast = restored;
+        System.out.println("Restored forecast points: " + forecast.size()
+        );
+    }
+
 }

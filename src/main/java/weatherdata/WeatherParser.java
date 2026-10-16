@@ -10,7 +10,7 @@ import javax.json.JsonObject;
 import javax.json.JsonReader;
 
 /**
- * Class to handle parsing of the api response.
+ //Class to handle parsing of the api response.
  */
 public class WeatherParser {
     private ArrayList<ForecastTimestamp> timestamps;

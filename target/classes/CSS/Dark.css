@@ -1,0 +1,59 @@
+/* Variables */
+.root{
+    backgroundColor : rgb(59, 59, 59);
+    textColor : rgb(240, 240, 240);
+    dataBackgroundColor : rgb(85, 85, 85);
+    dataBorderColor : rgb(0, 0, 0);
+}
+
+/* ----------- Start menu ----------- */
+.layout{
+    -fx-background-color: backgroundColor;
+}
+
+.text{
+    -fx-text-fill: textColor;
+}
+
+.header{
+    -fx-background-color: #6096e6;
+}
+
+.infoBox{
+    -fx-background-color: dataBackgroundColor;
+    -fx-border-color:  dataBorderColor;
+}
+
+.chart-plot-background{
+    -fx-background-color: backgroundColor;
+}
+
+.chart-title{
+    -fx-text-fill : textColor;
+}
+
+.axis-label {
+    -fx-text-fill : textColor;
+}
+
+.axis{
+    -fx-tick-label-fill: textColor;
+}
+
+/* ----------- Settings menu ----------- */
+
+
+/* ----------- Appliance menu ----------- */
+.headerRow{
+    -fx-border-color: #CCCCCC;
+}
+
+.applianceRow{
+    -fx-background-color: dataBackgroundColor;
+    -fx-border-color: dataBorderColor;
+}
+
+.check-box{
+    -fx-text-fill : textColor;
+}
+
