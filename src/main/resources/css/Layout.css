@@ -1,30 +1,127 @@
-/* ----------- Start menu ----------- */
+.root, 
+.layout {   
+    -fx-font-family: "Segoe UI";
+}
+
+/* Main title */
 .title{
-    -fx-font-size: 22px;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
 }
 
 .infoBox{
-    -fx-border-radius: 8;
-    -fx-background-radius: 8;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
 }
 
+/* Value shown in boxes (production, usage, etc.) */
 .boxText{
-    -fx-font-size: 25px; -fx-font-weight: bold;
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
 }
+
+/* All normal buttons */
+.button{
+    -fx-background-radius: 10;
+    -fx-padding: 8 14;
+    -fx-cursor: hand;
+}
+
+/* Header buttons (language, theme) */
+.header .button {
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-pref-width: 55px;
+    -fx-min-width: 55px;
+    -fx-cursor: hand;
+    -fx-background-radius: 12;
+    -fx-padding: 10, 18;
+}
+
+/* Inputs in forms and Add Appliance section */
+.app-card .text-field,
+.app-card .combo-box-base,
+.app-input {
+    -fx-border-radius: 9;
+    -fx-background-radius: 9;
+    -fx-pref-height: 42px;
+}
+
+.sidebar-title{
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 35 5;
+}
+
+.sidebar-button {
+    -fx-font-size: 16px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-background-radius: 12;
+    -fx-padding: 14 16;
+    -fx-cursor: hand;
+}
+
+.applianceRow{ 
+    -fx-border-width: 1;
+}
+
+.headerRow{
+    -fx-border-width: 1;
+}
+
+
+/* ------------------------- For line chart ------------------------- */
+
 
 .chart{
     /* For margin */
     -fx-padding: 30px;
     -fx-border-insets: 30px;
     -fx-background-insets: 30px;
+
+    -fx-background-radius: 18;
+    -fx-padding: 20;
 }
 
-/* ----------- Settings menu ----------- */
-
-/* ----------- Appliance menu ----------- */
-
-.applianceRow{ -fx-border-width: 1;
+.chart-title{
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
 }
 
-.headerRow{-fx-border-width: 1;
+.modern-line-chart{
+    -fx-background-radius: 18;
+    -fx-background-insets: 0;
+    -fx-border-insets: 0;
+    -fx-padding: 24;
+}
+
+.chart-hover-card{
+    -fx-background-radius: 12;
+    -fx-padding: 10 15;
+}
+
+.chart-hover-value{
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+}
+
+/* line */
+.default-color0.chart-series-line, .default-color0.chart-series-area-line {
+    -fx-stroke-width: 3px;
+}
+
+/* points */
+.default-color0.chart-line-symbol, .default-color0.chart-area-symbol {
+    -fx-background-radius: 7px;
+    -fx-background-insets: 0, 3;
+    -fx-padding: 6px;
+    -fx-cursor: hand;
+}
+
+.chart-horizontal-grid-lines{
+    -fx-stroke-dash-array: 4 6;
+}
+
+.chart-hover-time{
+    -fx-font-size: 13px;
 }
