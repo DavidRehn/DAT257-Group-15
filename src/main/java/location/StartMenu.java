@@ -30,7 +30,7 @@ import weatherdata.EstimationTimestamp;
 import location.builder.LabelBuilder;
 import location.builder.LabelDirector;
 import location.builder.Row;
-import i18n.LanguageManager;
+import language.LanguageManager;
 import ui.PageNavigator;
 import location.builder.VBoxBuilder;
 public class StartMenu extends Application implements SubAppInterface{

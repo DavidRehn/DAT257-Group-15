@@ -29,7 +29,7 @@ import java.time.LocalDateTime;
 import CSS.CSSPath;
 import other.TimestampData;
 import location.builder.VBoxBuilder;
-import i18n.LanguageManager;
+import language.LanguageManager;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.Priority;
 import ui.PageNavigator;
