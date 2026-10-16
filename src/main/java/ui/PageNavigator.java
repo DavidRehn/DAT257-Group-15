@@ -1,6 +1,6 @@
 package ui;
 
-import i18n.LanguageManager;
+import language.LanguageManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.ParallelTransition;
