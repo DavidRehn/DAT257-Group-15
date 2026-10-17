@@ -49,7 +49,16 @@ public class LocationApp extends Application implements SubAppInterface {
     public void start(Stage stage) {
         loadSavedData();
         director = new LabelDirector();
-        Label title = createLabel(LanguageManager.get("location.title"));                                                     //  TITLE
+        //Label title = constructName(LanguageManager.get("location.title"));  //  TITLE
+        //title.getStyleClass().addAll("home-welcome", "app-page-title");
+
+        String[] titleText = {""+LanguageManager.get("location.title")};
+        String[] titleTextStyle = {"home-welcome", "app-page-title"};
+
+        LabelBuilder title = new LabelBuilder();
+        director.constructSFR(title, titleText, titleTextStyle);
+
+
         String[] prompts = {
                 LanguageManager.get("input.longitude"),
                 LanguageManager.get("input.latitude"),
@@ -62,13 +71,30 @@ public class LocationApp extends Application implements SubAppInterface {
                 solarPanel == null ? null : String.valueOf(solarPanel.Tilt()),
                 solarPanel == null ? null : String.valueOf(solarPanel.Efficiency())
         };
+
         TextField[] fields = createTextFields(prompts, savedValues);
         // Give the fields clear names
-        TextField longitudeField = fields[0]; TextField latitudeField = fields[1]; TextField areaField = fields[2];
-        TextField tiltField = fields[3];TextField efficiencyField = fields[4];
+        TextField longitudeField = fields[0]; 
+        TextField latitudeField = fields[1]; 
+        TextField areaField = fields[2];
+        TextField tiltField = fields[3];
+        TextField efficiencyField = fields[4];
+        //  ROWS
+        String[] rowNames = {LanguageManager.get("longitude"), LanguageManager.get("latitude"),
+                             LanguageManager.get("area"),      LanguageManager.get("tilt"), 
+                             LanguageManager.get("efficiency")};
+        HBox[] rows = createInputRows(rowNames, fields);
+        for (HBox row : rows) {
+            row.setAlignment(Pos.CENTER_LEFT);
+            ((Label) row.getChildren().get(0)).setPrefWidth(160);
+            ((TextField) row.getChildren().get(1)).setPrefWidth(270);
+            row.getStyleClass().add("app-form-row");
+        }
+
         //  ZONE
         String[] zones = {"SE1", "SE2", "SE3", "SE4"};
         ComboBox<String> zoneList = createComboBox(LanguageManager.get("input.zone"), 185, zoneData == null ? null : zoneData.Zone(), zones);
+
         //  DIRECTION
         String[] directions = {"South", "Southwest", "West", "Northwest", "North", "Northeast", "East", "Southeast"};
         ComboBox<String> directionList = createComboBox(LanguageManager.get("input.direction"), 185,
@@ -81,8 +107,13 @@ public class LocationApp extends Application implements SubAppInterface {
             @Override public String fromString(String text) {return text;}});
 
         //  MESSAGE
-        Label allMessage = createLabel("");
-        allMessage.getStyleClass().add("text");
+        //Label allMessage = createLabel("");
+        //allMessage.getStyleClass().add("text");
+        String[] allMessageText ={""};
+        String[] allMessageTextStyle ={"text"};
+        LabelBuilder allMessage = new LabelBuilder();
+        director.constructS(allMessage, allMessageText, allMessageTextStyle);
+
         //  CHECK ALL
         Button checkAllButton = createButton(LanguageManager.get("check.all"), e -> validateAndSave(
                 longitudeField, latitudeField, areaField, tiltField, efficiencyField, zoneList, directionList, allMessage));
@@ -90,35 +121,37 @@ public class LocationApp extends Application implements SubAppInterface {
         Button getForecastButton = createButton(LanguageManager.get("get.forecast"), e -> loadForecast(allMessage));
         checkAllButton.setPrefWidth(160);
         getForecastButton.setPrefWidth(160);
-        //  ROWS
-        String[] rowNames = {LanguageManager.get("longitude"), LanguageManager.get("latitude"),
-                LanguageManager.get("area"), LanguageManager.get("tilt"), LanguageManager.get("efficiency")};
-
-        HBox[] rows = createInputRows(rowNames, fields);
+        
         HBox zoneRow = createComboRow(LanguageManager.get("zone"), zoneList);
-        HBox directionRow = createComboRow(LanguageManager.get("direction"), directionList);
-        for (HBox row : rows) {
-            row.setAlignment(Pos.CENTER_LEFT);
-            ((Label) row.getChildren().get(0)).setPrefWidth(160);
-            ((TextField) row.getChildren().get(1)).setPrefWidth(270);
-            row.getStyleClass().add("app-form-row");
-        }
         zoneRow.setAlignment(Pos.CENTER_LEFT);
-        directionRow.setAlignment(Pos.CENTER_LEFT);
         ((Label) zoneRow.getChildren().get(0)).setPrefWidth(160);
+
+        HBox directionRow = createComboRow(LanguageManager.get("direction"), directionList);
+        
+            
+        directionRow.setAlignment(Pos.CENTER_LEFT);
         ((Label) directionRow.getChildren().get(0)).setPrefWidth(160);
         zoneList.setPrefWidth(270);
         directionList.setPrefWidth(270);
         HBox buttonRow = new Row(checkAllButton, getForecastButton).getRow();
         buttonRow.setAlignment(Pos.CENTER_LEFT);
+
         checkAllButton.getStyleClass().add("app-secondary-button");
+        checkAllButton.setPrefWidth(170);  
+        checkAllButton.setMinWidth(170);
+
         getForecastButton.getStyleClass().add("app-primary-button");
+        getForecastButton.setPrefWidth(170); 
+        getForecastButton.setMinWidth(170);
         // Fix button widths
-        checkAllButton.setPrefWidth(170);  checkAllButton.setMinWidth(170);
-        getForecastButton.setPrefWidth(170); getForecastButton.setMinWidth(170);
+        
+        
+
         // Settings within the unified dashboard: two modern cards.
         Label locationHeading = createLabel(LanguageManager.get("location"));
         locationHeading.getStyleClass().addAll("solar-chart-title", "app-section-heading");
+
+
         VBox locationCard = new VBox(14, locationHeading, zoneRow, rows[0], rows[1]);
         locationCard.setPadding(new Insets(24));
         locationCard.getStyleClass().add("app-card");
@@ -131,7 +164,6 @@ public class LocationApp extends Application implements SubAppInterface {
         solarCard.getStyleClass().add("app-card");
         solarCard.setMaxWidth(Double.MAX_VALUE);
 
-        title.getStyleClass().addAll("home-welcome", "app-page-title");
         allMessage.getStyleClass().add("app-message");
         VBox layout = new VBox(22, title, locationCard, solarCard, buttonRow, allMessage);
         layout.setPadding(new Insets(25, 32, 35, 32));
@@ -152,7 +184,12 @@ public class LocationApp extends Application implements SubAppInterface {
     {
 
         // 1. Check empty fields
-        if (hasBlank(longitudeField, latitudeField, areaField, tiltField, efficiencyField)  || zoneList.getValue() == null || directionList.getValue() == null) {message.setText(LanguageManager.get("validation.empty"));return;
+        if (hasBlank(longitudeField, latitudeField, areaField, tiltField, efficiencyField)  
+            || zoneList.getValue() == null 
+            || directionList.getValue() == null) 
+        {
+            message.setText(LanguageManager.get("validation.empty"));
+            return;
         }
         // 2. Validate longitude
         Double longitude = readDouble(longitudeField, message, LanguageManager.get("validation.longitude"));
@@ -178,21 +215,26 @@ public class LocationApp extends Application implements SubAppInterface {
         // 5. Validate panel tilt
         Integer tilt = readInt(tiltField, message, LanguageManager.get("validation.tilt"));
         if (tilt == null) {return;}
-        if (!check(tilt >= 0 && tilt <= 90, message, LanguageManager.get("validation.tilt.range"))) {return;
+        if (!check(tilt >= 0 && tilt <= 90, message, LanguageManager.get("validation.tilt.range"))) {
+            return;
         }
         // 6. Validate panel efficiency
         Double efficiency = readDouble(efficiencyField, message, LanguageManager.get("validation.efficiency"));
-        if (efficiency == null) {return;
+        if (efficiency == null) {
+            return;
         }
         if (!check(efficiency > 0 && efficiency <= 1 && Double.isFinite(efficiency),
-                message, LanguageManager.get("validation.efficiency.range"))) {return;
+            message, LanguageManager.get("validation.efficiency.range"))) 
+        {
+            return;
         }
 
         // 7. Create valid data
         locationData = new LocationData(longitude, latitude);
         zoneData = new ZoneData(zoneList.getValue());
-        solarPanel = new SolarPanel(area, tilt, SolarPanel.directionConverter(directionList.getValue().toUpperCase(
-                java.util.Locale.ROOT)), efficiency);
+        solarPanel = new SolarPanel(area, tilt, 
+            SolarPanel.directionConverter(directionList.getValue().toUpperCase(java.util.Locale.ROOT)),
+            efficiency);
 
         // 8. Save data
         appData.Store("LocationData", locationData);
@@ -206,54 +248,85 @@ public class LocationApp extends Application implements SubAppInterface {
 
     // FORECAST
     private void loadForecast(Label message) {
-        if (locationData == null || solarPanel == null) {message.setText(LanguageManager.get("forecast.save.first")
-        );  return;}
+        if (locationData == null || solarPanel == null) {
+            message.setText(LanguageManager.get("forecast.save.first"));  
+            return;
+        }
         HTTPSolarRequest weatherRequest = new HTTPSolarRequest(
                 // Latitude first
                 locationData.Latitude(),  locationData.Longitude(), solarPanel.Tilt(), 2, solarPanel.Direction());
-        Thread apiThread = new Thread(() -> {SolarRadiationRetreiver retriever = new SolarRadiationRetreiver(weatherRequest, new WeatherParser(), appData);
-            if (!retriever.GetWeatherInfo()) {Platform.runLater(() -> message.setText(  LanguageManager.get("forecast.failed")));return;}
+        Thread apiThread = new Thread(() -> {
+            SolarRadiationRetreiver retriever = new SolarRadiationRetreiver(weatherRequest, new WeatherParser(), appData);
+
+            if (!retriever.GetWeatherInfo()) {
+                Platform.runLater(() -> message.setText(  LanguageManager.get("forecast.failed")));
+                return;
+            }
+
             TimestampData timestampData = (TimestampData) appData.Get("TimestampData");
-            if (timestampData == null) {Platform.runLater(() -> message.setText( LanguageManager.get("forecast.empty")));return;}
+
+            if (timestampData == null) {
+                Platform.runLater(() -> message.setText( LanguageManager.get("forecast.empty")));
+                return;
+            }
+            
             boolean saved = appData.SaveToDisc();
-            if (saved) {System.out.println("Forecast saved successfully");}
-            else {System.err.println("Could not save forecast");}
+
+            if (saved) {
+                System.out.println("Forecast saved successfully");
+            }
+            else {
+                System.err.println("Could not save forecast");
+            }
 
             ArrayList<EstimationTimestamp> timestamps = new ArrayList<>();
+
             for (HashMap.Entry<String, Double> entry : timestampData.GetTimestamps().entrySet()) {
-                timestamps.add(new EstimationTimestamp(LocalDateTime.parse(entry.getKey()), entry.getValue())
-                );}
+                timestamps.add(new EstimationTimestamp(LocalDateTime.parse(entry.getKey()), entry.getValue()));
+            }
             timestamps.sort(null);
             Platform.runLater(() -> {StartMenu.setForecastData(timestamps);
-                message.setText( LanguageManager.get("forecast.success"));   });
-        });     apiThread.setDaemon(true);apiThread.start();
+                message.setText( LanguageManager.get("forecast.success"));   
+            });
+        });     
+
+        apiThread.setDaemon(true);apiThread.start();
     }
 
     // ARRAY HELPERS
     private TextField[] createTextFields(String[] prompts, String[] values) {
         TextField[] fields = new TextField[prompts.length];
-        for (int i = 0; i < prompts.length; i++) {fields[i] = createTextField(prompts[i], values[i]);  }return fields;
+        for (int i = 0; i < prompts.length; i++) {
+            fields[i] = createTextField(prompts[i], values[i]);  
+        }
+        return fields;
     }
     private HBox[] createInputRows(String[] names, TextField[] fields) {
         HBox[] rows = new HBox[names.length];
-        for (int i = 0; i < names.length; i++) { rows[i] = createInputRow(names[i], fields[i]);  }return rows;
+        for (int i = 0; i < names.length; i++) {
+             rows[i] = createInputRow(names[i], fields[i]);  
+        }
+        return rows;
     }
     private boolean hasBlank(TextField... fields) { for (TextField field : fields) {
         if (field.getText().isBlank()) {return true;}}  return false;
     }
     // UI HELPERS
-    private Label createLabel(String text) {
+    private Label createLabel(String[] text) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructNameOfLabel(builder, text);
+        director.constructName(builder, text);
         return builder.getLabel();
     }
     private TextField createTextField(String prompt, String value) {
         TextInputBuilder builder = new TextInputBuilder();
         builder.setPromptText(prompt);
         TextField field = builder.getTextField();
-        if (value != null) {field.setText(value);}  return field;
+        if (value != null) {
+            field.setText(value);
+        }
+        return field;
     }
-    private Button createButton(String text, EventHandler<ActionEvent> event) {
+    private Button createButton(String[] text, EventHandler<ActionEvent> event) {
         ButtonBuilder builder = new ButtonBuilder();
         builder.setLabelName(text);
         builder.setEvent(event);
@@ -267,16 +340,16 @@ public class LocationApp extends Application implements SubAppInterface {
         if (value != null) {builder.setValue(value);}
         return builder.getComboBox();
     }
-    private HBox createInputRow(String name, TextField field) {
+    private HBox createInputRow(String[] name, TextField field) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructNameOfLabelWidth(builder, name);
+        director.constructW90(builder, name);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
         return new Row(label, field).getRow();
     }
-    private HBox createComboRow(String name, ComboBox<String> comboBox) {
+    private HBox createComboRow(String[] name, ComboBox<String> comboBox) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructNameOfLabelWidth(builder, name);
+        director.constructW90(builder, name);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
         return new Row(label, comboBox).getRow();
@@ -303,6 +376,7 @@ public class LocationApp extends Application implements SubAppInterface {
         String text = direction.toString().toLowerCase();
         return Character.toUpperCase(text.charAt(0)) + text.substring(1);
     }
+
     // LINKS
     @Override
     public void linkAppData(Model model) {this.appData = model;}
