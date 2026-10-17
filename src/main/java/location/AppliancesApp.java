@@ -293,7 +293,7 @@ public class AppliancesApp extends Application implements SubAppInterface{
 
 
         // Refined appliances dashboard: clear hierarchy and compact content.
-        title.getStyleClass().addAll("home-welcome", "app-page-title");
+        title.getStyleClass().add("home-welcome");
         Label addHeading = new Label(LanguageManager.get("appliance.add"));
         addHeading.getStyleClass().add("app-section-heading");
         VBox addCard = new VBox(16, addHeading, inputRow, errorMessage);

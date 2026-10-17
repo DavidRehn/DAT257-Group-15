@@ -131,7 +131,7 @@ public class LocationApp extends Application implements SubAppInterface {
         solarCard.getStyleClass().add("app-card");
         solarCard.setMaxWidth(Double.MAX_VALUE);
 
-        title.getStyleClass().addAll("home-welcome", "app-page-title");
+        title.getStyleClass().add("home-welcome");
         allMessage.getStyleClass().add("app-message");
         VBox layout = new VBox(22, title, locationCard, solarCard, buttonRow, allMessage);
         layout.setPadding(new Insets(25, 32, 35, 32));

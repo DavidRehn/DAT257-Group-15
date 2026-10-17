@@ -3,39 +3,26 @@
     -fx-font-family: "Segoe UI";
 }
 
-/* Main title */
-.title{
-    -fx-font-size: 26px;
-    -fx-font-weight: bold;
-}
 
-.infoBox{
-    -fx-background-radius: 18;
-    -fx-border-radius: 18;
-}
-
-/* Value shown in boxes (production, usage, etc.) */
-.boxText{
-    -fx-font-size: 27px;
-    -fx-font-weight: bold;
-}
-
-/* All normal buttons */
+/* ------------------------------- All normal buttons ------------------------------- */
 .button{
     -fx-background-radius: 10;
     -fx-padding: 8 14;
     -fx-cursor: hand;
 }
 
+
+/* ------------------------------- Header ------------------------------- */
+
 /* Header buttons (language, theme) */
-.header .button {
+.home-header .button {
     -fx-font-weight: bold;
     -fx-font-size: 14px;
     -fx-pref-width: 55px;
     -fx-min-width: 55px;
     -fx-cursor: hand;
     -fx-background-radius: 12;
-    -fx-padding: 10, 18;
+    -fx-padding: 10px, 18px;
 }
 
 /* Inputs in forms and Add Appliance section */
@@ -49,7 +36,6 @@
 
 
 /* ---------------------------------------- Sidebar ---------------------------------------- */
-
 
 .sidebar-title{
     -fx-font-size: 24px;
@@ -66,14 +52,35 @@
 }
 
 
-/* ---------------------------------------- IDK? ---------------------------------------- */
+/* ----------------------------- Main content ----------------------------- */
+
+/* Welcome text */
+.home-welcome {
+    -fx-font-size: 28px;
+}
+
+.home-subtitle {
+    -fx-font-size: 15px;
+}
 
 
-.applianceRow{ 
+/* ------------------------------- Information cards ------------------------------- */
+
+.infoBox{
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
     -fx-border-width: 1;
 }
 
-.headerRow{
+.boxText{
+    -fx-font-size: 27px;
+    -fx-font-weight: bold;
+}
+
+
+/* ---------------------------------------- IDK? ---------------------------------------- */
+
+.applianceRow{ 
     -fx-border-width: 1;
 }
 
@@ -138,7 +145,6 @@
 /* ---------------------------------------- Card surfaces throughout Home ---------------------------------------- */
 
 
-.infoBox,
 .app-card,
 .app-stat-card {
     -fx-background-radius: 18;

@@ -1,30 +1,13 @@
 
-/* Main background */
+/* ---------------------------- Main background ---------------------------- */
+
 .root { 
     -fx-background-color: #F3F7FC;
 }
 
-/* Header */
-.header {
-    -fx-background-color: #2563EB;
-}
 
-/* Header text */
-.header .label {
-    -fx-text-fill: white;
-}
+/* ---------------------------- Information cards ---------------------------- */
 
-/* Header buttons */
-.header .button {
-    -fx-background-color: #FFFFFF;
-    -fx-text-fill: #2563EB;
-}
-
-.header .button:hover {
-    -fx-background-color: #DBEAFE;
-}
-
-/* Information cards */
 .infoBox {
     -fx-background-color: white;
     -fx-border-color: #E2E8F0;
@@ -34,9 +17,11 @@
 /* Value shown in boxes (production, usage, etc.) */
 .boxText {  
     -fx-text-fill: #1D4ED8;
+    -fx-font-weight: bold;
 }
 
-/* Chart */
+
+/* ------------------------------- Chart ------------------------------- */
 .chart {
     -fx-background-color: white;
 }
@@ -51,20 +36,6 @@
     -fx-border-color: #CCCCCC;
 }
 
-.headerRow {
-    -fx-background-color: #F5F5F5; 
-    -fx-border-color: #CCCCCC;
-}
-
-/* header buttons (language, theme) */
-.header .button {
-    -fx-background-color: #DBEAFE;
-    -fx-text-fill: #1D4ED8;
-}
-
-.header .button:hover {   
-    -fx-background-color: #BFDBFE;
-}
 
 
 /* Main content */
@@ -92,48 +63,55 @@
 }
 
 .sidebar-button:hover {
-    -fx-background-color: #3B82F6;
+    -fx-background-color: #98c0ff;
 }
 
 .sidebar-active { 
-    -fx-background-color: #60A5FA; 
+    -fx-background-color: #58a3ff; 
+    -fx-text-fill: #FFFFFF;
     -fx-font-weight: bold;
 }
 
-/* Home header */
-.header.home-header {
-    -fx-background-color: transparent;
-    -fx-padding: 5 0 5 0;
+
+/* ---------------------------- Home header (on top containing language and theme buttons) ---------------------------- */
+
+
+.headerRow {
+    -fx-background-color: #F5F5F5; 
+    -fx-border-color: #CCCCCC;
 }
 
-.header.home-header .label { 
-    -fx-text-fill: #172554;
+.home-header {
+    -fx-background-color: transparent;
 }
+
+/* header buttons (language, theme) */
+.home-header .button {
+    -fx-background-color: #DBEAFE;
+    -fx-text-fill: #1D4ED8;
+}
+
+.home-header .button:hover {   
+    -fx-background-color: #BFDBFE;
+}
+
+
+/* ---------------------------------- Content on main page ---------------------------------- */
+
 
 /* Welcome text */
 .home-welcome {
     -fx-text-fill: #172554;
-    -fx-font-size: 28px;
     -fx-font-weight: bold;
 }
 
 .home-subtitle {
     -fx-text-fill: #64748B;
-    -fx-font-size: 15px;
 }
 
-/* Information cards */
-.infoBox {
-    -fx-background-color: white;
-    -fx-border-color: #E2E8F0;
-    -fx-effect: dropshadow(   gaussian, rgba(30, 60, 100, 0.12), 16, 0, 0, 5);
-}
 
-/* Production, usage and price values */
-.boxText {
-    -fx-text-fill: #2563EB;
-    -fx-font-weight: bold;
-}
+
+
 
 /* Modern LineChart */
 .modern-line-chart {
@@ -310,33 +288,18 @@
    =============================================== */
 
 /* A calmer light canvas, with a strong blue navigation rail. */
-.home-content,
-.home-scroll,
-.home-scroll > .viewport { -fx-background-color: #F5F8FD; }
 
 
-.sidebar-button.sidebar-active {
-    -fx-background-color: #69A2FF;
-    -fx-text-fill: #FFFFFF;
-    -fx-font-weight: bold;
+
+.shell-brand { 
+    -fx-text-fill: #142B50; 
+    -fx-font-size: 21px; 
 }
-
-.header.home-header { -fx-background-color: #F5F8FD; }
-.header.home-header .label { -fx-text-fill: #142B50; }
-.shell-brand { -fx-text-fill: #142B50; -fx-font-size: 21px; }
-
-.home-welcome, .app-page-title {
-    -fx-text-fill: #132B52;
-    -fx-font-size: 29px;
-    -fx-font-weight: bold;
-}
-.home-subtitle { -fx-text-fill: #617798; }
 
 
 /* ---------------------------------------- Card surfaces throughout Home ---------------------------------------- */
 
 
-.infoBox,
 .app-card,
 .app-stat-card {
     -fx-background-color: #FFFFFF;

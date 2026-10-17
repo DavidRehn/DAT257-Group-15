@@ -1,31 +1,34 @@
-/* Main background */
+/* ---------------------------- Main background ---------------------------- */
+
 .root, 
 .layout {   
     -fx-background-color: #101827;  
 }
 
-/* Normal text */
+
+/* ---------------------------- Normal text ---------------------------- */
+
 .label,
 .text,
 .check-box {
     -fx-text-fill: #E2E8F0;
 }
 
-/* Header */
-.header {
-    -fx-background-color: #1D376B;
+
+/* ---------------------------- All normal buttons ---------------------------- */
+
+.button {
+    -fx-background-color: #293B56;
+    -fx-text-fill: #F1F5F9;
 }
 
-.header .label {   
-    -fx-text-fill: white;
+.button:hover {
+    -fx-background-color: #385478;
 }
 
-/* Main title */
-.title {  
-    -fx-text-fill: white;   
-}
 
-/* Information cards */
+/* ------------------------------- Information cards ------------------------------- */
+
 .infoBox {  
     -fx-background-color: #1D2A40; 
     -fx-border-color: #34455F;
@@ -41,28 +44,9 @@
     -fx-text-fill: #8CB9FF;
 }
 
-/* All normal buttons */
-.button {
-    -fx-background-color: #293B56;
-    -fx-text-fill: #F1F5F9;
-}
 
-.button:hover {
-    -fx-background-color: #385478;
-}
+/* ------------------------------- Input fields ------------------------------- */
 
-
-/* Header buttons (language, theme) */
-.header .button {
-    -fx-background-color: #304E83;
-    -fx-text-fill: white;
-}
-
-.header .button:hover {
-    -fx-background-color: #4169AA;
-}
-
-/* Input fields */
 .text-field {
     -fx-background-color: #25354E;
     -fx-text-fill: #FFFFFF;
@@ -161,10 +145,7 @@
     -fx-border-color: #34455F;
 }
 
-.headerRow {
-    -fx-background-color: #25354E;
-    -fx-border-color: #425774;
-}
+
 
 
 /* ---------------------------------------- Sidebar ---------------------------------------- */
@@ -190,52 +171,46 @@
 }
 
 
+/* ---------------------------- Home header (on top containing language and theme buttons) ---------------------------- */
 
-/* ==============================
-   MODERN HOME - DARK MODE
-   ============================== */
 
-.home-content,
-.home-scroll,
-.home-scroll > .viewport {
-    -fx-background-color: #101827;
+.headerRow {
+    -fx-background-color: #25354E;
+    -fx-border-color: #425774;
 }
 
-
-
-/* Home header */
-.header.home-header {
+.home-header {
     -fx-background-color: transparent;
-    -fx-padding: 5 0 5 0;
 }
 
-.header.home-header .label {
+.home-header .label {
     -fx-text-fill: #F8FAFC;
 }
 
-/* Welcome text */
+/* Header buttons (language, theme) */
+.home-header .button {
+    -fx-background-color: #304E83;
+    -fx-text-fill: white;
+}
+
+.home-header .button:hover {
+    -fx-background-color: #4169AA;
+}
+
+
+/* ---------------------------------- Content on main page ---------------------------------- */
+
 .home-welcome {
     -fx-text-fill: #F8FAFC;
-    -fx-font-size: 28px;
     -fx-font-weight: bold;
 }
 
 .home-subtitle {
     -fx-text-fill: #AFC1DC;
-    -fx-font-size: 15px;
 }
 
-/* Information cards */
-.infoBox {
-    -fx-background-color: #1D2A40;
-    -fx-border-color: #34455F;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25),16, 0, 0, 5);
-}
 
-/* Information values */
-.boxText {
-    -fx-text-fill: #8CB9FF;
-}
+
 
 /* Modern LineChart */
 .modern-line-chart {
