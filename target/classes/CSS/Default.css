@@ -21,31 +21,6 @@
 }
 
 
-/* ------------------------------- Chart ------------------------------- */
-.chart {
-    -fx-background-color: white;
-}
-
-.chart-title { 
-    -fx-text-fill: #1E293B;
-}
-
-/* Keep existing appliance styling */
-.applianceRow { 
-    -fx-background-color: white;
-    -fx-border-color: #CCCCCC;
-}
-
-
-
-/* Main content */
-.home-content,
-.home-scroll,
-.home-scroll > .viewport {
-    -fx-background-color: #F3F7FC;
-}
-
-
 /* ---------------------------------------- Sidebar ---------------------------------------- */
 
 
@@ -75,12 +50,6 @@
 
 /* ---------------------------- Home header (on top containing language and theme buttons) ---------------------------- */
 
-
-.headerRow {
-    -fx-background-color: #F5F5F5; 
-    -fx-border-color: #CCCCCC;
-}
-
 .home-header {
     -fx-background-color: transparent;
 }
@@ -98,6 +67,12 @@
 
 /* ---------------------------------- Content on main page ---------------------------------- */
 
+/* Main content */
+.home-content,
+.home-scroll,
+.home-scroll > .viewport {
+    -fx-background-color: #F3F7FC;
+}
 
 /* Welcome text */
 .home-welcome {
@@ -119,15 +94,7 @@
     -fx-effect: dropshadow(gaussian, rgba(30, 60, 100, 0.10), 14, 0, 0, 4);
 }
 
-/* Chart background */
-.chart-plot-background {
-    -fx-background-color: white;
-}
 
-/* Chart title */
-.chart-title {
-    -fx-text-fill: #172554;
-}
 
 /* Horizontal grid */
 .chart-horizontal-grid-lines {
@@ -281,24 +248,15 @@
     -fx-background-color: #2563EB;
     -fx-text-fill: white;
 }
-/* ===============================================
-   SOLAR APP · LIGHT MODE POLISH
-   Append this block ONLY to Default.css.
-   Do not place it in Dark.css.
-   =============================================== */
-
-/* A calmer light canvas, with a strong blue navigation rail. */
 
 
+/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
 
-.shell-brand { 
-    -fx-text-fill: #142B50; 
-    -fx-font-size: 21px; 
+/* Keep existing appliance styling */
+.applianceRow { 
+    -fx-background-color: white;
+    -fx-border-color: #CCCCCC;
 }
-
-
-/* ---------------------------------------- Card surfaces throughout Home ---------------------------------------- */
-
 
 .app-card,
 .app-stat-card {
@@ -320,10 +278,6 @@
 .app-message { 
     -fx-text-fill: #647995; 
 }
-
-
-/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
-
 
 .app-card .text-field,
 .app-card .combo-box-base,

@@ -88,21 +88,6 @@
 /* ---------------------------------------- Line chart ---------------------------------------- */
 
 
-.chart{
-    /* For margin */
-    -fx-padding: 30px;
-    -fx-border-insets: 30px;
-    -fx-background-insets: 30px;
-
-    -fx-background-radius: 18;
-    -fx-padding: 20;
-}
-
-.chart-title{
-    -fx-font-size: 18px;
-    -fx-font-weight: bold;
-}
-
 .modern-line-chart{
     -fx-background-radius: 18;
     -fx-background-insets: 0;
@@ -142,7 +127,7 @@
 }
 
 
-/* ---------------------------------------- Card surfaces throughout Home ---------------------------------------- */
+/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
 
 
 .app-card,
@@ -180,10 +165,6 @@
 .app-message { 
     -fx-font-size: 13px; 
 }
-
-
-/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
-
 
 .app-card .text-field,
 .app-card .combo-box-base,

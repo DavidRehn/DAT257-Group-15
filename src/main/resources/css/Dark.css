@@ -93,24 +93,20 @@
     -fx-background-color: #60A5FA;
 }
 
+
+
+
+
+
+
+
+
 /* Scroll panes */
 .scroll-pane,
 .scroll-pane > .viewport {
     -fx-background-color: #101827;
 }
 
-/* Charts */
-.chart {
-    -fx-background-color: #1D2A40;
-}
-
-.chart-title {
-    -fx-text-fill: #E2E8F0;
-}
-
-.chart-plot-background {
-    -fx-background-color: #1D2A40;
-}
 
 .chart-horizontal-grid-lines,
 .chart-vertical-grid-lines {
@@ -139,11 +135,7 @@
     -fx-background-color: #60A5FA, #1D2A40;
 }
 
-/* Appliances rows */
-.applianceRow {
-    -fx-background-color: #1D2A40;
-    -fx-border-color: #34455F;
-}
+
 
 
 
@@ -152,7 +144,7 @@
 
 
 .sidebar {
-    -fx-background-color: #142646;
+    -fx-background-color: linear-gradient(to bottom, #0f1c33, #0b2463);
 }
 
 .sidebar-title {
@@ -172,12 +164,6 @@
 
 
 /* ---------------------------- Home header (on top containing language and theme buttons) ---------------------------- */
-
-
-.headerRow {
-    -fx-background-color: #25354E;
-    -fx-border-color: #425774;
-}
 
 .home-header {
     -fx-background-color: transparent;
@@ -210,23 +196,13 @@
 }
 
 
+/* ------------------------------------ Chart ------------------------------------ */
 
-
-/* Modern LineChart */
 .modern-line-chart {
-    -fx-background-color: #1D2A40;
+    -fx-background-color: #401e1d;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 14, 0, 0, 4);
 }
 
-/* Chart background */
-.modern-line-chart .chart-plot-background {
-    -fx-background-color: #1D2A40;
-}
-
-/* Chart title */
-.modern-line-chart .chart-title {
-    -fx-text-fill: #F8FAFC;
-}
 
 /* Horizontal grid */
 .modern-line-chart .chart-horizontal-grid-lines {
@@ -416,8 +392,14 @@
 }
 
 
-/* ---------------------------------------- Card surfaces throughout Home ---------------------------------------- */
+/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
 
+
+/* Appliances rows */
+.applianceRow {
+    -fx-background-color: #1D2A40;
+    -fx-border-color: #34455F;
+}
 
 .app-settings-page,
 .app-appliances-page {
@@ -450,10 +432,6 @@
 .app-message { 
     -fx-text-fill: #BACCE7; 
 }
-
-
-/* ---------------------------------------- Inputs in forms and Add Appliance section ---------------------------------------- */
-
 
 .app-card .text-field,
 .app-card .combo-box-base,
