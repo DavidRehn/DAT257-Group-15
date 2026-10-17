@@ -42,6 +42,7 @@
 /* Value shown in boxes (production, usage, etc.) */
 .boxText {
     -fx-text-fill: #8CB9FF;
+    -fx-font-weight: bold;
 }
 
 
@@ -199,29 +200,23 @@
 /* ------------------------------------ Chart ------------------------------------ */
 
 .modern-line-chart {
-    -fx-background-color: #401e1d;
+    -fx-background-color: #1D2A40;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25), 14, 0, 0, 4);
 }
-
 
 /* Horizontal grid */
 .modern-line-chart .chart-horizontal-grid-lines {
     -fx-stroke: #38485F;
-    -fx-stroke-dash-array: 4 6;
 }
 
 /* Blue line */
 .modern-line-chart .default-color0.chart-series-line {
     -fx-stroke: #60A5FA;
-    -fx-stroke-width: 3px;
 }
 
 /* Circular points */
 .modern-line-chart .default-color0.chart-line-symbol {
     -fx-background-color: #60A5FA, #1D2A40;
-    -fx-background-radius: 7px;
-    -fx-background-insets: 0, 3;
-    -fx-padding: 6px;
 }
 
 /* Chart axes */
@@ -233,46 +228,26 @@
     -fx-text-fill: #B9C9E0;
 }
 
-/* =============================
-   INTERACTIVE CHART - DARK
-   ============================= */
-
 /* Light blue line */
 .modern-line-chart .default-color0.chart-series-area-line {
     -fx-stroke: #60A5FA;
-    -fx-stroke-width: 3px;
 }
 
 /* Dark mode area gradient */
 .modern-line-chart .default-color0.chart-series-area-fill {
-    -fx-fill: linear-gradient(
-        to bottom,
-        rgba(59, 130, 246, 0.35),
-        rgba(59, 130, 246, 0.03)
-    );
+    -fx-fill: linear-gradient(to bottom,rgba(59, 130, 246, 0.35), rgba(59, 130, 246, 0.03));
 }
 
 /* Circular points */
 .modern-line-chart .default-color0.chart-area-symbol {
     -fx-background-color: #60A5FA, #1D2A40;
-    -fx-background-insets: 0, 3;
-    -fx-background-radius: 10;
-    -fx-padding: 7;
-    -fx-cursor: hand;
 }
 
 /* Floating tooltip */
 .chart-hover-card {
     -fx-background-color: #0F172A;
     -fx-border-color: #3B82F6;
-    -fx-border-radius: 12;
-    -fx-background-radius: 12;
-    -fx-padding: 10 15;
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0, 0, 0, 0.35),
-        15, 0, 0, 5
-    );
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35),14, 0, 0, 5);
 }
 
 /* Tooltip text */
@@ -282,46 +257,31 @@
 
 .chart-hover-value {
     -fx-text-fill: #93C5FD;
+    -fx-font-weight: bold;
 }
 
 /* Vertical guide */
 .chart-hover-guide {
     -fx-stroke: #60A5FA;
-    -fx-stroke-width: 1.5px;
-    -fx-stroke-dash-array: 5 5;
 }
 
-/* Chart panel */
-.modern-line-chart {
-    -fx-background-color: #1D2A40;
-    -fx-background-radius: 20;
-}
 
 
 /* Interactive chart panel - Dark Mode */
 
 .solar-chart-panel {
     -fx-background-color: #1D2A40;
-    -fx-background-radius: 20;
-    -fx-padding: 22;
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(0, 0, 0, 0.25),
-        16, 0, 0, 5
-    );
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.25),16, 0, 0, 5 );
 }
 
 .solar-chart-title {
     -fx-text-fill: #F8FAFC;
-    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
 .chart-day-selector {
     -fx-background-color: #304E83;
-    -fx-background-radius: 10;
     -fx-border-color: transparent;
-    -fx-cursor: hand;
 }
 
 .chart-day-selector .list-cell {
@@ -330,9 +290,6 @@
 
 .solar-chart-panel .modern-line-chart {
     -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-    -fx-padding: 5 0 0 0;
     -fx-effect: null;
 }
 
@@ -342,44 +299,29 @@
 
 .solar-chart-panel .default-color0.chart-series-area-line {
     -fx-stroke: #60A5FA;
-    -fx-stroke-width: 3px;
 }
 
 .solar-chart-panel .default-color0.chart-series-area-fill {
-    -fx-fill: linear-gradient(
-        to bottom,
-        rgba(59, 130, 246, 0.35),
-        rgba(59, 130, 246, 0.02)
-    );
+    -fx-fill: linear-gradient(to bottom,rgba(59, 130, 246, 0.35), rgba(59, 130, 246, 0.02));
 }
 
 .solar-chart-panel .default-color0.chart-area-symbol {
     -fx-background-color: #60A5FA, #1D2A40;
-    -fx-background-insets: 0, 3;
-    -fx-background-radius: 10;
-    -fx-padding: 9;
-    -fx-cursor: hand;
 }
 
 .solar-chart-panel .chart-horizontal-grid-lines {
     -fx-stroke: #38485F;
-    -fx-stroke-dash-array: 4 6;
 }
 
 .chart-status {
     -fx-text-fill: #AFC1DC;
-    -fx-font-size: 12px;
 }
 
 .day-tab {
     -fx-background-color: #304E83;
     -fx-text-fill: #DCEBFF;
-    -fx-font-size: 14px;
-    -fx-font-weight: bold;
-    -fx-background-radius: 14;
-    -fx-padding: 8 18;
-    -fx-cursor: hand;
     -fx-border-color: transparent;
+    -fx-font-weight: bold;
 }
 
 .day-tab:hover {
@@ -410,8 +352,7 @@
 .app-stat-card {
     -fx-background-color: #1D2A40;
     -fx-border-color: #34455F;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 16, 0, 0, 5);
-    -fx-padding: 24;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.22), 15, 0, 0, 5);
 }
 
 
@@ -419,14 +360,21 @@
 .app-page-title,
 .app-section-heading {
     -fx-text-fill: #F8FAFC;
+    -fx-font-weight: bold;
+}
+
+.app-page-title{
+    -fx-font-weight: bold;
 }
 
 .app-stat-value {
     -fx-text-fill: #93C5FD;
+    -fx-font-weight: bold;
 }
 
 .app-total-label {
     -fx-text-fill: #93C5FD;
+    -fx-font-weight: bold;
 }
 
 .app-message { 
@@ -456,6 +404,7 @@
 .app-primary-button {
     -fx-background-color: #397BEE;
     -fx-text-fill: #FFFFFF;
+    -fx-font-weight: bold;
 }
 
 .app-primary-button:hover { 
@@ -465,6 +414,7 @@
 .app-secondary-button {
     -fx-background-color: #304866;
     -fx-text-fill: #DBEAFE;
+    -fx-font-weight: bold;
 }
 
 .app-secondary-button:hover { 
@@ -491,6 +441,7 @@
 
 .app-table-header .label {
     -fx-text-fill: #D6E4F7;
+    -fx-font-weight: bold;
 }
 
 .app-table-row {

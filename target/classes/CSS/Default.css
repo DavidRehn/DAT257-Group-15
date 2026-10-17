@@ -117,7 +117,7 @@
 }
 
 .modern-line-chart .axis-label {
-    -fx-text-fill: #475569;
+    -fx-text-fill: #694747;
 }
 
 /* Light blue area below the line */
@@ -140,46 +140,32 @@
 /* Tooltip watts */
 .chart-hover-value {
     -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 /* Vertical hover guide */
 .chart-hover-guide {
     -fx-stroke: #60A5FA;
-    -fx-stroke-width: 1.5;
-    -fx-stroke-dash-array: 5 5;
 }
 
-/* Smooth visual layout */
-.modern-line-chart {
-    -fx-background-color: white;
-    -fx-background-radius: 20;
-}
+
 
 
 /* Interactive chart panel - Light Mode */
 
 .solar-chart-panel {
     -fx-background-color: white;
-    -fx-background-radius: 20;
-    -fx-padding: 22;
-    -fx-effect: dropshadow(
-        gaussian,
-        rgba(30, 60, 100, 0.12),
-        16, 0, 0, 5
-    );
+    -fx-effect: dropshadow(gaussian, rgba(30, 60, 100, 0.12),16, 0, 0, 5 );
 }
 
 .solar-chart-title {
     -fx-text-fill: #172554;
-    -fx-font-size: 20px;
     -fx-font-weight: bold;
 }
 
 .chart-day-selector {
     -fx-background-color: #DBEAFE;
-    -fx-background-radius: 10;
     -fx-border-color: transparent;
-    -fx-cursor: hand;
 }
 
 .chart-day-selector .list-cell {
@@ -188,9 +174,6 @@
 
 .solar-chart-panel .modern-line-chart {
     -fx-background-color: transparent;
-    -fx-background-insets: 0;
-    -fx-border-insets: 0;
-    -fx-padding: 5 0 0 0;
     -fx-effect: null;
 }
 
@@ -200,43 +183,28 @@
 
 .solar-chart-panel .default-color0.chart-series-area-line {
     -fx-stroke: #2563EB;
-    -fx-stroke-width: 3px;
 }
 
 .solar-chart-panel .default-color0.chart-series-area-fill {
-    -fx-fill: linear-gradient(
-        to bottom,
-        rgba(37, 99, 235, 0.26),
-        rgba(37, 99, 235, 0.02)
-    );
+    -fx-fill: linear-gradient(to bottom, rgba(37, 99, 235, 0.26),  rgba(37, 99, 235, 0.02));
 }
 
 .solar-chart-panel .default-color0.chart-area-symbol {
     -fx-background-color: #2563EB, white;
-    -fx-background-insets: 0, 3;
-    -fx-background-radius: 10;
-    -fx-padding: 9;
-    -fx-cursor: hand;
 }
 
 .solar-chart-panel .chart-horizontal-grid-lines {
     -fx-stroke: #E2E8F0;
-    -fx-stroke-dash-array: 4 6;
 }
 
 .chart-status {
     -fx-text-fill: #64748B;
-    -fx-font-size: 12px;
 }
 
 .day-tab {
     -fx-background-color: #DBEAFE;
     -fx-text-fill: #1D4ED8;
-    -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-background-radius: 14;
-    -fx-padding: 8 18;
-    -fx-cursor: hand;
     -fx-border-color: transparent;
 }
 
@@ -262,17 +230,26 @@
 .app-stat-card {
     -fx-background-color: #FFFFFF;
     -fx-border-color: #E4ECF8;
-    -fx-effect: dropshadow(gaussian, rgba(21, 57, 113, 0.10), 15, 0, 0, 4);
+    -fx-effect: dropshadow(gaussian, rgba(21, 57, 113, 0.10), 15, 0, 0, 5);
 }
 
 .app-section-heading {
     -fx-text-fill: #17345E;
+    -fx-font-weight: bold;
 }
+
+.app-page-title{
+    -fx-font-weight: bold;
+}
+
 .app-stat-value {
     -fx-text-fill: #245FE9;
+    -fx-font-weight: bold;
 }
+
 .app-total-label {
     -fx-text-fill: #1F51B7;
+    -fx-font-weight: bold;
 }
 
 .app-message { 
@@ -297,6 +274,7 @@
 .app-primary-button {
     -fx-background-color: #245FED;
     -fx-text-fill: white;
+    -fx-font-weight: bold;
 }
 
 .app-primary-button:hover { 
@@ -306,6 +284,7 @@
 .app-secondary-button {
     -fx-background-color: #E9F0FF;
     -fx-text-fill: #2357C7;
+    -fx-font-weight: bold;
 }
 .app-secondary-button:hover { 
     -fx-background-color: #D4E3FF; 
@@ -330,6 +309,7 @@
 
 .app-table-header .label {
     -fx-text-fill: #4E6281;
+    -fx-font-weight: bold;
 }
 
 .app-table-row {
