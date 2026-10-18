@@ -33,7 +33,11 @@ public class ButtonBuilder implements LBuilder {
         this.a = bBuilder;
         this.defultTitle.setOnAction(a.getEvent());
     }
-
+    // Temporary method for LocationApp
+    public Button getButton() {
+        return defultTitle;//
+    }
+/// /    //////
         //interface functions
 //--------------------------------
    

@@ -63,7 +63,17 @@ public class TextInputBuilder implements LBuilder {
     public ArrayList<LBuilder> getRowList(){
         return this.rowMaker.getListOfRow();
     }
-    
+
+
+
+  public void setPromptText(String promptText) {/// // ////// تحويل الى تعليق
+        if (defultTitle != null) {/// //
+            defultTitle.setPromptText(promptText);//////   /////
+        }
+    }
+
+
+/// ///   //////   / / / //
 /*
     private Label title;
   //  private TextField defult;
