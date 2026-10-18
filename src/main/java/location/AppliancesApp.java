@@ -1,37 +1,32 @@
 package location;
 
+import java.time.LocalDateTime;
+
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-
-import location.builder.LabelBuilder;
-import location.builder.LabelDirector;
-import location.builder.TextInputBuilder;
 import location.builder.ButtonBuilder;
 import location.builder.CheckBoxBuilder;
+import location.builder.LabelBuilder;
+import location.builder.LabelDirector;
 import location.builder.Row;
-
+import location.builder.TextInputBuilder;
+import location.builder.VBoxBuilder;
 import other.AppInterface;
 import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
-import java.time.LocalDateTime;
-
-import CSS.CSSPath;
 import other.TimestampData;
-import location.builder.VBoxBuilder;
-import language.LanguageManager;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.Priority;
+import ui.LanguageManager;
 import ui.PageNavigator;
 
 public class AppliancesApp extends Application implements SubAppInterface{

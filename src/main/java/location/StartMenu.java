@@ -18,7 +18,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-
+import location.builder.LabelBuilder;
+import location.builder.LabelDirector;
+import location.builder.Row;
+import location.builder.VBoxBuilder;
 import other.AppInterface;
 import other.ApplianceData;
 import other.Model;
@@ -26,13 +29,9 @@ import other.SubAppInterface;
 import other.TimestampData;
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
-import weatherdata.EstimationTimestamp;
-import location.builder.LabelBuilder;
-import location.builder.LabelDirector;
-import location.builder.Row;
-import language.LanguageManager;
+import ui.LanguageManager;
 import ui.PageNavigator;
-import location.builder.VBoxBuilder;
+import weatherdata.EstimationTimestamp;
 public class StartMenu extends Application implements SubAppInterface{
     private static ArrayList<EstimationTimestamp> forecast;
 
