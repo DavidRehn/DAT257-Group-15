@@ -1,5 +1,9 @@
 package ui;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+
 import i18n.LanguageManager;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
@@ -21,10 +25,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import other.AppInterface;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.Locale;
-
 /** One persistent scene: the sidebar and header do not change between pages. */
 public class PageNavigator {
 
@@ -36,9 +36,13 @@ public class PageNavigator {
     private static Timeline clock;
     private static Label clockLabel;
     private static Button languageButton;
-    private static Button homeButton;
-    private static Button settingsButton;
-    private static Button appliancesButton;
+    private static Button homeButton = sidebarButton("home", "home");
+    private static Button settingsButton = sidebarButton("settings", "settings");
+    private static Button appliancesButton = sidebarButton("appliances", "appliances");
+    private static Button overviewButton = sidebarButton("overview", "overview");
+    private final static Button[] sidebarButtons={homeButton,settingsButton,appliancesButton,overviewButton};
+    
+
     private static String currentPage = "home";
     private static Runnable onLeave = () -> {};
 
@@ -81,20 +85,26 @@ public class PageNavigator {
         Label logo = new Label("☀ Solar App");
         logo.getStyleClass().add("sidebar-title");
 
-        homeButton = sidebarButton("home", "home");
-        settingsButton = sidebarButton("settings", "settings");
-        appliancesButton = sidebarButton("appliances", "appliances");
-
-        homeButton.setOnAction(e -> app.viewStart(window));
-        settingsButton.setOnAction(e -> app.viewSettings(window));
-        appliancesButton.setOnAction(e -> app.viewAppliances(window));
-
-        VBox sidebar = new VBox(18, logo,
-                homeButton, settingsButton, appliancesButton);
+        VBox sidebar = new VBox(18);
         sidebar.setPadding(new Insets(30, 15, 20, 15));
         sidebar.setPrefWidth(220);
         sidebar.setMinWidth(220);
         sidebar.getStyleClass().add("sidebar");
+        //Add button actions
+        homeButton.setOnAction(e -> app.view(window,"home"));
+        sidebar.getChildren().add(homeButton);
+
+        overviewButton.setOnAction(e -> app.view(window,"overview"));
+        sidebar.getChildren().add(overviewButton);
+
+        settingsButton.setOnAction(e -> app.view(window,"settings"));
+        sidebar.getChildren().add(settingsButton);
+
+        appliancesButton.setOnAction(e -> app.view(window,"appliances"));
+        sidebar.getChildren().add(appliancesButton);
+
+        
+        
 
         clockLabel = new Label();
         clockLabel.setMinWidth(135);
@@ -160,25 +170,24 @@ public class PageNavigator {
     }
 
     private static void updateLanguage() {
-        homeButton.setText(LanguageManager.get("home"));
-        settingsButton.setText(LanguageManager.get("settings"));
-        appliancesButton.setText(LanguageManager.get("appliances"));
+        for(Button button : sidebarButtons){
+            button.setText(LanguageManager.get((String)String.valueOf(button.getUserData())));
+        }
+        
         languageButton.setText(LanguageManager.getLanguage().equals("en") ? "SV" : "EN");
         updateClock();
     }
 
     private static void updateActiveButton() {
-        Button[] buttons = {homeButton, settingsButton, appliancesButton};
-        for (Button button : buttons) {button.getStyleClass().remove("sidebar-active");
+        
+        for (Button button : sidebarButtons) {button.getStyleClass().remove("sidebar-active");
             if (currentPage.equals(button.getUserData())) {button.getStyleClass().add("sidebar-active");
             }
         }
     }
 
     private static void openCurrentPage() {
-        switch (currentPage) {case "settings": app.viewSettings(window); break;
-            case "appliances": app.viewAppliances(window); break;
-            default: app.viewStart(window); break;
-        }
+        app.view(window,currentPage);
+    
     }
 }

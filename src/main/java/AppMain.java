@@ -1,4 +1,8 @@
+import java.util.HashMap;
+
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import location.AppliancesApp;
 import location.LocationApp;
@@ -8,13 +12,16 @@ import other.Model;
 import other.SubAppInterface;
 import saveload.JsonSaveLoad;
 import saveload.SaveLoadInterface;
-import javafx.scene.image.Image;
-import java.io.InputStream;
-import java.io.IOException;
 public class AppMain extends Application implements AppInterface{
-    private StartMenu startMenu = new StartMenu();
+    private StartMenu homeMenu = new StartMenu();
     private LocationApp settingsMenu = new LocationApp();
     private AppliancesApp appliancesMenu = new AppliancesApp();
+    private final HashMap<String,Application> Menus = new HashMap<>(){{
+        put("home",homeMenu);
+        put("settings",settingsMenu);
+        put("appliances",appliancesMenu);
+        put("overview",homeMenu);
+    }};
 
     private SaveLoadInterface SL = new JsonSaveLoad();
     private Model appData = new Model(SL);
@@ -28,30 +35,36 @@ public class AppMain extends Application implements AppInterface{
         }
 
         appData.LoadFromDisc();
-        initSubApp(startMenu);
+        initSubApp(homeMenu);
         initSubApp(settingsMenu);
         initSubApp(appliancesMenu);
         // One Stage for the entire application. PageNavigator creates one Scene.
         stage.setTitle("Solar App");
-        viewStart(stage);
+        view(stage,"home");
     }
 
 
     public static void main(String[] args) {
         launch(AppMain.class,args);
     }
-    public void viewStart(Stage stage){
-        System.out.println("Switch to start");
-        startMenu.start(stage);
+
+    public void view(Stage stage,String key){
+        try {
+            
+            Menus.get(key).start(stage);
+            
+            
+        } catch (Exception e) {
+            System.out.println(e);
+            System.out.println("Menu key not found, ensure String key in the view(Stage stage, String key) call matches a key in AppMain.Menus");
+            Platform.exit();
+            
+        }
+        
     }
-    public void viewSettings(Stage stage){
-        System.out.println("Switch to settings");
-        settingsMenu.start(stage);
-    }
-    public void viewAppliances(Stage stage){
-        System.out.println("Switch to appliances");
-        appliancesMenu.start(stage);
-    }
+    
+    
+
     public void initSubApp(SubAppInterface app){
         app.linkAppData(this.appData);
         app.linkRoot(this);
