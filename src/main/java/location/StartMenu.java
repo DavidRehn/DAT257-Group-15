@@ -29,20 +29,12 @@ import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
 import other.TimestampData;
-
 import powermarketdata.PowerMarketParser;
 import powermarketdata.PowerMarketRetriver;
 import ui.LanguageManager;
 import ui.PageNavigator;
 import weatherdata.EstimationTimestamp;
 
-import location.builder.LabelBuilder;
-import location.builder.LabelDirector;
-import location.builder.Row;
-import location.builder.VBoxBuilder;
-
-import i18n.LanguageManager;
-import ui.PageNavigator;
 
 public class StartMenu extends Application implements SubAppInterface {
 
