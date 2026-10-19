@@ -1,13 +1,13 @@
 package location.builder;
 
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.control.TextField;
-import javafx.scene.control.CheckBox;
-import javafx.scene.Node;
+import javafx.scene.layout.HBox;
 
 
 public class Row {
@@ -57,6 +57,7 @@ public class Row {
         row = new HBox(15, buttonA, buttonB);
         row.setAlignment(Pos.CENTER);
     }
+
 
     public Row(TextField textFieldA, TextField textFieldB, Button button) {
 

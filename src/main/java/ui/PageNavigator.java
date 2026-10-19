@@ -23,16 +23,19 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import other.AppInterface;
+import other.Model;
 
 /** One persistent scene: the sidebar and header do not change between pages. */
 public class PageNavigator {
 
     private static Stage window;
     private static AppInterface app;
+    private static Model appData;
     private static BorderPane shell;
     private static StackPane content;
     private static Scene scene;
     private static Timeline clock;
+
     private static Label clockLabel;
     private static Button languageButton;
     private static Button homeButton = sidebarButton("home", "home");
@@ -56,6 +59,7 @@ public class PageNavigator {
         onLeave = cleanup == null ? () -> {} : cleanup;
         currentPage = page;
 
+        appData=app.GetModel();
         updateLanguage();
         updateActiveButton();
 
@@ -159,13 +163,24 @@ public class PageNavigator {
         button.getStyleClass().add("sidebar-button");
         button.setMaxWidth(Double.MAX_VALUE);
         button.setUserData(page);
+        //System.out.println(button.getUserData());
         return button;
     }
-
+    //internal counter, starts at -1 to offset multiple early calls.
+    private static int minuteCounter=-1;
     private static void updateClock() {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("EEE HH:mm",
              Locale.forLanguageTag(LanguageManager.getLanguage()));
         clockLabel.setText(LocalDateTime.now().format(format));
+
+        if(minuteCounter>=30){
+            minuteCounter=0;
+            appData.GetPrices().run();
+            
+        }else{minuteCounter++;System.out.println("Minute: "+((int)minuteCounter/2));}
+        
+        
+
     }
 
     private static void updateLanguage() {
@@ -180,13 +195,15 @@ public class PageNavigator {
     private static void updateActiveButton() {
         
         for (Button button : sidebarButtons) {button.getStyleClass().remove("sidebar-active");
-            if (currentPage.equals(button.getUserData())) {button.getStyleClass().add("sidebar-active");
+            if (currentPage.equals(button.getUserData())) {
+                button.getStyleClass().add("sidebar-active");
             }
         }
     }
 
     private static void openCurrentPage() {
+        System.out.println(currentPage);
         app.view(window,currentPage);
-    
+        
     }
 }

@@ -72,4 +72,7 @@ public class AppMain extends Application implements AppInterface{
         app.linkAppData(this.appData);
         app.linkRoot(this);
     }
+    public Model GetModel(){
+        return appData;
+    }
 }

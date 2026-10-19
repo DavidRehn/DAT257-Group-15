@@ -1,6 +1,5 @@
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\AppMain.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\CSS\CSSPath.java
-C:\Users\Gabriel\DAT257-Group-15\src\main\java\i18n\LanguageManager.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\AppliancesApp.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\builder\BarChartBuilder.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\builder\BBuilder.java
@@ -26,6 +25,7 @@ C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\ChartHover.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\LocationApp.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\LocationMain.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\LocationManager.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\OverviewApp.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\SolarChartView.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\StartMenu.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\location\StartMenuMain.java
@@ -34,6 +34,7 @@ C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\ApplianceData.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\Direction.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\LocationData.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\Model.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\ProfileData.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\SavableData.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\SolarPanel.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\SubAppInterface.java
@@ -42,9 +43,11 @@ C:\Users\Gabriel\DAT257-Group-15\src\main\java\other\ZoneData.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\HTTPMarketRequest.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketParser.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\PowerMarketRetriver.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\powermarketdata\PriceData.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\saveload\JsonSaveLoad.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\saveload\SaveLoadInterface.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\test\test.java
+C:\Users\Gabriel\DAT257-Group-15\src\main\java\ui\LanguageManager.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\ui\PageNavigator.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\ui\ThemeManager.java
 C:\Users\Gabriel\DAT257-Group-15\src\main\java\weatherdata\EnergyEstimator.java

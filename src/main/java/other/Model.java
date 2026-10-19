@@ -2,19 +2,27 @@ package other;
 
 import java.util.Hashtable;
 
+import powermarketdata.PriceData;
 import saveload.SaveLoadInterface;
 
 public class Model {
     private Hashtable<String, SavableData> datatable;
     private SaveLoadInterface saveLoad;
     private int currentProfile=0;
+    private PriceData prices = new PriceData();
     public Model(SaveLoadInterface saveLoad){
+        prices.run();
         this.saveLoad = saveLoad;
         datatable=new Hashtable<>();
+        
     }
+    
 
     public SavableData Get(String key){
         return datatable.get(key + "*" + currentProfile);
+    }
+    public SavableData Get(String key,int i){
+        return datatable.get(key + "*" + i);
     }
 
     public void Store(String key, SavableData data){
@@ -32,6 +40,13 @@ public class Model {
 
     private void SetProfile(int profile){
         this.currentProfile = profile;
+    }
+
+    public void UpdatePrices(){
+        prices.run();
+    }
+    public PriceData GetPrices(){
+        return prices;
     }
 }
 /* 

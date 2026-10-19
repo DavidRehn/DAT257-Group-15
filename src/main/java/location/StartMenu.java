@@ -34,13 +34,14 @@ import powermarketdata.PowerMarketRetriver;
 import ui.LanguageManager;
 import ui.PageNavigator;
 import weatherdata.EstimationTimestamp;
-
+import powermarketdata.PriceData;
 
 public class StartMenu extends Application implements SubAppInterface {
 
     private static ArrayList<EstimationTimestamp> forecast;
 
     private Model appData;
+    private PriceData prices;
     private AppInterface root;
 
     public static void setForecastData(ArrayList<EstimationTimestamp> f) {
@@ -50,6 +51,7 @@ public class StartMenu extends Application implements SubAppInterface {
     @Override
     public void linkAppData(Model m) {
         this.appData = m;
+        this.prices=appData.GetPrices();
     }
 
     @Override
@@ -158,7 +160,7 @@ public class StartMenu extends Application implements SubAppInterface {
         // Load electricity price in background
         priceValue.setText("— SEK/kWh");
 
-        Runnable refreshPrice = () -> {
+        /*Runnable refreshPrice = () -> {
 
             Thread worker = new Thread(() -> {
 
@@ -194,14 +196,14 @@ public class StartMenu extends Application implements SubAppInterface {
 
             worker.setDaemon(true);
             worker.start();
-        };
+        };*/
 
-        refreshPrice.run();
-
+        
+        priceValue.setText(prices.GetCurrentPrice("SE3", LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh");
         Timeline priceClock = new Timeline(
                 new KeyFrame(
                         Duration.minutes(15),
-                        e -> refreshPrice.run()
+                        e -> priceValue.setText(prices.GetCurrentPrice("SE3", LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh")
                 )
         );
 
