@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import location.AppliancesApp;
 import location.LocationApp;
+import location.OverviewApp;
 import location.StartMenu;
 import other.AppInterface;
 import other.Model;
@@ -16,11 +17,12 @@ public class AppMain extends Application implements AppInterface{
     private StartMenu homeMenu = new StartMenu();
     private LocationApp settingsMenu = new LocationApp();
     private AppliancesApp appliancesMenu = new AppliancesApp();
+    private OverviewApp overviewMenu = new OverviewApp();
     private final HashMap<String,Application> Menus = new HashMap<>(){{
         put("home",homeMenu);
         put("settings",settingsMenu);
         put("appliances",appliancesMenu);
-        put("overview",homeMenu);
+        put("overview",overviewMenu);
     }};
 
     private SaveLoadInterface SL = new JsonSaveLoad();
@@ -38,6 +40,7 @@ public class AppMain extends Application implements AppInterface{
         initSubApp(homeMenu);
         initSubApp(settingsMenu);
         initSubApp(appliancesMenu);
+        initSubApp(overviewMenu);
         // One Stage for the entire application. PageNavigator creates one Scene.
         stage.setTitle("Solar App");
         view(stage,"home");
