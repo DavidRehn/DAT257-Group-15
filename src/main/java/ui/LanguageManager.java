@@ -1,5 +1,5 @@
 
-package i18n;
+package ui;
 
 import java.util.Locale;
 import java.util.ResourceBundle;

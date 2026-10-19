@@ -41,8 +41,8 @@ import weatherdata.EstimationTimestamp;
 import weatherdata.HTTPSolarRequest;
 import weatherdata.SolarRadiationRetreiver;
 import weatherdata.WeatherParser;
-
-import i18n.LanguageManager;
+import ui.LanguageManager;
+import javafx.util.StringConverter;
 import ui.PageNavigator;
 
 public class LocationApp extends Application implements SubAppInterface {

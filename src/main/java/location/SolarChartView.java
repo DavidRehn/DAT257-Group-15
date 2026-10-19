@@ -1,7 +1,7 @@
 
 package location;
 
-import i18n.LanguageManager;
+import ui.LanguageManager;
 import weatherdata.EstimationTimestamp;
 
 import javafx.animation.ScaleTransition;
