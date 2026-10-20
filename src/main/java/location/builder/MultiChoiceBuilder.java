@@ -31,7 +31,7 @@ public class MultiChoiceBuilder  implements LBuilder{
         this.rowMaker = rowMaker;
     }
     @Override 
-    public void setStyl(String[] styl){
+    public void setStyl(String styl){
         this.defultTitle.getStyleClass().addAll(styl);
     }
     @Override 

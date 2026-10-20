@@ -24,39 +24,36 @@ public class LabelDirector {
      * @param string
      */
 
- 
+    public void constructName(LBuilder lBuilder, String[] string){
+        lBuilder.setLabelName(string);
+    }
+
+    public void constructS(LBuilder lBuilder, String[] string, String styl){
+        lBuilder.setLabelName(string);
+        lBuilder.setStyl(styl);
+    }
+
     public void constructW(LBuilder lBuilder, String[] string, int a){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(a);
     }
-
-    
-    public void constructName(LBuilder lBuilder, String[] string){
+    public void constructWS(LBuilder lBuilder, String[] string, int a, String styl){
         lBuilder.setLabelName(string);
-    }
-    public void constructS(LBuilder lBuilder, String[] string, String[] styl){
-        lBuilder.setLabelName(string);
+        lBuilder.setWidth(a);
         lBuilder.setStyl(styl);
     }
 
         // universal
     //-------------------------
-        // event & actions
-    public void constructEventB(LBuilder lBuilder, String[] string){
-        lBuilder.setLabelName(string);
-        //((ButtonBuilder)lBuilder).setEvent(new CallWetherAPI());
-    }
-// event & actions
-    //-------------------------
         //MultiChoise construktor
-    public void constructMCWFR(LBuilder lBuilder, String[] string, String[] Alternativs){
+    public void constructM185CWFR(LBuilder lBuilder, String[] string, int W, String[] Alternativs){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(185);
         ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
         lBuilder.setRow(new RowMaker(lBuilder));
     }
 
-    public void constructMCWAR(LBuilder lBuilder, String[] string, String[] Alternativs, ArrayList<LBuilder> rowList){
+    public void constructMCW185AR(LBuilder lBuilder, String[] string, String[] Alternativs, ArrayList<LBuilder> rowList){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(185);
         ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
@@ -64,51 +61,7 @@ public class LabelDirector {
     }
 
         //MultiChoise construktor
-    //-------------------------
-        // constructors with Row's
-    public void constructWFR(LBuilder lBuilder, String[] string){
-        lBuilder.setLabelName(string);
-        lBuilder.setWidth(90);
-        lBuilder.setRow(new RowMaker(lBuilder));
-    }
-    public void constructSFR(LBuilder lBuilder, String[] string, String[] styl){
-        lBuilder.setLabelName(string);
-        lBuilder.setStyl(styl);
-        lBuilder.setRow(new RowMaker(lBuilder));
-    }
-    public void constructWSFR(LBuilder lBuilder, String[] string, String[] styl){
-        lBuilder.setLabelName(string);
-        lBuilder.setStyl(styl);
-        lBuilder.setWidth(90);
-        lBuilder.setRow(new RowMaker(lBuilder));
-    }
-
-    //Perset comon TextField width of (90)
-    public void constructW220AR(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
-        lBuilder.setLabelName(string);
-        lBuilder.setWidth(220);
-        lBuilder.setRow(new RowMaker(rowList, lBuilder));
-    }
-    public void constructW220SAR(LBuilder lBuilder, String[] string, String[] styl, ArrayList<LBuilder> rowList){
-        lBuilder.setLabelName(string);
-        lBuilder.setWidth(220);
-        lBuilder.setStyl(styl);
-        lBuilder.setRow(new RowMaker(rowList, lBuilder));
-    }
-    //Perset comon Label width (90)
-    public void constructW90AR(LBuilder lBuilder, String[] string, ArrayList<LBuilder> rowList){
-        lBuilder.setLabelName(string);
-        lBuilder.setWidth(90);
-        lBuilder.setRow(new RowMaker(rowList, lBuilder));
-    } 
-    public void constructW90SAR(LBuilder lBuilder, String[] string, String[] styl, ArrayList<LBuilder> rowList){
-        lBuilder.setLabelName(string);
-        lBuilder.setWidth(90);
-        lBuilder.setStyl(styl);
-        lBuilder.setRow(new RowMaker(rowList, lBuilder));
-    } 
     
-        // constructors with Row's
     //------------------------------------------------
     //------------------------------------------------
 //VBOX

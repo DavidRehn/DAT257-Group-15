@@ -147,7 +147,7 @@ public class OverviewApp extends Application implements SubAppInterface {
         layout.addChildren(builderBoxTitel.getLabel());
         
         LabelBuilder builderBoxValue = new LabelBuilder();
-        director.constructS(builderBoxValue, new String[]{value}, new String[]{"boxText"});
+        director.constructS(builderBoxValue, new String[]{value}, "boxText");
         layout.addChildren(builderBoxValue.getLabel());
 
         return layout.getVBox();
