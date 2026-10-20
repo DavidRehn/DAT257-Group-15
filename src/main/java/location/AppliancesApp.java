@@ -56,8 +56,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
         labelDirector = new LabelDirector();
 
         // PAGE TITLE
-        Label title = createLabel(LanguageManager.get("appliances")
-        );
+        Label title = createLabel(LanguageManager.get("appliances"));
 
         title.getStyleClass().addAll("text", "home-welcome", "app-page-title");
 
@@ -108,11 +107,12 @@ public class AppliancesApp extends Application implements SubAppInterface {
         nameField.getStyleClass().add("app-input");
 
         // APPLIANCE WATTAGE FIELD
-        TextField wattageField = createTextField(LanguageManager.get("appliance.wattage"));
+        TextInputBuilder wattageField = new TextInputBuilder();
+        //createTextField(LanguageManager.get("appliance.wattage"));
+        labelDirector.constructS(wattageField, LanguageManager.get("appliance.wattage"),"app-input");
+        wattageField.getTextField().setPrefWidth(155);
 
-        wattageField.setPrefWidth(155);
-
-        wattageField.getStyleClass().add("app-input");
+        //wattageField.getStyleClass().add("app-input");
 
         // ADD APPLIANCE BUTTON
         ButtonBuilder addButtonBuilder = new ButtonBuilder();
@@ -122,7 +122,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
         addButton.setPrefWidth(115);
 
         // INPUT ROW
-        Row inputRowBuilder = new Row(nameField, wattageField, addButton);
+        Row inputRowBuilder = new Row(nameField, wattageField.getTextField(), addButton);
         HBox inputRow = inputRowBuilder.getRow();
         inputRow.setAlignment(Pos.CENTER_LEFT);
         inputRow.setMaxWidth(Double.MAX_VALUE);
@@ -176,14 +176,14 @@ public class AppliancesApp extends Application implements SubAppInterface {
             double savedWattage = entry.getValue();
 
             // APPLIANCE NAME
-            Label nameLabel = createLabel(savedName);
-            nameLabel.getStyleClass().add("text");
-            nameLabel.setPrefWidth(210);
-            // APPLIANCE WATTAGE
-            Label wattageLabel = createLabel(savedWattage + " W");
+            LabelBuilder nameLabel = new LabelBuilder();
+            labelDirector.constructS(nameLabel, savedName,"text");
+            nameLabel.getLabel().setPrefWidth(210);
 
-            wattageLabel.getStyleClass().add("text");
-            wattageLabel.setPrefWidth(135);
+            // APPLIANCE WATTAGE
+            LabelBuilder wattageLabel = new LabelBuilder();
+            labelDirector.constructS(wattageLabel, savedWattage + " W", "text");
+            wattageLabel.getLabel().setPrefWidth(135);
 
             // IN USE CHECKBOX
             CheckBoxBuilder inUseCheckBoxBuilder = new CheckBoxBuilder();
@@ -194,13 +194,13 @@ public class AppliancesApp extends Application implements SubAppInterface {
             inUseCheckBox.setSelected(appliances.IsInUse(savedName));
 
             // REMOVE BUTTON
-            ButtonBuilder removeButtonBuilder = new ButtonBuilder();
-            labelDirector.constructName(removeButtonBuilder, LanguageManager.get("appliance.remove"));
-            Button removeButton = removeButtonBuilder.getButton();
-            removeButton.getStyleClass().add("app-delete-button");
+            ButtonBuilder removeButton = new ButtonBuilder();
+            labelDirector.constructS(removeButton, LanguageManager.get("appliance.remove"), "app-delete-button");
+            //Button removeButton = removeButtonBuilder.getButton();
+            //removeButton.getStyleClass().add("app-delete-button");
 
             // APPLIANCE ROW
-            Row applianceRowBuilder = new Row(nameLabel, wattageLabel, inUseCheckBox, removeButton);
+            Row applianceRowBuilder = new Row(nameLabel.getLabel(), wattageLabel.getLabel(), inUseCheckBox, removeButton.getButton());
             HBox applianceRow = applianceRowBuilder.getRow();
             applianceRow.setPadding(new Insets(12, 16, 12, 16));
 
@@ -219,7 +219,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
             });
 
             // REMOVE SAVED APPLIANCE
-            removeButtonBuilder.setEvent(() -> e -> {appliances.Remove(savedName, savedWattage);
+            removeButton.setEvent(() -> e -> {appliances.Remove(savedName, savedWattage);
                 appData.Store("ApplianceData", appliances);
                 appData.SaveToDisc();
                 applianceList.getChildren().remove(applianceRow);
@@ -233,7 +233,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
         // ADD NEW APPLIANCE EVENT
         addButtonBuilder.setEvent(() -> event -> {String name = nameField.getText().trim();
-            try {double wattage = Double.parseDouble(wattageField.getText().trim());
+            try {double wattage = Double.parseDouble(wattageField.getTextField().getText().trim());
 
                 // VALIDATE NAME
                 if (name.isBlank() || appliances.hasKey(name)) {errorMessage.setText(
@@ -248,9 +248,10 @@ public class AppliancesApp extends Application implements SubAppInterface {
                 errorMessage.setText("");
 
                 // NEW APPLIANCE NAME
-                Label nameLabel = createLabel(name);
-                nameLabel.getStyleClass().add("text");
-                nameLabel.setPrefWidth(210);
+                LabelBuilder nameLabel = new LabelBuilder();// createLabel(name);
+                labelDirector.constructS(nameLabel, name, "text");
+                //nameLabel.getStyleClass().add("text");
+                nameLabel.getLabel().setPrefWidth(210);
 
                 // NEW APPLIANCE WATTAGE
                 Label wattageLabel = createLabel(wattage + " W");
@@ -272,13 +273,13 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
                 // CREATE REMOVE BUTTON
                 ButtonBuilder removeButtonBuilder = new ButtonBuilder();
-                labelDirector.constructName(removeButtonBuilder, LanguageManager.get("appliance.remove"));
+                labelDirector.constructS(removeButtonBuilder, LanguageManager.get("appliance.remove"),"app-delete-button");
 
                 Button removeButton = removeButtonBuilder.getButton();
                 removeButton.getStyleClass().add("app-delete-button");
 
                 // CREATE NEW APPLIANCE ROW
-                Row applianceRowBuilder = new Row(nameLabel, wattageLabel, inUseCheckBox, removeButton);
+                Row applianceRowBuilder = new Row(nameLabel.getLabel(), wattageLabel, inUseCheckBox, removeButtonBuilder.getButton());
                 HBox applianceRow = applianceRowBuilder.getRow();
                 applianceRow.setPadding(new Insets(12, 16, 12, 16));
                 applianceRow.setAlignment(Pos.CENTER_LEFT);
@@ -303,8 +304,11 @@ public class AppliancesApp extends Application implements SubAppInterface {
                 );
 
                 // CLEAR INPUTS
-                nameField.clear();wattageField.clear();
-            } catch (NumberFormatException e) {errorMessage.setText(LanguageManager.get("appliance.error.number"));}
+                nameField.clear();
+                wattageField.getTextField().clear();
+            } catch (NumberFormatException e) {
+                errorMessage.setText(LanguageManager.get("appliance.error.number"));
+            }
         });
 
         // ADD APPLIANCE CARD
@@ -344,14 +348,16 @@ public class AppliancesApp extends Application implements SubAppInterface {
     // CREATE LABEL USING BUILDER
 
 
-    private Label createLabel(String text) {LabelBuilder builder = new LabelBuilder();
+    private Label createLabel(String text) {
+        LabelBuilder builder = new LabelBuilder();
         labelDirector.constructName(builder,text);
         return builder.getLabel();
     }
 
     // CREATE TEXT FIELD USING BUILDER
 
-    private TextField createTextField(String prompt) {TextInputBuilder builder = new TextInputBuilder();
+    private TextField createTextField(String prompt) {
+        TextInputBuilder builder = new TextInputBuilder();
         // Create field before setting placeholder
         labelDirector.constructName(builder, "");
        builder.setPromptText(prompt);
