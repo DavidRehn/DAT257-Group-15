@@ -15,6 +15,11 @@ public class RowMaker {
     private HBox rowFormat;
     private ArrayList<LBuilder> rows;
 
+    public RowMaker(){
+        this.rows = new ArrayList<>();
+        this.rowFormat = new HBox();
+    }
+
     /** Called by The first LBuilder in the row to creat a list of all LBuilder objects that are desierd to be on the same row.
      * @param firstRow is the firs element of the row.
      */
@@ -27,6 +32,16 @@ public class RowMaker {
         this.rows = rows;
         this.rows.add(newColume);
     }
+        //constructors
+    //----------------------------
+        //set
+
+    public void add(LBuilder lBuilder){
+        this.rows.add(lBuilder);
+    }
+        //set
+    //----------------------------
+        //get
 
     public ArrayList<LBuilder> getListOfRow(){
         return rows;
