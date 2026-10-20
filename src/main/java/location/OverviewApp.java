@@ -55,7 +55,7 @@ public class OverviewApp extends Application implements SubAppInterface {
         ButtonBuilder buttonBuilder=new ButtonBuilder();
         HashMap<String,String> test=new HashMap<>();
         test.put("production","0");
-        director.constructName(buttonBuilder, new String[]{LanguageManager.get("appliance.add")});
+        director.constructName(buttonBuilder, LanguageManager.get("appliance.add"));
         buttonBuilder.setEvent(() -> e ->{appData.AddProfile("Name");layout.getChildren().add(profileConstructor(appData.GetHighest(),test));});
 
         layout.getChildren().add(buttonBuilder.getButton());
@@ -107,7 +107,7 @@ public class OverviewApp extends Application implements SubAppInterface {
 
         //Title
         LabelBuilder builder = new LabelBuilder();
-        director.constructName(builder, new String[]{appData.GetName(name)});
+        director.constructName(builder, appData.GetName(name));
         layout.getChildren().add(builder.getLabel());
 
         //Info box row
@@ -121,12 +121,12 @@ public class OverviewApp extends Application implements SubAppInterface {
         HBox buttonRow = new HBox();
         ButtonBuilder buttonBuilder=new ButtonBuilder();
         //Add lang
-        director.constructName(buttonBuilder, new String[]{"Select"});
+        director.constructName(buttonBuilder, "Select");
         buttonBuilder.setEvent(() -> e ->{appData.SwitchProfile(name);});
         buttonRow.getChildren().add(buttonBuilder.getButton());
 
         buttonBuilder=new ButtonBuilder();
-        director.constructName(buttonBuilder, new String[]{LanguageManager.get("appliance.remove")});
+        director.constructName(buttonBuilder, LanguageManager.get("appliance.remove"));
         buttonBuilder.setEvent(() -> e ->{appData.RemoveProfile(name);});
         buttonRow.getChildren().add(buttonBuilder.getButton());
 
@@ -143,11 +143,11 @@ public class OverviewApp extends Application implements SubAppInterface {
         director.constructVboxAWHIS(layout,8, Pos.CENTER_LEFT, 220, 95, 20, "infoBox");
 
         LabelBuilder builderBoxTitel = new LabelBuilder();
-        director.constructName(builderBoxTitel, new String[]{LanguageManager.get(title)});
+        director.constructName(builderBoxTitel, LanguageManager.get(title));
         layout.addChildren(builderBoxTitel.getLabel());
         
         LabelBuilder builderBoxValue = new LabelBuilder();
-        director.constructS(builderBoxValue, new String[]{value}, "boxText");
+        director.constructS(builderBoxValue, value, "boxText");
         layout.addChildren(builderBoxValue.getLabel());
 
         return layout.getVBox();

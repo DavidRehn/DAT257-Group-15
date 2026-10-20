@@ -96,7 +96,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 productionBuilder,
-                new String[]{LanguageManager.get("production")}
+                LanguageManager.get("production")
         );
 
         Label production = productionBuilder.getLabel();
@@ -107,7 +107,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 productionValueBuilder,
-                new String[]{(int) prodVal + " W"}
+                (int) prodVal + " W"
         );
 
         Label productionValue = productionValueBuilder.getLabel();
@@ -118,7 +118,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 usageBuilder,
-                new String[]{LanguageManager.get("usage")}
+                LanguageManager.get("usage")
         );
 
         Label usage = usageBuilder.getLabel();
@@ -129,7 +129,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 usageValueBuilder,
-                new String[]{formatCurrentUsage()}
+                formatCurrentUsage()
         );
 
         Label usageValue = usageValueBuilder.getLabel();
@@ -140,7 +140,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 priceBuilder,
-                new String[]{LanguageManager.get("price")}
+                LanguageManager.get("price")
         );
 
         Label price = priceBuilder.getLabel();
@@ -151,7 +151,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 priceValueBuilder,
-                new String[]{" SEK/kWh"}
+                " SEK/kWh"
         );
 
         Label priceValue = priceValueBuilder.getLabel();

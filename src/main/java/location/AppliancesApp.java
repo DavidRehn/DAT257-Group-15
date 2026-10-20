@@ -116,9 +116,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
         // ADD APPLIANCE BUTTON
         ButtonBuilder addButtonBuilder = new ButtonBuilder();
-        labelDirector.constructName(addButtonBuilder, new String[]{LanguageManager.get("appliance.add")
-        }
-        );
+        labelDirector.constructName(addButtonBuilder, LanguageManager.get("appliance.add"));
 
         Button addButton = addButtonBuilder.getButton();addButton.getStyleClass().add("app-primary-button");
         addButton.setPrefWidth(115);
@@ -197,7 +195,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
             // REMOVE BUTTON
             ButtonBuilder removeButtonBuilder = new ButtonBuilder();
-            labelDirector.constructName(removeButtonBuilder, new String[]{LanguageManager.get("appliance.remove")});
+            labelDirector.constructName(removeButtonBuilder, LanguageManager.get("appliance.remove"));
             Button removeButton = removeButtonBuilder.getButton();
             removeButton.getStyleClass().add("app-delete-button");
 
@@ -274,8 +272,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
                 // CREATE REMOVE BUTTON
                 ButtonBuilder removeButtonBuilder = new ButtonBuilder();
-                labelDirector.constructName(removeButtonBuilder, new String[]{LanguageManager.get("appliance.remove")}
-                );
+                labelDirector.constructName(removeButtonBuilder, LanguageManager.get("appliance.remove"));
 
                 Button removeButton = removeButtonBuilder.getButton();
                 removeButton.getStyleClass().add("app-delete-button");
@@ -348,7 +345,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
 
     private Label createLabel(String text) {LabelBuilder builder = new LabelBuilder();
-        labelDirector.constructName(builder, new String[]{text});
+        labelDirector.constructName(builder,text);
         return builder.getLabel();
     }
 
@@ -356,7 +353,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
 
     private TextField createTextField(String prompt) {TextInputBuilder builder = new TextInputBuilder();
         // Create field before setting placeholder
-        labelDirector.constructName(builder, new String[]{""});
+        labelDirector.constructName(builder, "");
        builder.setPromptText(prompt);
         return builder.getTextField();
     }

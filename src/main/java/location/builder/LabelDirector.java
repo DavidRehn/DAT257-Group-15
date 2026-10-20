@@ -24,20 +24,20 @@ public class LabelDirector {
      * @param string
      */
 
-    public void constructName(LBuilder lBuilder, String[] string){
+    public void constructName(LBuilder lBuilder, String string){
         lBuilder.setLabelName(string);
     }
 
-    public void constructS(LBuilder lBuilder, String[] string, String styl){
+    public void constructS(LBuilder lBuilder, String string, String styl){
         lBuilder.setLabelName(string);
         lBuilder.setStyl(styl);
     }
 
-    public void constructW(LBuilder lBuilder, String[] string, int a){
+    public void constructW(LBuilder lBuilder, String string, int a){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(a);
     }
-    public void constructWS(LBuilder lBuilder, String[] string, int a, String styl){
+    public void constructWS(LBuilder lBuilder, String string, int a, String styl){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(a);
         lBuilder.setStyl(styl);
@@ -46,18 +46,18 @@ public class LabelDirector {
         // universal
     //-------------------------
         //MultiChoise construktor
-    public void constructM185CWFR(LBuilder lBuilder, String[] string, int W, String[] Alternativs){
+    public void constructM185CWFR(LBuilder lBuilder, String string, int W, String[] Alternativs){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(185);
         ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
-        lBuilder.setRow(new RowMaker(lBuilder));
+        //lBuilder.setRow(new RowMaker(lBuilder));
     }
 
-    public void constructMCW185AR(LBuilder lBuilder, String[] string, String[] Alternativs, ArrayList<LBuilder> rowList){
+    public void constructMCW185AR(LBuilder lBuilder, String string, String[] Alternativs, ArrayList<LBuilder> rowList){
         lBuilder.setLabelName(string);
         lBuilder.setWidth(185);
         ((MultiChoiceBuilder)lBuilder).setAlternativs(Alternativs);
-        lBuilder.setRow(new RowMaker(rowList, lBuilder));
+        //lBuilder.setRow(new RowMaker(rowList, lBuilder));
     }
 
         //MultiChoise construktor
@@ -75,6 +75,12 @@ public class LabelDirector {
         vBuilder.setStyle(styl); 
     }
  
+    //------------------------------------------------
+    //------------------------------------------------
+//CBuilder
+
+
+//CBuilder
     //------------------------------------------------
     //------------------------------------------------
         // Hard coded constructors 

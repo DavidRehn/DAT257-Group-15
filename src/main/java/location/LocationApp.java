@@ -308,14 +308,14 @@ public class LocationApp extends Application implements SubAppInterface {
     }
     // LABEL BUILDER
     private Label createLabel(String text) {LabelBuilder builder = new LabelBuilder();
-        director.constructName(builder, new String[]{text});
+        director.constructName(builder, text);
         return builder.getLabel();}
 
     // TEXT INPUT BUILDER
     private TextField createTextField(String prompt, String value) {
         TextInputBuilder builder = new TextInputBuilder();
         // Create the TextField first
-        director.constructName(builder, new String[]{""});
+        director.constructName(builder, "");
         // Set placeholder using temporary method
        builder.setPromptText(prompt);
        TextField field = builder.getTextField();
@@ -327,7 +327,7 @@ public class LocationApp extends Application implements SubAppInterface {
     private Button createButton(String text, EventHandler<ActionEvent> event) {
         ButtonBuilder builder = new ButtonBuilder();
         // Create button using LabelDirector
-        director.constructName(builder, new String[]{text});
+        director.constructName(builder, text);
 
         // BBuilder provides the event handler
         builder.setEvent(() -> event);
@@ -347,7 +347,7 @@ public class LocationApp extends Application implements SubAppInterface {
     // INPUT ROW
     private HBox createInputRow(String name, TextField field) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructW(builder, new String[]{name}, 90);
+        director.constructW(builder, name, 90);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
         return new Row(label, field).getRow();
@@ -357,7 +357,7 @@ public class LocationApp extends Application implements SubAppInterface {
 
     private HBox createComboRow(String name, ComboBox<String> comboBox) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructW(builder, new String[]{name}, 90);
+        director.constructW(builder, name, 90);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
 
