@@ -79,49 +79,4 @@ public class LabelDirector {
     //------------------------------------------------
         // Hard coded constructors 
 
-    
-    
-    public void constructRowLabelTextfild(LBuilder lBuilder, String[] string, TextField textField){
-        lBuilder.setLabelName(string);
-        lBuilder.setWidth(90);
-    }
-
-    public void constructSolarDetails(LBuilder lBuilder){
-        lBuilder.setLabelName(new String[]{"Solar panel details"});
-        //lBuilder.setWidth(90);
-    }
-
-    public void constructArea(LBuilder builder){
-        /*builder.reset();
-        builder.setLabelName("Area");
-        builder.setInput(new TextField("Area (m²)"));
-        
-        Conditions[] con = {new NumberNotZero()}
-        builder.setConditions(con);
-      /؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟
-      */
-    }
-    public void constructBackButton(BBuilder bBuilder){
-        /*
-        Button backButton = new Button("← Back to main page");
-
-        backButton.setOnAction(event -> {
-            root.viewStart(stage);
-        });
-
-        HBox backRow = new HBox(backButton);
-        
-        setAlignment(Pos.CENTER_LEFT);
-        backRow.setPadding(new Insets(0, 0, 0, 20));
-        backRow.setMaxWidth(Double.MAX_VALUE);
-       //؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟؟
-       */
-    }
-    public void constructZone(LBuilder lBuilder){
-        lBuilder.setLabelName( new String[]{"Zone"});
-
-    }
-    
-
-
 }
