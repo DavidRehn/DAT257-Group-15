@@ -171,7 +171,8 @@ public class AppliancesApp extends Application implements SubAppInterface {
         headerRow.getStyleClass().add("app-table-header");
         headerRow.setMaxWidth(Double.MAX_VALUE);
         // DISPLAY SAVED APPLIANCES
-        for (Map.Entry<String, Double> entry : appliances.GetAppliances().entrySet()) {
+        if(appData.Get("ApplianceData")!=null){
+        for (Map.Entry<String, Double> entry : ((ApplianceData)appData.Get("ApplianceData")).GetAppliances().entrySet()) {
 
             String savedName = entry.getKey();
             double savedWattage = entry.getValue();
@@ -226,6 +227,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
                 applianceList.getChildren().remove(applianceRow);
                 updateTotal(applianceList, totalLabel, currentUsage);
             });
+        }
         }
 
         // UPDATE INITIAL USAGE
