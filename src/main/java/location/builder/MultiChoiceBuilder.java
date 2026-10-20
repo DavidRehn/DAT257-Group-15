@@ -32,7 +32,7 @@ public class MultiChoiceBuilder  implements LBuilder{
     }
     @Override 
     public void setStyl(String[] styl){
-        this.defultTitle.getStyleClass().addAll("" + styl);
+        this.defultTitle.getStyleClass().addAll(styl);
     }
     @Override 
     public void setEvent(BBuilder bBuilder){

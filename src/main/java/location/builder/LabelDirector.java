@@ -17,8 +17,6 @@ public class LabelDirector {
      * MC: MultiChoiceBuilder
      (Indicates unique functunalitis/propetis of any given constructor)
      * W : Width is set in constructor.
-     * FR: First Row.       for the first element of a row.
-     * AR: Added/ing Row.   for any aditional element row (NOT the first one) 
      * /
     
     /* 
@@ -27,9 +25,9 @@ public class LabelDirector {
      */
 
  
-    public void constructW90(LBuilder lBuilder, String[] string){
+    public void constructW(LBuilder lBuilder, String[] string, int a){
         lBuilder.setLabelName(string);
-        lBuilder.setWidth(90);
+        lBuilder.setWidth(a);
     }
 
     
@@ -39,7 +37,6 @@ public class LabelDirector {
     public void constructS(LBuilder lBuilder, String[] string, String[] styl){
         lBuilder.setLabelName(string);
         lBuilder.setStyl(styl);
-
     }
 
         // universal
@@ -112,6 +109,20 @@ public class LabelDirector {
     } 
     
         // constructors with Row's
+    //------------------------------------------------
+    //------------------------------------------------
+//VBOX
+
+    public void constructVboxAWHIS(VBuilder vBuilder,double spacing,Pos alignment,int W,int H, int insets, String styl){
+        vBuilder.setSpacing(spacing);
+        vBuilder.setAlignment(alignment);
+        vBuilder.setPrefWidth(W);
+        vBuilder.setMinHeight(H);
+        vBuilder.setPadding(new Insets (insets));
+        vBuilder.setStyle(styl); 
+    }
+ 
+    //------------------------------------------------
     //------------------------------------------------
         // Hard coded constructors 
 

@@ -15,6 +15,7 @@ import javafx.util.Duration;
 import location.builder.ButtonBuilder;
 import location.builder.LabelBuilder;
 import location.builder.LabelDirector;
+import location.builder.VBoxBuilder;
 import other.AppInterface;
 import other.Model;
 import other.SubAppInterface;
@@ -70,22 +71,13 @@ public class OverviewApp extends Application implements SubAppInterface {
             layout.getChildren().add(profileConstructor(counter,maker));
             counter++;
 
-        }
-        
-        
-
-
-        
-
-            
+        }    
         
         Timeline priceClock = new Timeline(
                 new KeyFrame(
                         Duration.minutes(15)
                 )
         );
-
-        
 
         // Scroll pane
         ScrollPane homeScroll = new ScrollPane(layout);
@@ -146,27 +138,19 @@ public class OverviewApp extends Application implements SubAppInterface {
 
     
 
-
     private VBox infoBoxConstructor(String title, String value){
-        VBox layout = new VBox(8);
-        layout.setPrefWidth(220);
-        layout.setMinHeight(95);
-        layout.setPadding(new Insets(20));
-        layout.setAlignment(Pos.CENTER_LEFT);
-        layout.getStyleClass().add("infoBox");
+        VBoxBuilder layout = new VBoxBuilder();
+        director.constructVboxAWHIS(layout,8, Pos.CENTER_LEFT, 220, 95, 20, "infoBox");
 
-        LabelBuilder builder = new LabelBuilder();
-        director.constructName(builder, new String[]{LanguageManager.get(title)});
-        layout.getChildren().add(builder.getLabel());
+        LabelBuilder builderBoxTitel = new LabelBuilder();
+        director.constructName(builderBoxTitel, new String[]{LanguageManager.get(title)});
+        layout.addChildren(builderBoxTitel.getLabel());
         
-        
-        builder = new LabelBuilder();
-        director.constructName(builder, new String[]{value});
-        javafx.scene.control.Label temp = builder.getLabel();
-        temp.getStyleClass().add("boxText");
-        layout.getChildren().add(builder.getLabel());
-        
-        return layout;
+        LabelBuilder builderBoxValue = new LabelBuilder();
+        director.constructS(builderBoxValue, new String[]{value}, new String[]{"boxText"});
+        layout.addChildren(builderBoxValue.getLabel());
+
+        return layout.getVBox();
     }
     
 

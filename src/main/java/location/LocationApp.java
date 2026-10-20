@@ -347,7 +347,7 @@ public class LocationApp extends Application implements SubAppInterface {
     // INPUT ROW
     private HBox createInputRow(String name, TextField field) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructW90(builder, new String[]{name});
+        director.constructW(builder, new String[]{name}, 90);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
         return new Row(label, field).getRow();
@@ -357,7 +357,7 @@ public class LocationApp extends Application implements SubAppInterface {
 
     private HBox createComboRow(String name, ComboBox<String> comboBox) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructW90(builder, new String[]{name});
+        director.constructW(builder, new String[]{name}, 90);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
 
