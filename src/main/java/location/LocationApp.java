@@ -96,6 +96,10 @@ public class LocationApp extends Application implements SubAppInterface {
         }
 
         // ELECTRICITY ZONES
+    /* 
+    Should be the ageografical zones, not a acrunim.
+    handeld by sve & eng.
+        */
         String[] zones = {"SE1", "SE2", "SE3", "SE4"};
 
         ComboBox<String> zoneList = createComboBox(LanguageManager.get("input.zone"),
