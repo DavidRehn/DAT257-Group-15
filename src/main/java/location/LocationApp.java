@@ -256,7 +256,7 @@ public class LocationApp extends Application implements SubAppInterface {
             return;}
 
         HTTPSolarRequest weatherRequest = new HTTPSolarRequest(locationData.Latitude(), locationData.Longitude(),
-        solarPanel.Tilt(), 2, solarPanel.Direction());
+        solarPanel.Tilt(), 10, solarPanel.Direction());
         Thread apiThread = new Thread(() -> {SolarRadiationRetreiver retriever = new SolarRadiationRetreiver(weatherRequest,
           new WeatherParser(), appData);
             if (!retriever.GetWeatherInfo()) {

@@ -72,6 +72,7 @@ public class SolarChartView {
         title.getStyleClass().add("solar-chart-title");
 
         if (forecast != null){
+            dayButtons = new ArrayList<>();
             int days = forecast.size() / 24;
             for (int i = 0; i < days; i++){
                 Button button;
@@ -81,19 +82,23 @@ public class SolarChartView {
                     button.getStyleClass().addAll("day-tab", "day-tab-active");
                 }else{
                     String date = String.valueOf(forecast.get(i*24).GetTime().getDayOfMonth());
-                    String ending = " ";
+                    String ending;
                     switch (date) {
                         case "1":
-                            ending += "st";
+                        case "21":
+                        case "31":
+                            ending = "st";
                             break;
                         case "2":
-                            ending += "nd";
+                        case "22":
+                            ending = "nd";
                             break;
                         case "3":
-                            ending += "rd";
+                        case "23":
+                            ending = "rd";
                             break;
                         default:
-                            ending += "th";
+                            ending = "th";
                             break;
                     }
                     button = new Button(date + ending);
@@ -108,15 +113,12 @@ public class SolarChartView {
         }
 
         // Button container
-        HBox daySwitcher = new HBox();
+        HBox daySwitcher = new HBox(10);    // Margin between buttons
         daySwitcher.getChildren().addAll(dayButtons);
-        daySwitcher.setAlignment(Pos.CENTER_RIGHT);
+        daySwitcher.setAlignment(Pos.CENTER_LEFT);
 
-        // Spacer between title and buttons
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
         // Chart header
-        HBox header = new HBox(15, title, spacer, daySwitcher);
+        HBox header = new HBox(15, title, daySwitcher);
         header.setAlignment(Pos.CENTER_LEFT);
 
         // Forecast status message
