@@ -203,12 +203,10 @@ public class SolarChartView {
         int hour = item.getXValue().intValue();
         double watts = item.getYValue().doubleValue();
 
-        String information = String.format(Locale.US, "%02d:00\n%.1f W", hour, watts);
+        String information = String.format(Locale.US, "%02d:00\n%.0f W", hour, watts);
         // Floating tooltip
         Tooltip tooltip = new Tooltip(information);
-
-        tooltip.setStyle("-fx-background-color: #172554;" + "-fx-text-fill: white;" + "-fx-font-size: 15px;" +
-                        "-fx-font-weight: bold;" + "-fx-background-radius: 10;" + "-fx-padding: 12 16;");
+        tooltip.getStyleClass().add("chart-hover-card");
 
         // Mouse enters
         point.setOnMouseEntered(event -> {

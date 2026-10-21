@@ -1,7 +1,7 @@
 
 /* ---------------------------- Main background ---------------------------- */
 
-.root { 
+.layout{
     -fx-background-color: #F3F7FC;
 }
 
@@ -128,13 +128,15 @@
 
 /* Tooltip card */
 .chart-hover-card {
-    -fx-background-color: #1E293B;
-    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.25), 14, 0, 0, 5);
+    -fx-background-color: #245FED;
+    -fx-effect: dropshadow(gaussian, rgba(15, 23, 42, 0.25), 14, 0, 0, 5);  
+    -fx-font-weight:bold;
 }
 
 /* Tooltip time */
 .chart-hover-time {
     -fx-text-fill: #CBD5E1;
+    -fx-font-weight:bold;
 }
 
 /* Tooltip watts */

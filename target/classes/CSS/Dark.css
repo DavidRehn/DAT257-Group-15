@@ -1,6 +1,6 @@
 /* ---------------------------- Main background ---------------------------- */
 
-.root, 
+
 .layout {   
     -fx-background-color: #101827;  
 }
@@ -145,7 +145,7 @@
 
 
 .sidebar {
-    -fx-background-color: linear-gradient(to bottom, #0f1c33, #0b2463);
+    -fx-background-color: linear-gradient(to bottom, #0f1c33, #0c2668);
 }
 
 .sidebar-title {
@@ -167,7 +167,7 @@
 /* ---------------------------- Home header (on top containing language and theme buttons) ---------------------------- */
 
 .home-header {
-    -fx-background-color: transparent;
+    -fx-background-color: #101827;
 }
 
 .home-header .label {
@@ -243,11 +243,12 @@
     -fx-background-color: #60A5FA, #1D2A40;
 }
 
+
 /* Floating tooltip */
 .chart-hover-card {
-    -fx-background-color: #0F172A;
-    -fx-border-color: #3B82F6;
+    -fx-background-color: #0f1c33;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.35),14, 0, 0, 5);
+    -fx-font-weight:bold;
 }
 
 /* Tooltip text */
