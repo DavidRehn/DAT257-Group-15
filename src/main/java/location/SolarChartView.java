@@ -11,6 +11,7 @@ import javafx.scene.chart.AreaChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.HBox;
@@ -19,6 +20,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
+import location.builder.ButtonBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,15 +30,15 @@ import java.util.List;
 import java.util.Locale;
 
 public class SolarChartView {
-
+    private static ArrayList<Button> dayButtons = new ArrayList<>();
+    private static int day;
     // Create the complete chart
     public static VBox create(List<EstimationTimestamp> forecast) {
         // X axis: 24-hour time
         NumberAxis xAxis = new NumberAxis(0, 23, 2);
         xAxis.setAutoRanging(false);
         xAxis.setMinorTickVisible(false);
-        xAxis.setLabel(LanguageManager.get("chart.time")
-        );
+        xAxis.setLabel(LanguageManager.get("chart.time"));
 
         // Format hours as 00:00, 02:00...
         xAxis.setTickLabelFormatter(new StringConverter<Number>() {
@@ -68,22 +70,55 @@ public class SolarChartView {
         // Chart title
         Label title = new Label();
         title.getStyleClass().add("solar-chart-title");
-        // Today button
-        Button todayButton = new Button(LanguageManager.get("chart.today"));
-        // Tomorrow button
-        Button tomorrowButton = new Button(LanguageManager.get("chart.tomorrow"));
-        todayButton.getStyleClass().addAll("day-tab", "day-tab-active");
-        tomorrowButton.getStyleClass().add("day-tab");
+
+        if (forecast != null){
+            dayButtons = new ArrayList<>();
+            int days = forecast.size() / 24;
+            for (int i = 0; i < days; i++){
+                Button button;
+                String label;
+                if(i == 0){
+                    button = new Button("Today");
+                    button.getStyleClass().addAll("day-tab", "day-tab-active");
+                }else{
+                    String date = String.valueOf(forecast.get(i*24).GetTime().getDayOfMonth());
+                    String ending;
+                    switch (date) {
+                        case "1":
+                        case "21":
+                        case "31":
+                            ending = "st";
+                            break;
+                        case "2":
+                        case "22":
+                            ending = "nd";
+                            break;
+                        case "3":
+                        case "23":
+                            ending = "rd";
+                            break;
+                        default:
+                            ending = "th";
+                            break;
+                    }
+                    button = new Button(date + ending);
+                    button.getStyleClass().add("day-tab");
+                }
+                button.setOnAction(event -> {
+                    setActiveDayButton(button);
+                    updateChart(chart, forecast);
+                });
+                dayButtons.add(button);
+            }
+        }
 
         // Button container
-        HBox daySwitcher = new HBox(8, todayButton, tomorrowButton);
-        daySwitcher.setAlignment(Pos.CENTER_RIGHT);
+        HBox daySwitcher = new HBox(10);    // Margin between buttons
+        daySwitcher.getChildren().addAll(dayButtons);
+        daySwitcher.setAlignment(Pos.CENTER_LEFT);
 
-        // Spacer between title and buttons
-        Region spacer = new Region();
-        HBox.setHgrow(spacer, Priority.ALWAYS);
         // Chart header
-        HBox header = new HBox(15, title, spacer, daySwitcher);
+        HBox header = new HBox(15, title, daySwitcher);
         header.setAlignment(Pos.CENTER_LEFT);
 
         // Forecast status message
@@ -95,18 +130,10 @@ public class SolarChartView {
         VBox chartBox = new VBox(12, header, chart, message);
         chartBox.getStyleClass().add("solar-chart-panel");
         VBox.setVgrow(chart, Priority.ALWAYS);
-        // Click Today
-        todayButton.setOnAction(event -> {setActiveDayButton(todayButton, tomorrowButton);
-            updateChart(chart, forecast, false, title, message);
-        });
+        
 
-        // Click Tomorrow
-        tomorrowButton.setOnAction(event -> {setActiveDayButton(tomorrowButton, todayButton);
-            updateChart(chart, forecast, true, title, message
-            );
-        });
         // Show Today when opening Home
-        updateChart(chart, forecast, false, title, message);
+        updateChart(chart, forecast);
         return chartBox;
     }
 
@@ -114,38 +141,34 @@ public class SolarChartView {
     // SELECTED BUTTON
 
 
-    private static void setActiveDayButton(
-            Button active, Button inactive) {inactive.getStyleClass().remove("day-tab-active");
-        if (!active.getStyleClass().contains("day-tab-active")) {
-            active.getStyleClass().add("day-tab-active"
-            );
+    private static void setActiveDayButton( Button active) {
+        for (Button button : dayButtons) {
+            button.getStyleClass().remove("day-tab-active");
         }
+        active.getStyleClass().add("day-tab-active");
     }
 
 
     // UPDATE CHART
 
 
-    private static void updateChart(AreaChart<Number, Number> chart,
-            List<EstimationTimestamp> forecast, boolean tomorrow, Label title, Label message) {
+    private static void updateChart(AreaChart<Number, Number> chart, List<EstimationTimestamp> forecast) {
 
         // New series for the selected day
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
         LocalDate selectedDay = LocalDate.now();
-        if (tomorrow) {selectedDay = selectedDay.plusDays(1);
+        int day = 100000;   // Should always be set by loop below, larde number to make errors obvious.
+        for (int i = 0; i < dayButtons.size(); i++){
+            if (dayButtons.get(i).getStyleClass().contains("day-tab-active")){
+                day = i;
+            }
         }
+        selectedDay = selectedDay.plusDays(day);
 
         // If no forecast exists
         if (forecast == null || forecast.isEmpty()) {
-            if (!tomorrow) {title.setText(LanguageManager.get("chart.demo"));
-                addDemoData(series);
-                message.setText(LanguageManager.get("chart.demo.notice"));
-            } else {
-                title.setText(LanguageManager.get("chart.estimated"));
-                message.setText(LanguageManager.get("chart.no.data"));
-            }
-
+            addDemoData(series);
         } else {
             // Real forecasttitle.setText(LanguageManager.get("chart.estimated"));
 
@@ -162,9 +185,6 @@ public class SolarChartView {
                 int hour = time.getHour();
                 series.getData().add(new XYChart.Data<>(hour, watts));
             }
-
-            if (series.getData().isEmpty()) {message.setText(LanguageManager.get("chart.no.data"));
-            } else {message.setText("");}
         }
 
         // Replace the old series
@@ -203,12 +223,10 @@ public class SolarChartView {
         int hour = item.getXValue().intValue();
         double watts = item.getYValue().doubleValue();
 
-        String information = String.format(Locale.US, "%02d:00\n%.1f W", hour, watts);
+        String information = String.format(Locale.US, "%02d:00\n%.0f W", hour, watts);
         // Floating tooltip
         Tooltip tooltip = new Tooltip(information);
-
-        tooltip.setStyle("-fx-background-color: #172554;" + "-fx-text-fill: white;" + "-fx-font-size: 15px;" +
-                        "-fx-font-weight: bold;" + "-fx-background-radius: 10;" + "-fx-padding: 12 16;");
+        tooltip.getStyleClass().add("chart-hover-card");
 
         // Mouse enters
         point.setOnMouseEntered(event -> {

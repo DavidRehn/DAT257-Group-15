@@ -363,8 +363,7 @@ public class StartMenu extends Application implements SubAppInterface {
     // Calculate electricity usage from saved appliances
     private String formatCurrentUsage() {
 
-        ApplianceData devices =
-                (ApplianceData) appData.Get("ApplianceData");
+        ApplianceData devices = (ApplianceData) appData.Get("ApplianceData");
 
         if (devices == null) {
             return "0 W";
@@ -372,8 +371,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         double total = 0;
 
-        for (Map.Entry<String, Double> entry :
-                devices.GetAppliances().entrySet()) {
+        for (Map.Entry<String, Double> entry : devices.GetAppliances().entrySet()) {
 
             if (devices.IsInUse(entry.getKey())) {
                 total += entry.getValue();
@@ -394,50 +392,32 @@ public class StartMenu extends Application implements SubAppInterface {
             return;
         }
 
-        TimestampData savedData =
-                (TimestampData) appData.Get("TimestampData");
+        TimestampData savedData = (TimestampData) appData.Get("TimestampData");
 
         if (savedData == null) {
-
             System.out.println("No saved forecast found");
             return;
         }
 
-        ArrayList<EstimationTimestamp> restored =
-                new ArrayList<>();
+        ArrayList<EstimationTimestamp> restored =  new ArrayList<>();
 
-        for (Map.Entry<String, Double> entry :
-                savedData.GetTimestamps().entrySet()) {
+        for (Map.Entry<String, Double> entry : savedData.GetTimestamps().entrySet()) {
 
             try {
-
-                LocalDateTime time =
-                        LocalDateTime.parse(entry.getKey());
-
+                LocalDateTime time = LocalDateTime.parse(entry.getKey());
                 Double watts = entry.getValue();
 
                 if (watts != null && Double.isFinite(watts)) {
-
-                    restored.add(
-                            new EstimationTimestamp(time, watts)
-                    );
+                    restored.add(new EstimationTimestamp(time, watts));
                 }
 
             } catch (Exception e) {
-
-                System.err.println(
-                        "Invalid saved timestamp: "
-                                + entry.getKey()
-                );
+                System.err.println("Invalid saved timestamp: " + entry.getKey());
             }
         }
 
         restored.sort(null);
-
         forecast = restored;
-
-        System.out.println(
-                "Restored forecast points: " + forecast.size()
-        );
+        System.out.println("Restored forecast points: " + forecast.size());
     }
 }

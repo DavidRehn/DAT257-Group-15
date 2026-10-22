@@ -58,6 +58,7 @@ public class AppMain extends Application implements AppInterface{
             
             
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println(e);
             System.out.println("Menu key not found, ensure String key in the view(Stage stage, String key) call matches a key in AppMain.Menus");
             Platform.exit();
