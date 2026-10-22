@@ -11,6 +11,7 @@ public class Model {
     private int currentProfile=0;
     private int highestProfile=0;
     private PriceData prices = new PriceData();
+    
     public Model(SaveLoadInterface saveLoad){
         prices.run();
         this.saveLoad = saveLoad;
@@ -70,6 +71,7 @@ public class Model {
             
         }
         System.out.println(datatable);
+        highestProfile--;
         SaveToDisc();
     }
     public void SwitchProfile(int i){

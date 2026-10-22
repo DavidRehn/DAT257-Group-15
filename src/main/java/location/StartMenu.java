@@ -10,7 +10,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -29,23 +28,23 @@ import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
 import other.TimestampData;
-import powermarketdata.PowerMarketParser;
-import powermarketdata.PowerMarketRetriver;
+import other.ZoneData;
+import powermarketdata.PriceData;
 import ui.LanguageManager;
 import ui.PageNavigator;
 import weatherdata.EstimationTimestamp;
-import powermarketdata.PriceData;
 
 public class StartMenu extends Application implements SubAppInterface {
 
-    private static ArrayList<EstimationTimestamp> forecast;
+    private static ArrayList<EstimationTimestamp> forecast=new ArrayList<>();
 
     private Model appData;
     private PriceData prices;
     private AppInterface root;
 
     public static void setForecastData(ArrayList<EstimationTimestamp> f) {
-        forecast = f;
+        forecast.clear();
+        forecast.addAll(f);
     }
 
     @Override
@@ -199,11 +198,11 @@ public class StartMenu extends Application implements SubAppInterface {
         };*/
 
         
-        priceValue.setText(prices.GetCurrentPrice("SE3", LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh");
+        priceValue.setText(prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData")).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh");
         Timeline priceClock = new Timeline(
                 new KeyFrame(
                         Duration.minutes(15),
-                        e -> priceValue.setText(prices.GetCurrentPrice("SE3", LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh")
+                        e -> priceValue.setText(prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData")).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh")
                 )
         );
 
@@ -387,10 +386,10 @@ public class StartMenu extends Application implements SubAppInterface {
 
     // Restore saved solar forecast
     private void restoreSavedForecast() {
-
+        /* This ruins the chart code
         if (forecast != null && !forecast.isEmpty()) {
             return;
-        }
+        }*/
 
         TimestampData savedData = (TimestampData) appData.Get("TimestampData");
 
@@ -417,7 +416,7 @@ public class StartMenu extends Application implements SubAppInterface {
         }
 
         restored.sort(null);
-        forecast = restored;
+        setForecastData(restored);
         System.out.println("Restored forecast points: " + forecast.size());
     }
 }

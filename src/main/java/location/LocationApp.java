@@ -276,7 +276,7 @@ public class LocationApp extends Application implements SubAppInterface {
                 timestamps.add(new EstimationTimestamp(LocalDateTime.parse(entry.getKey()), entry.getValue()));
             }
             timestamps.sort(null);
-            Platform.runLater(() -> {StartMenu.setForecastData(timestamps);message.setText(LanguageManager.get("forecast.success"
+            Platform.runLater(() -> {/*StartMenu.setForecastData(timestamps);*/message.setText(LanguageManager.get("forecast.success"
                ));
             });
         });
