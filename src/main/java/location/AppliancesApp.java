@@ -1,7 +1,6 @@
 
 package location;
 
-import java.time.LocalDateTime;
 import java.util.Map;
 
 import javafx.application.Application;
@@ -28,7 +27,6 @@ import other.AppInterface;
 import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
-import other.TimestampData;
 import ui.LanguageManager;
 import ui.PageNavigator;
 
@@ -61,15 +59,7 @@ public class AppliancesApp extends Application implements SubAppInterface {
         title.getStyleClass().addAll("text", "home-welcome", "app-page-title");
 
         // CURRENT SOLAR PRODUCTION
-        TimestampData prodData = (TimestampData) appData.Get("TimestampData");
-        double prodVal = 0;
-
-        if (prodData != null) {LocalDateTime now = LocalDateTime.now();
-            String currentHour = LocalDateTime.of(now.getYear(), now.getMonth(), now.getDayOfMonth(), now.getHour(), 0).toString();
-            Double value = prodData.GetTimestamps().get(currentHour);
-            if (value != null) {prodVal = value;
-            }
-        }
+       double prodVal=appData.GetProduction();
 
         Label currentProduction = createLabel(LanguageManager.get("appliance.production") + ": " + (int) prodVal + " W");
 

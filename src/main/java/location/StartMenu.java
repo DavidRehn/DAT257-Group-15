@@ -66,29 +66,9 @@ public class StartMenu extends Application implements SubAppInterface {
         LabelDirector labelDirector = new LabelDirector();
 
         // Get current solar production
-        TimestampData prodData =
-                (TimestampData) appData.Get("TimestampData");
+        double prodVal = appData.GetProduction();
 
-        double prodVal = 0;
-
-        if (prodData != null) {
-
-            LocalDateTime now = LocalDateTime.now();
-
-            String currentHour = LocalDateTime.of(
-                    now.getYear(),
-                    now.getMonth(),
-                    now.getDayOfMonth(),
-                    now.getHour(),
-                    0
-            ).toString();
-
-            Double value = prodData.GetTimestamps().get(currentHour);
-
-            if (value != null) {
-                prodVal = value;
-            }
-        }
+        
 
         // SOLAR PRODUCTION LABEL
         LabelBuilder productionBuilder = new LabelBuilder();
@@ -196,19 +176,22 @@ public class StartMenu extends Application implements SubAppInterface {
             worker.setDaemon(true);
             worker.start();
         };*/
-
-        
+        Timeline priceClock;
+        if(appData.Get("ZoneData")!=null){
         priceValue.setText(prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData")).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh");
-        Timeline priceClock = new Timeline(
+        priceClock = new Timeline(
                 new KeyFrame(
                         Duration.minutes(15),
                         e -> priceValue.setText(prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData")).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh")
                 )
         );
-
+        
         priceClock.setCycleCount(Timeline.INDEFINITE);
         priceClock.play();
-
+        }else{
+                priceClock = new Timeline();
+                priceClock.play(); 
+        }
         // VALUE STYLING
         productionValue.getStyleClass().add("boxText");
         usageValue.getStyleClass().add("boxText");

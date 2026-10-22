@@ -1,5 +1,6 @@
 package other;
 
+import java.time.LocalDateTime;
 import java.util.Hashtable;
 
 import powermarketdata.PriceData;
@@ -72,6 +73,7 @@ public class Model {
         }
         System.out.println(datatable);
         highestProfile--;
+        if(currentProfile>highestProfile){currentProfile=highestProfile;}
         SaveToDisc();
     }
     public void SwitchProfile(int i){
@@ -115,6 +117,56 @@ public class Model {
     }
     public PriceData GetPrices(){
         return prices;
+    }
+
+    public double GetProduction(int i){
+
+        TimestampData prodData =
+                (TimestampData)Get("TimestampData",i);
+
+        double prodVal = 0;
+
+        if (prodData != null) {
+
+            LocalDateTime now = LocalDateTime.now();
+
+            String currentHour = LocalDateTime.of(
+                    now.getYear(),
+                    now.getMonth(),
+                    now.getDayOfMonth(),
+                    now.getHour(),
+                    0
+            ).toString();
+
+            Double value = prodData.GetTimestamps().get(currentHour);
+
+            if (value != null) {
+                prodVal = value;
+            }
+        }
+        return prodVal;
+    }
+    public double GetProduction(){
+        return GetProduction(currentProfile);
+    }
+
+    public double GetUsage(int i){
+        double usageValue = 0;
+            if(Get("ApplianceData",i)!=null){
+                ApplianceData appliance=(ApplianceData)Get("ApplianceData",i);
+                Hashtable<String,Double> appliances = appliance.GetAppliances();
+                for(String s:appliances.keySet()){
+                    if(appliance.IsInUse(s)){
+                        usageValue+=appliances.get(s);
+                    }
+                }
+
+            }
+        return usageValue;
+    }
+
+    public double GetUsage(){
+        return GetUsage(currentProfile);
     }
 }
 /* 
