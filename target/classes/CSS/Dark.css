@@ -163,6 +163,10 @@
     -fx-font-weight: bold;
 }
 
+.sidebar-clock {
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+}
 
 /* ---------------------------- Home header (on top containing language and theme buttons) ---------------------------- */
 

@@ -119,7 +119,7 @@ public class LocationApp extends Application implements SubAppInterface {
         findLocationButton.setPrefWidth(150);
         findLocationButton.setMinWidth(150);
         Button checkAllButton = createButton(LanguageManager.get("check.all"), e -> validateAndSave(longitudeField, latitudeField, areaField, tiltField, efficiencyField, zoneList, directionList, allMessage));
-        Button getForecastButton = createButton(LanguageManager.get("get.forecast"), e -> loadForecast(allMessage));
+        //Button getForecastButton = createButton(LanguageManager.get("get.forecast"), e -> loadForecast(allMessage));
         Label addressLabel = createLabel(LanguageManager.get("address"));
         addressLabel.getStyleClass().add("text");
         addressLabel.setPrefWidth(160);
@@ -134,14 +134,14 @@ public class LocationApp extends Application implements SubAppInterface {
         ((Label) directionRow.getChildren().get(0)).setPrefWidth(160);
         zoneList.setPrefWidth(270);
         directionList.setPrefWidth(270);
-        HBox buttonRow = new Row(checkAllButton, getForecastButton).getRow();
+        HBox buttonRow = new Row(checkAllButton).getRow();
         buttonRow.setAlignment(Pos.CENTER_LEFT);
-        checkAllButton.getStyleClass().add("app-secondary-button");
+        checkAllButton.getStyleClass().add("app-primary-button");
         checkAllButton.setPrefWidth(170);
         checkAllButton.setMinWidth(170);
-        getForecastButton.getStyleClass().add("app-primary-button");
+        /*getForecastButton.getStyleClass().add("app-primary-button");
         getForecastButton.setPrefWidth(170);
-        getForecastButton.setMinWidth(170);
+        getForecastButton.setMinWidth(170);*/
         Label locationHeading = createLabel(LanguageManager.get("location"));
         locationHeading.getStyleClass().addAll("solar-chart-title", "app-section-heading");
         VBox locationCard = new VBox(14, locationHeading, addressRow, zoneRow, rows[0], rows[1]);
@@ -253,6 +253,7 @@ public class LocationApp extends Application implements SubAppInterface {
         } else {appData.SaveToDisc();
         }
         message.setText(LanguageManager.get("validation.success"));
+        loadForecast(message);
     }
     private boolean addressFieldIsUnavailable() {
         return false;
