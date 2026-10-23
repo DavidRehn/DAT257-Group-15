@@ -288,3 +288,10 @@
     -fx-border-radius: 5;
     -fx-background-radius: 5;
 }
+
+.sidebar-clock {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 0 0 10px 5px;
+}
