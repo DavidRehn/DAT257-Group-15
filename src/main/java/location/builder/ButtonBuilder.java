@@ -11,8 +11,8 @@ public class ButtonBuilder implements LBuilder {
     private EventHandler<ActionEvent> event;
 
     @Override 
-    public void setLabelName(String[] labelName ){
-        this.defultTitle = new Button(labelName[0]);
+    public void setLabelName(String labelName ){
+        this.defultTitle = new Button(labelName);
     }
 
     @Override 
@@ -20,36 +20,25 @@ public class ButtonBuilder implements LBuilder {
         this.defultTitle.setPrefWidth(width);        
     }
 
-    @Override
+    /*@Override
     public void setRow(RowMaker rowMaker){
         this.rowMaker = rowMaker;
-    }
+    }*/
     @Override 
-    public void setStyl(String[] styl){
-        this.defultTitle.getStyleClass().addAll("" + styl);
+    public void setStyl(String styl){
+        this.defultTitle.getStyleClass().addAll(styl);
     }
     @Override 
     public void setEvent(BBuilder bBuilder){
         this.a = bBuilder;
         this.defultTitle.setOnAction(a.getEvent());
     }
-    // Temporary method for LocationApp
+    
+        //interface functions
+//--------------------------------
+        //get functions
+
     public Button getButton() {
         return defultTitle;//
     }
-/// /    //////
-        //interface functions
-//--------------------------------
-   
-    /*
-    private Button button = new Button();
- 
-    @Override
-    public void setEvent(EventHandler<ActionEvent> eventHandler) {
-        button.setOnAction(eventHandler);
-    }
-
-    public Button getButton() {
-        return button;
-    }*/
 }

@@ -34,6 +34,9 @@ public class SolarChartView {
     private static int day;
     // Create the complete chart
     public static VBox create(List<EstimationTimestamp> forecast) {
+        for (EstimationTimestamp estimationTimestamp : forecast) {
+            System.out.println(estimationTimestamp);
+        }
         // X axis: 24-hour time
         NumberAxis xAxis = new NumberAxis(0, 23, 2);
         xAxis.setAutoRanging(false);
@@ -164,7 +167,9 @@ public class SolarChartView {
                 day = i;
             }
         }
+        System.out.println("Base day: "+selectedDay);
         selectedDay = selectedDay.plusDays(day);
+        System.out.println("Offset day: "+selectedDay);
 
         // If no forecast exists
         if (forecast == null || forecast.isEmpty()) {
@@ -181,8 +186,10 @@ public class SolarChartView {
                 if (!time.toLocalDate().equals(selectedDay)) {continue;
                 }
                 double watts = item.GetWatts();
+                //System.out.println("Watts: "+watts);
                 if (!Double.isFinite(watts)) {continue;}
                 int hour = time.getHour();
+                //System.out.println("Time: "+time);
                 series.getData().add(new XYChart.Data<>(hour, watts));
             }
         }

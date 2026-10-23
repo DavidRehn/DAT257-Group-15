@@ -1,9 +1,12 @@
 package other;
 
+import java.time.LocalDateTime;
 import java.util.Hashtable;
 
+import location.GetNewForcast;
 import powermarketdata.PriceData;
 import saveload.SaveLoadInterface;
+
 
 public class Model {
     private Hashtable<String, SavableData> datatable;
@@ -11,11 +14,14 @@ public class Model {
     private int currentProfile=0;
     private int highestProfile=0;
     private PriceData prices = new PriceData();
+    private GetNewForcast newForcast;
+    
     public Model(SaveLoadInterface saveLoad){
         prices.run();
         this.saveLoad = saveLoad;
         datatable=new Hashtable<>();
-        
+        newForcast = new GetNewForcast(this);
+        newForcast.loadTheForecast(currentProfile);
     }
     
 
@@ -70,6 +76,8 @@ public class Model {
             
         }
         System.out.println(datatable);
+        highestProfile--;
+        if(currentProfile>highestProfile){currentProfile=highestProfile;}
         SaveToDisc();
     }
     public void SwitchProfile(int i){
@@ -101,7 +109,13 @@ public class Model {
         
     }
 
-    
+    public void GetNewForecast(){
+        newForcast.loadTheForecast(currentProfile);
+    }
+
+    public void GetNewForecast(int profile){
+        newForcast.loadTheForecast(profile);
+    }
     
 
     private void SetProfile(int profile){
@@ -113,6 +127,56 @@ public class Model {
     }
     public PriceData GetPrices(){
         return prices;
+    }
+
+    public double GetProduction(int i){
+
+        TimestampData prodData =
+                (TimestampData)Get("TimestampData",i);
+
+        double prodVal = 0;
+
+        if (prodData != null) {
+
+            LocalDateTime now = LocalDateTime.now();
+
+            String currentHour = LocalDateTime.of(
+                    now.getYear(),
+                    now.getMonth(),
+                    now.getDayOfMonth(),
+                    now.getHour(),
+                    0
+            ).toString();
+
+            Double value = prodData.GetTimestamps().get(currentHour);
+
+            if (value != null) {
+                prodVal = value;
+            }
+        }
+        return prodVal;
+    }
+    public double GetProduction(){
+        return GetProduction(currentProfile);
+    }
+
+    public double GetUsage(int i){
+        double usageValue = 0;
+            if(Get("ApplianceData",i)!=null){
+                ApplianceData appliance=(ApplianceData)Get("ApplianceData",i);
+                Hashtable<String,Double> appliances = appliance.GetAppliances();
+                for(String s:appliances.keySet()){
+                    if(appliance.IsInUse(s)){
+                        usageValue+=appliances.get(s);
+                    }
+                }
+
+            }
+        return usageValue;
+    }
+
+    public double GetUsage(){
+        return GetUsage(currentProfile);
     }
 }
 /* 

@@ -14,8 +14,8 @@ public class LabelBuilder implements LBuilder{
     private RowMaker rowMaker;
 
     @Override 
-    public void setLabelName(String[] title){
-        this.defultTitle = new Label("" + title[0]);
+    public void setLabelName(String title){
+        this.defultTitle = new Label(title);
     }
     
     @Override
@@ -23,13 +23,13 @@ public class LabelBuilder implements LBuilder{
         defultTitle.setMaxWidth(width);
     }
 
-     @Override
+    /*@Override
     public void setRow(RowMaker rowMaker){
         this.rowMaker = rowMaker;
-    }
+    }*/
     @Override 
-    public void setStyl(String[] styl){
-        this.defultTitle.getStyleClass().addAll("" + styl);
+    public void setStyl(String styl){
+        this.defultTitle.getStyleClass().addAll(styl);
     }
     @Override 
     public void setEvent(BBuilder bBuilder){

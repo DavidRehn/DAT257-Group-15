@@ -14,9 +14,9 @@ public class MultiChoiceBuilder  implements LBuilder{
     private BBuilder a;
 
     @Override 
-    public void setLabelName(String[] labelName ){
+    public void setLabelName(String labelName ){
         this.defultTitle = new ComboBox<>();
-        this.defultTitle.setPromptText(labelName[0]);
+        this.defultTitle.setPromptText(labelName);
     }
 
     @Override 
@@ -26,13 +26,13 @@ public class MultiChoiceBuilder  implements LBuilder{
         this.defultTitle.setMaxWidth(width);
     }
 
-    @Override
+    /*@Override
     public void setRow(RowMaker rowMaker){
         this.rowMaker = rowMaker;
-    }
+    }*/
     @Override 
-    public void setStyl(String[] styl){
-        this.defultTitle.getStyleClass().addAll("" + styl);
+    public void setStyl(String styl){
+        this.defultTitle.getStyleClass().addAll(styl);
     }
     @Override 
     public void setEvent(BBuilder bBuilder){

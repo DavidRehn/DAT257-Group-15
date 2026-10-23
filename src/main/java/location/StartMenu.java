@@ -10,7 +10,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -29,23 +28,23 @@ import other.ApplianceData;
 import other.Model;
 import other.SubAppInterface;
 import other.TimestampData;
-import powermarketdata.PowerMarketParser;
-import powermarketdata.PowerMarketRetriver;
+import other.ZoneData;
+import powermarketdata.PriceData;
 import ui.LanguageManager;
 import ui.PageNavigator;
 import weatherdata.EstimationTimestamp;
-import powermarketdata.PriceData;
 
 public class StartMenu extends Application implements SubAppInterface {
 
-    private static ArrayList<EstimationTimestamp> forecast;
+    private static ArrayList<EstimationTimestamp> forecast=new ArrayList<>();
 
     private Model appData;
     private PriceData prices;
     private AppInterface root;
 
     public static void setForecastData(ArrayList<EstimationTimestamp> f) {
-        forecast = f;
+        forecast.clear();
+        forecast.addAll(f);
     }
 
     @Override
@@ -62,41 +61,22 @@ public class StartMenu extends Application implements SubAppInterface {
     @Override
     public void start(Stage stage) {
 
+        appData.GetNewForecast();
         restoreSavedForecast();
 
         LabelDirector labelDirector = new LabelDirector();
 
         // Get current solar production
-        TimestampData prodData =
-                (TimestampData) appData.Get("TimestampData");
+        double prodVal = appData.GetProduction();
 
-        double prodVal = 0;
-
-        if (prodData != null) {
-
-            LocalDateTime now = LocalDateTime.now();
-
-            String currentHour = LocalDateTime.of(
-                    now.getYear(),
-                    now.getMonth(),
-                    now.getDayOfMonth(),
-                    now.getHour(),
-                    0
-            ).toString();
-
-            Double value = prodData.GetTimestamps().get(currentHour);
-
-            if (value != null) {
-                prodVal = value;
-            }
-        }
+        
 
         // SOLAR PRODUCTION LABEL
         LabelBuilder productionBuilder = new LabelBuilder();
 
         labelDirector.constructName(
                 productionBuilder,
-                new String[]{LanguageManager.get("production")}
+                LanguageManager.get("production")
         );
 
         Label production = productionBuilder.getLabel();
@@ -107,7 +87,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 productionValueBuilder,
-                new String[]{(int) prodVal + " W"}
+                (int) prodVal + " W"
         );
 
         Label productionValue = productionValueBuilder.getLabel();
@@ -118,7 +98,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 usageBuilder,
-                new String[]{LanguageManager.get("usage")}
+                LanguageManager.get("usage")
         );
 
         Label usage = usageBuilder.getLabel();
@@ -129,7 +109,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 usageValueBuilder,
-                new String[]{formatCurrentUsage()}
+                formatCurrentUsage()
         );
 
         Label usageValue = usageValueBuilder.getLabel();
@@ -140,7 +120,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 priceBuilder,
-                new String[]{LanguageManager.get("price")}
+                LanguageManager.get("price")
         );
 
         Label price = priceBuilder.getLabel();
@@ -151,7 +131,7 @@ public class StartMenu extends Application implements SubAppInterface {
 
         labelDirector.constructName(
                 priceValueBuilder,
-                new String[]{" SEK/kWh"}
+                " SEK/kWh"
         );
 
         Label priceValue = priceValueBuilder.getLabel();
@@ -197,19 +177,22 @@ public class StartMenu extends Application implements SubAppInterface {
             worker.setDaemon(true);
             worker.start();
         };*/
-
-        
-        priceValue.setText(prices.GetCurrentPrice("SE3", LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh");
-        Timeline priceClock = new Timeline(
+        Timeline priceClock;
+        if(appData.Get("ZoneData")!=null){
+        priceValue.setText(prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData")).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh");
+        priceClock = new Timeline(
                 new KeyFrame(
                         Duration.minutes(15),
-                        e -> priceValue.setText(prices.GetCurrentPrice("SE3", LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh")
+                        e -> priceValue.setText(prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData")).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4) + " SEK/kWh")
                 )
         );
-
+        
         priceClock.setCycleCount(Timeline.INDEFINITE);
         priceClock.play();
-
+        }else{
+                priceClock = new Timeline();
+                priceClock.play(); 
+        }
         // VALUE STYLING
         productionValue.getStyleClass().add("boxText");
         usageValue.getStyleClass().add("boxText");
@@ -387,12 +370,14 @@ public class StartMenu extends Application implements SubAppInterface {
 
     // Restore saved solar forecast
     private void restoreSavedForecast() {
-
+        /* This ruins the chart code
         if (forecast != null && !forecast.isEmpty()) {
             return;
-        }
+        }*/
 
         TimestampData savedData = (TimestampData) appData.Get("TimestampData");
+
+        //System.out.println(savedData.ToJsonObj("a").toString());
 
         if (savedData == null) {
             System.out.println("No saved forecast found");
@@ -417,7 +402,7 @@ public class StartMenu extends Application implements SubAppInterface {
         }
 
         restored.sort(null);
-        forecast = restored;
+        setForecastData(restored);
         System.out.println("Restored forecast points: " + forecast.size());
     }
 }

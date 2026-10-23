@@ -1,17 +1,10 @@
 package powermarketdata;
 
-import java.io.StringReader;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-import java.util.Locale;
-import java.util.Set;
-
-import javax.json.stream.JsonParser;  
-import javax.json.Json;  
-
 import java.time.LocalDateTime;
 
 /**
@@ -26,7 +19,7 @@ public class PowerMarketRetriver{
         httpClient = HttpClient.newHttpClient();
     }
 
-    public String GetPowerMarketInfo(){
+    public String GetPowerMarketInfo(String zone){
         time = LocalDateTime.now();
 
         // this is for the api dayformat. it has to be 2 characters long.
@@ -36,7 +29,7 @@ public class PowerMarketRetriver{
         }
 
         // should be a option to switch zones.       
-        String swedenZone =  "SE3";
+        String swedenZone =  zone;
 
         String requestUrl = 
             "https://www.elprisetjustnu.se/api/v1/prices/" //2026/10-01_SE3.json

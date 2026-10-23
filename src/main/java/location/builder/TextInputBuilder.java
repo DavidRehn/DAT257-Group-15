@@ -19,16 +19,18 @@ public class TextInputBuilder implements LBuilder {
     private BBuilder a;
 
     @Override 
-    public void setLabelName(String[] defultTitle){
+    public void setLabelName(String defultTitle){
+        this.defultTitle = new TextField(defultTitle);
+
         //this should be fixt
-        if(defultTitle.length <= 1 ){
+        /*if(defultTitle.length <= 1 ){
             this.defultTitle = new TextField("" + defultTitle[0]);
         }
         else if(defultTitle[2] != null){
             this.defultTitle = new TextField("" + defultTitle[1]);
         }else{
             this.defultTitle = new TextField("" + defultTitle[0]);
-        }
+        }*/
      
     }  
     @Override
@@ -36,13 +38,13 @@ public class TextInputBuilder implements LBuilder {
         defultTitle.setMaxWidth(width);
 
     }
-    @Override
+    /*@Override
     public void setRow(RowMaker rowMaker){
         this.rowMaker = rowMaker;
-    }
+    }*/
     @Override 
-    public void setStyl(String[] styl){
-        this.defultTitle.getStyleClass().addAll("" + styl);
+    public void setStyl(String styl){
+        this.defultTitle.getStyleClass().addAll(styl);
     }
     @Override 
     public void setEvent(BBuilder bBuilder){

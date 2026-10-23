@@ -285,7 +285,8 @@ public class LocationApp extends Application implements SubAppInterface {
                 timestamps.add(new EstimationTimestamp(LocalDateTime.parse(entry.getKey()), entry.getValue()));
             }
             timestamps.sort(null);
-            Platform.runLater(() -> {StartMenu.setForecastData(timestamps);message.setText(LanguageManager.get("forecast.success"));
+            Platform.runLater(() -> {/*StartMenu.setForecastData(timestamps);*/message.setText(LanguageManager.get("forecast.success"
+               ));
             });
         });
         apiThread.setDaemon(true);
@@ -310,23 +311,29 @@ public class LocationApp extends Application implements SubAppInterface {
         }
         return false;
     }
-    private Label createLabel(String text) {
-        LabelBuilder builder = new LabelBuilder();
+    // LABEL BUILDER
+    private Label createLabel(String text) {LabelBuilder builder = new LabelBuilder();
         director.constructName(builder, new String[]{text});
-        return builder.getLabel();
-    }
+        return builder.getLabel();}
+
+    // TEXT INPUT BUILDER
     private TextField createTextField(String prompt, String value) {
         TextInputBuilder builder = new TextInputBuilder();
+        // Create the TextField first
         director.constructName(builder, new String[]{""});
-        builder.setPromptText(prompt);
-        TextField field = builder.getTextField();
-        if (value != null) {field.setText(value);
-        }
+        // Set placeholder using temporary method
+       builder.setPromptText(prompt);
+       TextField field = builder.getTextField();
+       // Restore saved input
+        if (value != null) {field.setText(value);}
         return field;
     }
     private Button createButton(String text, EventHandler<ActionEvent> event) {
         ButtonBuilder builder = new ButtonBuilder();
+        // Create button using LabelDirector
         director.constructName(builder, new String[]{text});
+
+        // BBuilder provides the event handler
         builder.setEvent(() -> event);
         return builder.getButton();
     }
@@ -341,14 +348,14 @@ public class LocationApp extends Application implements SubAppInterface {
     }
     private HBox createInputRow(String name, TextField field) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructW90(builder, new String[]{name});
+        director.constructW(builder, name, 90);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
         return new Row(label, field).getRow();
     }
     private HBox createComboRow(String name, ComboBox<String> comboBox) {
         LabelBuilder builder = new LabelBuilder();
-        director.constructW90(builder, new String[]{name});
+        director.constructW(builder, name, 90);
         Label label = builder.getLabel();
         label.getStyleClass().add("text");
         return new Row(label, comboBox).getRow();

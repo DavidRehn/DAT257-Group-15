@@ -10,14 +10,15 @@ public class PriceData implements Runnable{
                 try {
                     PowerMarketRetriver provider =
                             new PowerMarketRetriver();
+                    for(int i = 1; i<=4;i++){
+                        ArrayList<Double> prices = new ArrayList<>(
+                                PowerMarketParser.ParseToJson(
+                                        provider.GetPowerMarketInfo("SE"+i)
+                                )
+                        );
 
-                    ArrayList<Double> prices = new ArrayList<>(
-                            PowerMarketParser.ParseToJson(
-                                    provider.GetPowerMarketInfo()
-                            )
-                    );
-
-                    storedData.put("SE3", prices);
+                        storedData.put("SE"+i, prices);
+                    }
 
                 } catch (Exception exception) {
 
