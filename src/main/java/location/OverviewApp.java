@@ -68,6 +68,11 @@ public class OverviewApp extends Application implements SubAppInterface {
                 "home-content"
         );
 
+        LabelBuilder builder = new LabelBuilder();
+        director.constructS(builder,LanguageManager.get("overview.title"),"home-welcome");
+        //titleLabel.getStyleClass().addAll("text", "home-welcome", "app-page-title");
+        layout.getChildren().add(builder.getLabel());
+
         HBox header = new HBox( 14);
         header.setPadding(new Insets(24));
         header.setMaxWidth(Double.MAX_VALUE);
@@ -163,7 +168,7 @@ public class OverviewApp extends Application implements SubAppInterface {
             maker.add(prod);
 
             double usageValue = appData.GetUsage(counter);
-            totalUsage=usageValue;
+            totalUsage+=usageValue;
             String[] usage = {"usage",""+(int)usageValue+" W"};
             maker.add(usage);
 
@@ -172,10 +177,12 @@ public class OverviewApp extends Application implements SubAppInterface {
             
             
             if(appData.Get("ZoneData",counter)!=null){
-                String[] price = {"price",prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData",counter)).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4)+" SEK/kWh"};
+            
+                Double income = ((productionValue-usageValue)*prices.GetCurrentPrice(((ZoneData)appData.Get("ZoneData",counter)).Zone(), LocalTime.now().getHour(), (int)LocalTime.now().getMinute()/4)/1000);
+                String[] price = {"overview.income",String.format("%.4f",income)+" SEK/h"};
                 maker.add(price);
             }else{
-                String[] price = {"price","-"+" SEK/kWh"};
+                String[] price = {"overview.income","-"+" SEK"};
                 maker.add(price);
             }
             
@@ -229,7 +236,7 @@ public class OverviewApp extends Application implements SubAppInterface {
         layout.getChildren().add(builder.getLabel());
         
         //Info box row
-        HBox infoRow = new HBox();
+        HBox infoRow = new HBox(5);
         for (String[] arr: boxes) {
             infoRow.getChildren().add(infoBoxConstructor(arr[0],arr[1]));
         }
@@ -257,7 +264,7 @@ public class OverviewApp extends Application implements SubAppInterface {
 
     private VBox infoBoxConstructor(String title, String value){
         VBoxBuilder layout = new VBoxBuilder();
-        director.constructVboxAWHIS(layout,8, Pos.CENTER_LEFT, 220, 95, 20, "infoBox");
+        director.constructVboxAWHIS(layout,8, Pos.CENTER_LEFT, 400, 95, 15, "infoBox");
 
         LabelBuilder builderBoxTitel = new LabelBuilder();
         director.constructName(builderBoxTitel, LanguageManager.get(title));
