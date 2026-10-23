@@ -243,7 +243,7 @@ public class OverviewApp extends Application implements SubAppInterface {
         layout.getChildren().add(infoRow);
         
         //Button row
-        HBox buttonRow = new HBox();
+        HBox buttonRow = new HBox(15);
         ButtonBuilder buttonBuilder=new ButtonBuilder();
         //Add lang
         director.constructName(buttonBuilder, LanguageManager.get("overview.select"));
