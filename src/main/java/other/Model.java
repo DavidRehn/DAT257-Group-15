@@ -3,8 +3,10 @@ package other;
 import java.time.LocalDateTime;
 import java.util.Hashtable;
 
+import location.GetNewForcast;
 import powermarketdata.PriceData;
 import saveload.SaveLoadInterface;
+
 
 public class Model {
     private Hashtable<String, SavableData> datatable;
@@ -12,12 +14,13 @@ public class Model {
     private int currentProfile=0;
     private int highestProfile=0;
     private PriceData prices = new PriceData();
+    private GetNewForcast newForcast;
     
     public Model(SaveLoadInterface saveLoad){
         prices.run();
         this.saveLoad = saveLoad;
         datatable=new Hashtable<>();
-        
+        newForcast = new GetNewForcast(this);
     }
     
 
