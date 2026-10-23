@@ -28,10 +28,10 @@ public class GetNewForcast {
         this.appData = appData;
     }
    
-    public void loadTheForecast(int key) {
+    public void loadTheForecast(int profile) {
     
-        locationData=((LocationData)appData.Get("LocationData",key));
-        solarPanel = ((SolarPanel)appData.Get("SolarPanel",key));
+        locationData=((LocationData)appData.Get("LocationData",profile));
+        solarPanel = ((SolarPanel)appData.Get("SolarPanel",profile));
 
         //last line of defense.
         if(locationData==null || solarPanel==null){
@@ -46,31 +46,20 @@ public class GetNewForcast {
             solarPanel.Direction()
         );
                 
-        Thread apiThread = new Thread(() -> {
-            SolarRadiationRetreiver retriever = new SolarRadiationRetreiver(
+        SolarRadiationRetreiver retriever = new SolarRadiationRetreiver(
                 weatherRequest,
                 new WeatherParser(), 
                 appData
             );
 
-            TimestampData timestampData = (TimestampData) appData.Get("TimestampData");
+            retriever.GetWeatherInfo();
 
             boolean saved = appData.SaveToDisc();
+            
             if (saved) {
                 System.out.println("Forecast saved successfully");
             } else {
                 System.err.println("Could not save forecast");
             }
-
-            ArrayList<EstimationTimestamp> timestamps = new ArrayList<>();
-            for (HashMap.Entry<String, Double> entry : timestampData.GetTimestamps().entrySet()) {
-                timestamps.add(new EstimationTimestamp(LocalDateTime.parse(entry.getKey()), entry.getValue()));
-            }
-            timestamps.sort(null);
-            
-        });
-
-        apiThread.setDaemon(true);
-        apiThread.start();
     }
 }

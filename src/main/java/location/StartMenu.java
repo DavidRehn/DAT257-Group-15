@@ -61,6 +61,7 @@ public class StartMenu extends Application implements SubAppInterface {
     @Override
     public void start(Stage stage) {
 
+        appData.GetNewForecast();
         restoreSavedForecast();
 
         LabelDirector labelDirector = new LabelDirector();
@@ -375,6 +376,8 @@ public class StartMenu extends Application implements SubAppInterface {
         }*/
 
         TimestampData savedData = (TimestampData) appData.Get("TimestampData");
+
+        //System.out.println(savedData.ToJsonObj("a").toString());
 
         if (savedData == null) {
             System.out.println("No saved forecast found");

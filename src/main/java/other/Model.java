@@ -21,6 +21,7 @@ public class Model {
         this.saveLoad = saveLoad;
         datatable=new Hashtable<>();
         newForcast = new GetNewForcast(this);
+        newForcast.loadTheForecast(currentProfile);
     }
     
 
@@ -108,7 +109,13 @@ public class Model {
         
     }
 
-    
+    public void GetNewForecast(){
+        newForcast.loadTheForecast(currentProfile);
+    }
+
+    public void GetNewForecast(int profile){
+        newForcast.loadTheForecast(profile);
+    }
     
 
     private void SetProfile(int profile){
