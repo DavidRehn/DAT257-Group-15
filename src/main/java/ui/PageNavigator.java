@@ -4,11 +4,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
-import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
-import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -64,11 +61,12 @@ public class PageNavigator {
         updateActiveButton();
 
         // Change ONLY the central content, not the Stage or the Scene.
-        pageContent.setOpacity(0);
-        pageContent.setTranslateX(12);
+        
+        //pageContent.setOpacity(100);
+        //pageContent.setTranslateX(12);
         content.getChildren().setAll(pageContent);
 
-        FadeTransition fade = new FadeTransition(
+        /*FadeTransition fade = new FadeTransition(
          Duration.millis(180), pageContent);
         fade.setFromValue(0);
         fade.setToValue(1);
@@ -77,7 +75,7 @@ public class PageNavigator {
           Duration.millis(180), pageContent);
         slide.setFromX(12);
         slide.setToX(0);
-        new ParallelTransition(fade, slide).play();
+        new ParallelTransition(fade, slide).play();*/
     }
 
     private static void buildShell(Stage stage, AppInterface navigation) {
