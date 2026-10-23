@@ -87,10 +87,16 @@ public class PageNavigator {
         logo.getStyleClass().add("sidebar-title");
 
         VBox sidebar = new VBox(18);
-        sidebar.setPadding(new Insets(30, 15, 20, 15));
+        sidebar.setPadding(new Insets(15, 15, 20, 15));
         sidebar.setPrefWidth(220);
         sidebar.setMinWidth(220);
         sidebar.getStyleClass().add("sidebar");
+// CLOCK - TOP LEFT
+        clockLabel = new Label();
+        clockLabel.setMinWidth(135);
+        clockLabel.getStyleClass().add("sidebar-clock");
+
+        sidebar.getChildren().add(clockLabel);
         //Add button actions
         homeButton.setOnAction(e -> app.view(window,"home"));
         sidebar.getChildren().add(homeButton);
@@ -107,8 +113,7 @@ public class PageNavigator {
         
         
 
-        clockLabel = new Label();
-        clockLabel.setMinWidth(135);
+
 
 
         languageButton = new Button();
@@ -129,7 +134,7 @@ public class PageNavigator {
         controls.setAlignment(Pos.CENTER_RIGHT);
 
         BorderPane header = new BorderPane();
-        header.setLeft(clockLabel);
+
 
         header.setRight(controls);
         header.setPadding(new Insets(22, 25, 14, 25));
