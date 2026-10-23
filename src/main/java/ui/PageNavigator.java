@@ -4,8 +4,11 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
+import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -21,6 +24,9 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import other.AppInterface;
 import other.Model;
+import javafx.scene.layout.Region;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 /** One persistent scene: the sidebar and header do not change between pages. */
 public class PageNavigator {
@@ -61,12 +67,11 @@ public class PageNavigator {
         updateActiveButton();
 
         // Change ONLY the central content, not the Stage or the Scene.
-        
-        //pageContent.setOpacity(100);
-        //pageContent.setTranslateX(12);
+        pageContent.setOpacity(0);
+        pageContent.setTranslateX(12);
         content.getChildren().setAll(pageContent);
 
-        /*FadeTransition fade = new FadeTransition(
+        FadeTransition fade = new FadeTransition(
          Duration.millis(180), pageContent);
         fade.setFromValue(0);
         fade.setToValue(1);
@@ -75,7 +80,7 @@ public class PageNavigator {
           Duration.millis(180), pageContent);
         slide.setFromX(12);
         slide.setToX(0);
-        new ParallelTransition(fade, slide).play();*/
+        new ParallelTransition(fade, slide).play();
     }
 
     private static void buildShell(Stage stage, AppInterface navigation) {
@@ -83,20 +88,23 @@ public class PageNavigator {
 
         window = stage;app = navigation;shell = new BorderPane();content = new StackPane();
         content.getStyleClass().add("home-content");
-        Label logo = new Label("☀ Solar App");
-        logo.getStyleClass().add("sidebar-title");
 
         VBox sidebar = new VBox(18);
         sidebar.setPadding(new Insets(15, 15, 20, 15));
         sidebar.setPrefWidth(220);
         sidebar.setMinWidth(220);
         sidebar.getStyleClass().add("sidebar");
-// CLOCK - TOP LEFT
-        clockLabel = new Label();
-        clockLabel.setMinWidth(135);
-        clockLabel.getStyleClass().add("sidebar-clock");
 
-        sidebar.getChildren().add(clockLabel);
+        var resource = PageNavigator.class.getResource("/icons/SolarCast.png");
+        Image image = new Image(resource.toExternalForm());
+        ImageView logo = new ImageView(image);
+        logo.setPreserveRatio(true);
+        logo.fitWidthProperty().bind(sidebar.widthProperty().subtract(sidebar.getPadding().getLeft()).subtract(sidebar.getPadding().getRight()));
+        StackPane logoContainer = new StackPane(logo);
+        logoContainer.setAlignment(Pos.CENTER);
+        logoContainer.setPadding(new Insets(0, 0, 10, 0));
+        sidebar.getChildren().add(0, logoContainer);
+        
         //Add button actions
         homeButton.setOnAction(e -> app.view(window,"home"));
         sidebar.getChildren().add(homeButton);
@@ -104,17 +112,24 @@ public class PageNavigator {
         overviewButton.setOnAction(e -> app.view(window,"overview"));
         sidebar.getChildren().add(overviewButton);
 
-        settingsButton.setOnAction(e -> app.view(window,"settings"));
-        sidebar.getChildren().add(settingsButton);
-
         appliancesButton.setOnAction(e -> app.view(window,"appliances"));
         sidebar.getChildren().add(appliancesButton);
 
+        settingsButton.setOnAction(e -> app.view(window,"settings"));
+        sidebar.getChildren().add(settingsButton);
+
+        // Spacer to place clock at bottom
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+        sidebar.getChildren().add(spacer);
+
+        // CLOCK - TOP LEFT
+        clockLabel = new Label();
+        clockLabel.setMinWidth(135);
+        clockLabel.getStyleClass().add("sidebar-clock");
+        clockLabel.setAlignment(Pos.BOTTOM_CENTER);
+        sidebar.getChildren().add(clockLabel);
         
-        
-
-
-
 
         languageButton = new Button();
         languageButton.getStyleClass().add("language-button");
@@ -149,7 +164,7 @@ public class PageNavigator {
 
         scene = new Scene(shell, 1200, 800);
         ThemeManager.apply(scene);
-        stage.setTitle("Solar App");
+        stage.setTitle("SolarCast");
         stage.setMinWidth(900);
         stage.setMinHeight(650);
         stage.setScene(scene);

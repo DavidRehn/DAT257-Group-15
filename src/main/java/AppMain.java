@@ -42,7 +42,7 @@ public class AppMain extends Application implements AppInterface{
         initSubApp(appliancesMenu);
         initSubApp(overviewMenu);
         // One Stage for the entire application. PageNavigator creates one Scene.
-        stage.setTitle("Solar App");
+        stage.setTitle("SolarCast");
         view(stage,"home");
     }
 
