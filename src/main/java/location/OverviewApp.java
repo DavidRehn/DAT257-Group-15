@@ -229,14 +229,14 @@ public class OverviewApp extends Application implements SubAppInterface {
         layout.getChildren().add(builder.getLabel());
         
         //Info box row
-        HBox infoRow = new HBox();
+        HBox infoRow = new HBox(15);
         for (String[] arr: boxes) {
             infoRow.getChildren().add(infoBoxConstructor(arr[0],arr[1]));
         }
         layout.getChildren().add(infoRow);
         
         //Button row
-        HBox buttonRow = new HBox();
+        HBox buttonRow = new HBox(15);
         ButtonBuilder buttonBuilder=new ButtonBuilder();
         //Add lang
         director.constructName(buttonBuilder, LanguageManager.get("overview.select"));
